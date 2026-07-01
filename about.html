@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="description" content="About Hassan Moustafa Automotive – established 2006 in Dubai. Two decades of engineering excellence, genuine OEM parts sourcing, and trusted luxury vehicle care in the UAE.">
+    <title>About Us | Hassan Moustafa Automotive Care – Dubai, UAE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#070707","surface-container":"#0c0c0e","surface-container-low":"#121214","surface-container-lowest":"#070707","secondary-container":"#d6041d","on-surface-variant":"#9a9a9f","on-surface":"#e5e2e1","primary":"#c9c6c5","outline-variant":"rgba(255,255,255,0.06)","outline":"#4e4e54"},spacing:{"section-gap":"140px","container-max":"1440px","gutter":"32px"},fontFamily:{"display":["Plus Jakarta Sans","system-ui","sans-serif"],"body":["Inter","system-ui","sans-serif"],"mono":["Space Grotesk","monospace"]}}}}
+    </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container/80 selection:text-white carbon-detail-bg">
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-40 nav-glass">
+    <div class="flex justify-between items-center px-gutter py-4 max-w-[1440px] mx-auto">
+        <a href="index.html" class="flex items-center gap-3 shrink-0"><img alt="Hassan Moustafa" class="h-16 md:h-20 w-auto object-contain rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"></a>
+        <div class="hidden lg:flex items-center gap-9">
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="about.html">About</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="services.html">Services</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="spare-parts.html">Spare Parts</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="contact.html">Contact</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="lg:hidden text-on-surface-variant hover:text-white transition-colors p-1"><span class="material-symbols-outlined" style="font-size:26px">menu</span></button>
+        </div>
+    </div>
+</nav>
+<div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-80 bg-surface-container border-l border-white/8 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl">
+    <div><div class="flex justify-between items-center mb-12"><img alt="Logo" class="h-14 w-auto rounded-lg shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"><button id="mobile-menu-close" class="text-on-surface-variant hover:text-white p-1"><span class="material-symbols-outlined" style="font-size:24px">close</span></button></div><div class="flex flex-col gap-7"><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="index.html">Home</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="about.html">About</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="services.html">Services</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="spare-parts.html">Spare Parts</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="contact.html">Contact</a></div></div>
+</div>
+
+<!-- PAGE HERO -->
+<section class="pt-32 pb-20 relative z-10 border-b border-white/5" style="background-image: linear-gradient(to right, rgba(7,7,7,0.95), rgba(7,7,7,0.85)), url('https://images.unsplash.com/photo-1625047509248-ec889cbff17f?q=80&w=1800&auto=format&fit=crop'); background-size: cover; background-position: center;">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-3">Est. 2006 · Al Quoz, Dubai</span>
+        <h1 class="font-display font-extrabold text-white leading-tight" style="font-size: clamp(2.2rem, 5vw, 4rem)">About <span class="gradient-text-animated">Hassan Moustafa</span></h1>
+        <p class="text-on-surface-variant text-sm mt-4 max-w-2xl font-light leading-relaxed">Two decades of engineering integrity, genuine parts sourcing, and unwavering commitment to the performance and safety of every vehicle that enters our workshop.</p>
+    </div>
+</section>
+
+<!-- OUR STORY -->
+<section class="py-section-gap relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter grid md:grid-cols-2 gap-20 items-center">
+        <div class="relative group reveal-item">
+            <div class="absolute -inset-3 border border-secondary-container/15 translate-x-6 translate-y-6 rounded-2xl -z-10 group-hover:translate-x-3 group-hover:translate-y-3 transition-all duration-600"></div>
+            <div class="w-full aspect-[4/3] bg-surface-container overflow-hidden rounded-2xl border border-white/5 card-img-wrap">
+                <img alt="Hassan Moustafa workshop interior with luxury vehicles" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=1200&auto=format&fit=crop">
+            </div>
+        </div>
+        <div class="space-y-6 reveal-item reveal-delay-2">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold">Our Story</span>
+            <h2 class="font-display font-extrabold text-white leading-tight" style="font-size: clamp(1.8rem, 3vw, 2.8rem)">Built on Engineering Integrity</h2>
+            <div class="space-y-4 text-on-surface-variant text-sm leading-7 font-light">
+                <p>Hassan Moustafa Automotive was founded in 2006 with a singular mission: to offer vehicle owners in the UAE a genuine alternative to dealership servicing — one built on technical honesty, transparent pricing, and uncompromising parts authenticity.</p>
+                <p>What began as a specialist garage for German and Japanese marques has grown into one of Dubai's most respected independent workshops, trusted by thousands of vehicle owners for everything from routine maintenance to full engine reconstructions.</p>
+                <p>Our philosophy has never changed: diagnose accurately, source genuine parts only, deliver on time, and charge fairly. Every vehicle that enters our workshop — whether a daily commuter or a collector's supercar — receives the same meticulous attention to detail.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MISSION & VISION -->
+<section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter grid md:grid-cols-2 gap-8">
+        <div class="glass-card-premium p-10 rounded-2xl space-y-5 reveal-item">
+            <div class="w-14 h-14 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:30px;font-variation-settings:'FILL' 1">flag</span>
+            </div>
+            <h3 class="font-display font-extrabold text-white text-xl uppercase tracking-wider">Our Mission</h3>
+            <p class="text-on-surface-variant text-sm font-light leading-7">To deliver dealer-grade automotive care that is accessible, transparent, and built on the principle that every vehicle owner deserves honest engineering — without the premium dealership markup. We exist to protect your investment, extend your vehicle's lifespan, and keep you safely on the road.</p>
+        </div>
+        <div class="glass-card-premium p-10 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+            <div class="w-14 h-14 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:30px;font-variation-settings:'FILL' 1">visibility</span>
+            </div>
+            <h3 class="font-display font-extrabold text-white text-xl uppercase tracking-wider">Our Vision</h3>
+            <p class="text-on-surface-variant text-sm font-light leading-7">To be recognised as the UAE's most trusted independent automotive workshop — where precision, authenticity, and customer trust define every interaction. We envision a workshop where technology and craftsmanship converge to set new benchmarks in independent car care.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CORE VALUES -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">What We Stand For</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Our Core Values</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">verified_user</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Parts Authenticity</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Zero tolerance for counterfeit components. Every part we fit is sourced from licensed OEM distributors and carries full manufacturer serialisation and traceability.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">receipt_long</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Complete Transparency</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Every quotation itemises labour, parts, and VAT individually. We share diagnostic evidence with you directly. No hidden fees, no surprise line items, no ambiguity.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">precision_manufacturing</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Engineering Precision</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our technicians follow manufacturer-defined service procedures exactly. Torque specifications, fluid volumes, and calibration sequences are adhered to without compromise.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">schedule</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Punctual Delivery</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">We provide accurate job timelines at the point of diagnosis. Proactive updates are sent throughout the service cycle. We never deliver late without prior communication.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">handshake</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Customer First</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our relationship with you extends beyond a single service. We track your vehicle's maintenance history, send proactive service reminders, and treat your car as if it were our own.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">workspace_premium</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Warranty Backed</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">All mechanical repairs and installed parts carry a documented warranty. If any issue arises within the warranty period, we rectify it at no additional charge — no questions asked.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS -->
+<section class="py-20 bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 reveal-item">
+            <div class="text-center">
+                <div class="font-mono text-5xl font-bold text-white tech-digits stat-glow">20<span class="text-secondary-container">+</span></div>
+                <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-2">Years in Operation</div>
+            </div>
+            <div class="text-center">
+                <div class="font-mono text-5xl font-bold text-white tech-digits stat-glow">10k<span class="text-secondary-container">+</span></div>
+                <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-2">Vehicles Serviced</div>
+            </div>
+            <div class="text-center">
+                <div class="font-mono text-5xl font-bold text-white tech-digits stat-glow">50<span class="text-secondary-container">+</span></div>
+                <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-2">Vehicle Brands</div>
+            </div>
+            <div class="text-center">
+                <div class="font-mono text-5xl font-bold text-white tech-digits stat-glow">100<span class="text-secondary-container">%</span></div>
+                <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-2">OEM Guarantee</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OUR WORKSHOP -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Workshop & Equipment</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Our Facility</h2>
+            <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light leading-relaxed">A purpose-built automotive workshop equipped with the diagnostic and mechanical tools required to service every marque to its factory standard.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item"><img alt="Professional diagnostic bay" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?q=80&w=800&auto=format&fit=crop"></div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-1"><img alt="Engine workshop with hydraulic lift" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=800&auto=format&fit=crop"></div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-2"><img alt="Spare parts inventory shelving" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?q=80&w=800&auto=format&fit=crop"></div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item"><img alt="Computerised wheel alignment machine" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=800&auto=format&fit=crop"></div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-1"><img alt="AC service and gas recharge station" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=800&auto=format&fit=crop"></div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-2"><img alt="Customer reception and consultation area" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop"></div>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="py-20 bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-10 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Accreditations</span>
+            <h2 class="font-display font-bold text-white text-xl">Certified & Recognised</h2>
+        </div>
+        <div class="flex flex-wrap gap-3 justify-center reveal-item">
+            <span class="cert-tag">ISO 9001</span>
+            <span class="cert-tag">TUV Certified</span>
+            <span class="cert-tag">Denso Accredited</span>
+            <span class="cert-tag">Bosch Service Partner</span>
+            <span class="cert-tag">Dubai Municipality Licensed</span>
+            <span class="cert-tag">RTA Approved</span>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 relative z-10 overflow-hidden border-t border-white/5">
+    <div class="absolute inset-0 bg-secondary-container/5 pointer-events-none"></div>
+    <div class="max-w-[1440px] mx-auto px-gutter text-center relative z-10 reveal-item space-y-6">
+        <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3.5vw, 3rem)">Experience the Difference</h2>
+        <p class="text-on-surface-variant text-sm max-w-xl mx-auto font-light leading-relaxed">Book your first appointment and discover why thousands of Dubai's vehicle owners trust Hassan Moustafa for their most critical automotive needs.</p>
+        <div class="flex flex-wrap gap-4 justify-center pt-2">
+            <a href="contact.html" class="btn-secondary-luxury text-white px-10 py-4 rounded-full font-bold text-[10px] uppercase tracking-[0.2em]">Contact Us</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-surface-container-lowest border-t border-white/5 py-20 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-12 pb-16 border-b border-white/5">
+            <div class="col-span-2 md:col-span-1 space-y-5"><img alt="Hassan Moustafa" class="h-20 w-auto rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"><p class="text-on-surface-variant text-xs font-light leading-6">Your trusted automotive partner in Dubai since 2006.</p></div>
+            <div class="space-y-4"><h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Services</h4><ul class="space-y-2.5 text-on-surface-variant text-xs font-light"><li><a class="hover:text-white transition-colors" href="services.html">Engine Overhaul</a></li><li><a class="hover:text-white transition-colors" href="services.html">Transmission</a></li><li><a class="hover:text-white transition-colors" href="services.html">Brakes & Suspension</a></li><li><a class="hover:text-white transition-colors" href="services.html">AC & Climate</a></li><li><a class="hover:text-white transition-colors" href="services.html">Diagnostics</a></li></ul></div>
+            <div class="space-y-4"><h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Company</h4><ul class="space-y-2.5 text-on-surface-variant text-xs font-light"><li><a class="hover:text-white transition-colors" href="about.html">About Us</a></li><li><a class="hover:text-white transition-colors" href="spare-parts.html">Parts Catalog</a></li><li><a class="hover:text-white transition-colors" href="contact.html">Contact</a></li></ul></div>
+            <div class="space-y-4"><h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Workshop</h4><ul class="space-y-3 text-on-surface-variant text-xs font-light"><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">location_on</span><span>Al Quoz Industrial Area 4, Dubai</span></li><li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">phone</span><span>+971 4 000 0000</span></li><li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">schedule</span><span>Mon–Sat: 8AM – 7PM</span></li></ul></div>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 text-on-surface-variant text-[10px] font-light"><p>© 2026 Hassan Moustafa Automotive. All Rights Reserved.</p></div>
+    </div>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div id="booking-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-lg p-4">
+    <div class="glass-card-premium max-w-lg w-full p-8 rounded-2xl relative border border-white/8">
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-white transition-colors p-1"><span class="material-symbols-outlined" style="font-size:22px">close</span></button>
+        <div class="flex items-center gap-3 mb-7"><div class="w-8 h-8 rounded-lg bg-secondary-container/15 flex items-center justify-center"><span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">calendar_month</span></div><h3 class="font-display font-extrabold text-white text-xl uppercase tracking-wide">Book Appointment</h3></div>
+        <form id="modal-booking-form" class="space-y-4">
+            <div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Select Service</label><select id="modal-service" class="w-full p-3.5 rounded-xl luxury-input text-sm" required><option value="">Choose a service...</option><option>Engine Overhaul</option><option>Transmission Repair</option><option>Brake Service</option><option>AC & Climate</option><option>General Service</option></select></div>
+            <div class="grid grid-cols-2 gap-4"><div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Date</label><input type="date" id="modal-date" class="w-full p-3.5 rounded-xl luxury-input text-sm" required></div><div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Time</label><input type="time" id="modal-time" class="w-full p-3.5 rounded-xl luxury-input text-sm" required></div></div>
+            <button type="submit" class="w-full btn-primary-luxury text-white py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] mt-1">Confirm Reservation</button>
+        </form>
+    </div>
+</div>
+
+<div class="fixed bottom-6 right-6 z-50"><a href="https://wa.me/97140000000" target="_blank" class="flex items-center gap-2.5 bg-[#25D366] text-white px-5 py-3 rounded-full shadow-2xl shadow-[#25D366]/20 hover:scale-105 transition-all duration-300"><span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1">chat</span><span class="font-bold text-[10px] uppercase tracking-wider hidden md:inline">WhatsApp Us</span></a></div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

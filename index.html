@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="description" content="Hassan Moustafa – Dubai's premier luxury automotive care and genuine spare parts centre. Certified OEM sourcing, engine overhauls, diagnostics, AC repair and more for German and Japanese marques.">
+    <title>Hassan Moustafa | Luxury Automotive Care & Genuine Spare Parts – Dubai, UAE</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+    <!-- Custom Style Sheet -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#070707",
+              "surface-container": "#0c0c0e",
+              "surface-container-low": "#121214",
+              "surface-container-lowest": "#070707",
+              "secondary-container": "#d6041d",
+              "on-surface-variant": "#9a9a9f",
+              "on-surface": "#e5e2e1",
+              "primary": "#c9c6c5",
+              "outline-variant": "rgba(255,255,255,0.06)",
+              "outline": "#4e4e54"
+            },
+            spacing: {
+              "section-gap": "140px",
+              "container-max": "1440px",
+              "gutter": "32px",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "system-ui", "sans-serif"],
+              "body": ["Inter", "system-ui", "sans-serif"],
+              "mono": ["Space Grotesk", "monospace"],
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container/80 selection:text-white carbon-detail-bg">
+
+<!-- ── NAVIGATION ──────────────────────────────────────────────── -->
+<nav class="fixed top-0 w-full z-40 nav-glass">
+    <div class="flex justify-between items-center px-gutter py-4 max-w-[1440px] mx-auto">
+        <a href="index.html" class="flex items-center gap-3 shrink-0">
+            <img alt="Hassan Moustafa Automotive" class="h-16 md:h-20 w-auto object-contain rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg">
+        </a>
+        <div class="hidden lg:flex items-center gap-9">
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="about.html">About</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="services.html">Services</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="spare-parts.html">Spare Parts</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="contact.html">Contact</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="lg:hidden text-on-surface-variant hover:text-white transition-colors p-1">
+                <span class="material-symbols-outlined" style="font-size:26px">menu</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-80 bg-surface-container border-l border-white/8 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl">
+    <div>
+        <div class="flex justify-between items-center mb-12">
+            <img alt="Logo" class="h-14 w-auto rounded-lg shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg">
+            <button id="mobile-menu-close" class="text-on-surface-variant hover:text-white p-1">
+                <span class="material-symbols-outlined" style="font-size:24px">close</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-7">
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="index.html">Home</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="about.html">About</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="services.html">Services</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="spare-parts.html">Spare Parts</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="contact.html">Contact</a>
+        </div>
+    </div>
+</div>
+
+<!-- ── HERO ─────────────────────────────────────────────────────── -->
+<section class="relative min-h-screen flex items-center pt-20 overflow-hidden" style="background-image: linear-gradient(to right, rgba(7,7,7,0.92), rgba(7,7,7,0.85)), url('https://images.unsplash.com/photo-1617886322168-72b886573c3c?q=80&w=1800&auto=format&fit=crop'); background-size: cover; background-position: center;">
+    <canvas class="shader-canvas absolute inset-0 w-full h-full z-0 opacity-40 pointer-events-none"></canvas>
+    <div class="absolute inset-0 z-0 pointer-events-none" style="background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 30%, rgba(7,7,7,0.85) 100%)"></div>
+
+    <div class="max-w-[1440px] mx-auto px-gutter grid lg:grid-cols-12 gap-10 items-center relative z-10 w-full py-20">
+        <div class="lg:col-span-7 space-y-8">
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-secondary-container/25 bg-secondary-container/5 backdrop-blur-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary-container status-dot"></span>
+                <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.2em] font-bold">Workshop Open · Al Quoz Industrial Area 4, Dubai</span>
+            </div>
+            <h1 class="font-display font-extrabold tracking-tight leading-[0.93] text-white" style="font-size: clamp(3rem, 7vw, 6.5rem)">
+                PRECISION<br><span class="gradient-text-animated">AUTOMOTIVE</span><br>CARE
+            </h1>
+            <p class="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-lg font-light">
+                Trusted UAE specialists delivering dealer-grade diagnostics, certified OEM replacement components, and master engineering overhauls for premium European and Japanese marques since 2006.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-2">
+                <a href="contact.html" class="btn-secondary-luxury text-white px-9 py-4 rounded-full font-bold text-[10px] uppercase tracking-[0.2em]">Get Free Quote</a>
+            </div>
+            <div class="flex gap-10 pt-4 border-t border-white/6">
+                <div>
+                    <div class="font-mono text-2xl font-bold text-white tech-digits">20<span class="text-secondary-container">+</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Years Legacy</div>
+                </div>
+                <div>
+                    <div class="font-mono text-2xl font-bold text-white tech-digits">10k<span class="text-secondary-container">+</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Vehicles Served</div>
+                </div>
+                <div>
+                    <div class="font-mono text-2xl font-bold text-white tech-digits">100<span class="text-secondary-container">%</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">OEM Guarantee</div>
+                </div>
+                <div>
+                    <div class="font-mono text-2xl font-bold text-white tech-digits">50<span class="text-secondary-container">+</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Brands Covered</div>
+                </div>
+            </div>
+        </div>
+        <div class="lg:col-span-5 relative h-[480px] hidden lg:block">
+            <div class="threejs-container absolute inset-0 w-full h-full"></div>
+            <div class="absolute bottom-8 left-4 glass-card-premium px-5 py-3 rounded-xl flex items-center gap-3 border border-white/8">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:20px;font-variation-settings:'FILL' 1">verified</span>
+                <div>
+                    <div class="font-mono text-[9px] text-white font-bold uppercase tracking-wider">Certified Workshop</div>
+                    <div class="font-body text-[9px] text-on-surface-variant">ISO 9001 · TUV · Denso Accredited</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 opacity-40">
+        <span class="font-mono text-[8px] tracking-[0.3em] uppercase text-white/50">Scroll to Explore</span>
+        <div class="w-5 h-8 rounded-full border border-white/20 flex justify-center items-start pt-1.5">
+            <div class="w-1 h-1.5 rounded-full bg-secondary-container scroll-indicator-dot"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── BRAND MARQUEE ────────────────────────────────────────────── -->
+<section class="py-8 border-y border-outline-variant overflow-hidden bg-surface-container-lowest">
+    <div class="animate-logo-scroll">
+        <div class="flex items-center gap-16 px-8 opacity-25">
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">PORSCHE</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">MERCEDES-BENZ</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">BMW</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">AUDI</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">LEXUS</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">TOYOTA</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">NISSAN</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">FERRARI</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">LAND ROVER</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">JAGUAR</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">MASERATI</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+        </div>
+        <div class="flex items-center gap-16 px-8 opacity-25" aria-hidden="true">
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">PORSCHE</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">MERCEDES-BENZ</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">BMW</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">AUDI</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">LEXUS</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">TOYOTA</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">NISSAN</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">FERRARI</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">LAND ROVER</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">JAGUAR</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+            <span class="font-display text-2xl font-black tracking-tighter text-white whitespace-nowrap">MASERATI</span>
+            <span class="w-1 h-1 rounded-full bg-white/30 shrink-0"></span>
+        </div>
+    </div>
+</section>
+
+<!-- ── ABOUT TEASER ─────────────────────────────────────────────── -->
+<section class="py-section-gap relative z-10 overflow-hidden">
+    <div class="max-w-[1440px] mx-auto px-gutter grid md:grid-cols-2 gap-20 items-center">
+        <div class="relative group reveal-item">
+            <div class="absolute -inset-3 border border-secondary-container/15 translate-x-6 translate-y-6 rounded-2xl -z-10 group-hover:translate-x-3 group-hover:translate-y-3 transition-all duration-600"></div>
+            <div class="w-full aspect-[4/3] bg-surface-container overflow-hidden rounded-2xl border border-white/5 card-img-wrap">
+                <img alt="Hassan Moustafa premium automotive workshop in Dubai" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1507136566006-cfc505b114fc?q=80&w=1200&auto=format&fit=crop">
+            </div>
+            <div class="absolute bottom-5 right-5 glass-card-premium px-5 py-3 rounded-xl border border-white/8">
+                <div class="font-mono text-xl font-bold text-white tech-digits">2006<span class="text-secondary-container text-sm ml-1">Est.</span></div>
+                <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-0.5">Al Quoz, Dubai</div>
+            </div>
+        </div>
+        <div class="space-y-7 reveal-item reveal-delay-2">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold">Our Heritage</span>
+            <h2 class="font-display font-extrabold text-white leading-tight" style="font-size: clamp(1.8rem, 3vw, 3rem)">
+                Dubai's Most Trusted <span class="text-secondary-container">Automotive</span> Specialists
+            </h2>
+            <div class="space-y-5 text-on-surface-variant text-sm leading-7 font-light">
+                <p>At Hassan Moustafa Automotive, we are more than a garage — we are your dedicated long-term partner for maintaining the performance, safety, and value of your vehicle. Founded in 2006, we built our reputation on a foundation of engineering integrity, precision diagnostics, and uncompromising parts authenticity.</p>
+                <p>Our workshop handles every marque with equal attention — whether you drive a daily family saloon or a rare collector's supercar. From computerised ECU scans and cylinder head overhauls to full transmission rebuilds and genuine OEM parts sourcing, every job is done right, on time, and at a fair price.</p>
+            </div>
+            <div class="flex gap-8 py-5 border-t border-b border-white/5">
+                <div>
+                    <div class="font-mono text-3xl font-bold text-white tech-digits">20<span class="text-secondary-container">+</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Years Legacy</div>
+                </div>
+                <div>
+                    <div class="font-mono text-3xl font-bold text-white tech-digits">10k<span class="text-secondary-container">+</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Cars Serviced</div>
+                </div>
+                <div>
+                    <div class="font-mono text-3xl font-bold text-white tech-digits">50<span class="text-secondary-container">+</span></div>
+                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Brands Covered</div>
+                </div>
+            </div>
+            <a href="about.html" class="inline-flex items-center gap-3 text-white border-b border-secondary-container pb-1 text-xs uppercase tracking-widest font-bold hover:gap-5 transition-all duration-300 font-mono">
+                Our Full Story <span class="material-symbols-outlined text-secondary-container" style="font-size:16px">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── WHY CHOOSE US ────────────────────────────────────────────── -->
+<section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">The Hassan Moustafa Advantage</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Why Clients Choose Us</h2>
+            <p class="text-on-surface-variant text-sm mt-3 max-w-xl mx-auto font-light leading-relaxed">Everything we do is built around your trust — from the moment you call to the moment your car is returned.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">verified_user</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">100% Genuine Parts</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">We maintain an absolute zero-tolerance policy on counterfeit components. Every part installed carries full manufacturer authentication and a serialised guarantee.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">groups</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Expert Engineers</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our certified technicians carry years of hands-on experience across German, Japanese, and British platforms — delivering diagnostic precision that rivals OEM dealerships.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">schedule</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">On-Time Delivery</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">We respect your schedule absolutely. Our workshop operates on structured job timelines with proactive SMS updates throughout your vehicle's service progression.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-3">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">receipt_long</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Transparent Pricing</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">No hidden charges. No surprise invoices. Every quotation itemises labour, parts, and VAT before a single bolt is touched — you always know exactly what you are paying for.</p>
+            </div>
+        </div>
+        <!-- Second Row of WHY US -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">local_shipping</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Free Pickup & Delivery</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">We collect your vehicle from your home or office and return it at your convenience anywhere across Dubai — no drop-off hassle, no disruption to your day.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">support_agent</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Emergency Assistance</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Breakdowns don't keep business hours. Our emergency response service operates extended hours for urgent roadside support, diagnostics, and rapid recovery across the UAE.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">workspace_premium</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Warranty on All Work</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">All mechanical repairs and fitted parts carry a written service warranty. If anything isn't right, we fix it — no questions asked, at no additional cost to you.</p>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-3">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">psychology</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Advanced Diagnostics</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our workshop is equipped with the latest computerised OBD diagnostic platforms — including brand-specific scanners for Porsche PIWIS, BMW ISTA, and Mercedes XENTRY systems.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── HOW IT WORKS ─────────────────────────────────────────────── -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Workshop Process</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">How It Works</h2>
+            <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light leading-relaxed">A clear, four-step process from first contact to final delivery — engineered to remove complexity and maximise confidence.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="reveal-item text-center space-y-4 relative">
+                <div class="w-16 h-16 rounded-full bg-secondary-container/10 border border-secondary-container/30 flex items-center justify-center mx-auto">
+                    <span class="font-mono text-2xl font-bold text-secondary-container tech-digits">01</span>
+                </div>
+                <div class="hidden md:block absolute top-8 left-[60%] w-full h-px border-t border-dashed border-white/10"></div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Book or Call</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Schedule your appointment online, by phone, or via WhatsApp. Free pickup from your location is available across all Dubai zones.</p>
+            </div>
+            <div class="reveal-item reveal-delay-1 text-center space-y-4 relative">
+                <div class="w-16 h-16 rounded-full bg-secondary-container/10 border border-secondary-container/30 flex items-center justify-center mx-auto">
+                    <span class="font-mono text-2xl font-bold text-secondary-container tech-digits">02</span>
+                </div>
+                <div class="hidden md:block absolute top-8 left-[60%] w-full h-px border-t border-dashed border-white/10"></div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Diagnosis</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our engineers conduct a thorough computerised diagnostic scan and a manual 50-point inspection to identify all active and potential issues.</p>
+            </div>
+            <div class="reveal-item reveal-delay-2 text-center space-y-4 relative">
+                <div class="w-16 h-16 rounded-full bg-secondary-container/10 border border-secondary-container/30 flex items-center justify-center mx-auto">
+                    <span class="font-mono text-2xl font-bold text-secondary-container tech-digits">03</span>
+                </div>
+                <div class="hidden md:block absolute top-8 left-[60%] w-full h-px border-t border-dashed border-white/10"></div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Transparent Quote</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">You receive a detailed itemised quotation covering every component and labour charge. Work proceeds only upon your explicit approval.</p>
+            </div>
+            <div class="reveal-item reveal-delay-3 text-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-secondary-container/10 border border-secondary-container/30 flex items-center justify-center mx-auto">
+                    <span class="font-mono text-2xl font-bold text-secondary-container tech-digits">04</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Delivery & Warranty</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Your vehicle is returned clean, tested, and accompanied by a full written service record. All repairs carry a documented warranty period.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CORE SERVICES HIGHLIGHT ─────────────────────────────────── -->
+<section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 reveal-item">
+            <div>
+                <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Our Capabilities</span>
+                <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Core Service Offerings</h2>
+                <p class="text-on-surface-variant text-sm mt-2 max-w-lg font-light">Dealer-grade diagnostic equipment, expert technicians, and certified procedures for your peace of mind.</p>
+            </div>
+            <a href="services.html" class="btn-secondary-luxury px-7 py-3 rounded-full text-[10px] uppercase tracking-[0.15em] font-bold shrink-0">Explore All Services</a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Mechanical Repairs -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">build</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Mechanical Repairs</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Full engine rebuilds, transmission overhauls, clutch replacements, and complete timing belt/chain kit renewals to OEM specifications.</p>
+            </div>
+            <!-- Brakes & Suspension -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">emergency</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Brakes & Suspension</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Genuine brake disc/pad fitment, shock absorber replacement, power steering rebuilds, and computerized wheel alignment checks.</p>
+            </div>
+            <!-- Advanced Diagnostics -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">cable</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Advanced Diagnostics</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Computerized dealership-grade diagnostic scans, ECU reprogramming, sensor troubleshooting, and complex wiring harness repairs.</p>
+            </div>
+            <!-- Climate Control & AC -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-3">
+                <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">ac_unit</span>
+                </div>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Climate Control & AC</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Nitrogen gas leak tests, AC compressor overhauls, refrigerant recharging, evaporator core flushes, and cabin filter service.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── OEM SPARE PARTS ──────────────────────────────────────────── -->
+<section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter grid lg:grid-cols-12 gap-16 items-center">
+        <div class="lg:col-span-5 space-y-7 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold">Catalog Distribution</span>
+            <h2 class="font-display font-extrabold text-white leading-tight" style="font-size: clamp(1.8rem, 3vw, 3rem)">Genuine OEM Spares for Every Marque</h2>
+            <p class="text-on-surface-variant text-sm leading-7 font-light">We maintain direct supply channels with licensed European and Japanese OEM distributors — ensuring every component we supply matches the factory specification of your vehicle, without compromise.</p>
+            <div class="space-y-3">
+                <div class="flex items-center gap-4 p-4 rounded-xl border border-white/5 hover:border-secondary-container/25 transition-colors">
+                    <div class="w-9 h-9 rounded-full bg-secondary-container/10 flex items-center justify-center font-mono text-xs font-bold text-secondary-container tech-digits shrink-0">01</div>
+                    <div>
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider">German Precision</h4>
+                        <p class="text-[10px] text-on-surface-variant font-light mt-0.5">Porsche, BMW, Mercedes-Benz, Audi, Volkswagen & Volkswagen Group.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-4 rounded-xl border border-white/5 hover:border-secondary-container/25 transition-colors">
+                    <div class="w-9 h-9 rounded-full bg-secondary-container/10 flex items-center justify-center font-mono text-xs font-bold text-secondary-container tech-digits shrink-0">02</div>
+                    <div>
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider">Japanese Engineering</h4>
+                        <p class="text-[10px] text-on-surface-variant font-light mt-0.5">Toyota, Lexus, Nissan, Infiniti, Honda, Mitsubishi & Subaru.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-4 rounded-xl border border-white/5 hover:border-secondary-container/25 transition-colors">
+                    <div class="w-9 h-9 rounded-full bg-secondary-container/10 flex items-center justify-center font-mono text-xs font-bold text-secondary-container tech-digits shrink-0">03</div>
+                    <div>
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider">British & Exotic</h4>
+                        <p class="text-[10px] text-on-surface-variant font-light mt-0.5">Land Rover, Jaguar, Ferrari, Lamborghini, Bentley & Rolls-Royce.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-4 rounded-xl border border-white/5 hover:border-secondary-container/25 transition-colors">
+                    <div class="w-9 h-9 rounded-full bg-secondary-container/10 flex items-center justify-center font-mono text-xs font-bold text-secondary-container tech-digits shrink-0">04</div>
+                    <div>
+                        <h4 class="font-display font-bold text-white text-xs uppercase tracking-wider">American & Korean</h4>
+                        <p class="text-[10px] text-on-surface-variant font-light mt-0.5">Cadillac, Chevrolet, Ford, Hyundai, Kia and more on request.</p>
+                    </div>
+                </div>
+            </div>
+            <a href="spare-parts.html" class="btn-primary-luxury text-white px-8 py-3.5 rounded-full font-bold text-[10px] uppercase tracking-[0.2em]">Browse Parts Catalog</a>
+        </div>
+        <div class="lg:col-span-7 relative reveal-item reveal-delay-2">
+            <div class="aspect-video bg-surface-container rounded-2xl overflow-hidden border border-white/5 card-img-wrap shadow-2xl">
+                <img alt="Genuine OEM automotive parts inventory" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?q=80&w=1400&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/70 via-transparent to-transparent"></div>
+                <div class="absolute bottom-5 left-5 flex items-center gap-2 glass-card-premium px-4 py-2 rounded-full border border-secondary-container/25">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:14px;font-variation-settings:'FILL' 1">verified</span>
+                    <span class="font-mono text-[9px] text-white uppercase tracking-wider font-bold">100% Genuine · Authenticated Parts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- ── VEHICLE BRANDS GRID ─────────────────────────────────────── -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Brand Coverage</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Every Brand. One Workshop.</h2>
+            <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light leading-relaxed">From everyday commuters to exotic supercars — our certified engineers are trained and equipped for every marque on the road.</p>
+        </div>
+
+        <!-- German Vehicles -->
+        <div class="mb-12 reveal-item">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                <span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">German Vehicles</span>
+                <div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/porsche.png" alt="PORSCHE" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">PORSCHE</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/bmw.png" alt="BMW" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">BMW</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/mercedes-benz.png" alt="MERCEDES" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MERCEDES</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/audi.png" alt="AUDI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">AUDI</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/volkswagen.png" alt="VOLKSWAGEN" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">VOLKSWAGEN</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/opel.png" alt="OPEL" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">OPEL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Japanese Vehicles -->
+        <div class="mb-12 reveal-item">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                <span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">Japanese Vehicles</span>
+                <div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/toyota.png" alt="TOYOTA" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">TOYOTA</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/lexus.png" alt="LEXUS" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">LEXUS</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/nissan.png" alt="NISSAN" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">NISSAN</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/infiniti.png" alt="INFINITI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">INFINITI</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/honda.png" alt="HONDA" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">HONDA</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/mitsubishi.png" alt="MITSUBISHI" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MITSUBISHI</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Luxury & Exotic Vehicles -->
+        <div class="mb-12 reveal-item">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                <span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">Luxury & Exotic Vehicles</span>
+                <div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/ferrari.png" alt="FERRARI" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">FERRARI</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/lamborghini.png" alt="LAMBORGHINI" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">LAMBORGHINI</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/bentley.png" alt="BENTLEY" class="h-8 w-auto object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">BENTLEY</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/rolls-royce.jpg" alt="ROLLS-ROYCE" class="h-8 w-auto object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">ROLLS-ROYCE</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/maserati.png" alt="MASERATI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MASERATI</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/aston-martin.png" alt="ASTON MARTIN" class="h-8 w-auto object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">ASTON MARTIN</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- British & Other Vehicles -->
+        <div class="reveal-item">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                <span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">British, American & Other</span>
+                <div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/land-rover.png" alt="LAND ROVER" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">LAND ROVER</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/jaguar.png" alt="JAGUAR" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">JAGUAR</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/ford.png" alt="FORD" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">FORD</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/cadillac.png" alt="CADILLAC" class="h-10 w-auto object-contain mx-auto mb-2 opacity-90 group-hover:opacity-100 transition-opacity" style="filter: invert(1) hue-rotate(180deg);">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">CADILLAC</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/hyundai.png" alt="HYUNDAI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">HYUNDAI</span>
+                </div>
+                <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
+                    <img src="assets/images/brands/kia.png" alt="KIA" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">KIA</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── TESTIMONIALS ─────────────────────────────────────────────── -->
+<section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Client Reviews</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">What Our Clients Say</h2>
+            <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light">Hundreds of Dubai's discerning vehicle owners trust Hassan Moustafa for their most critical automotive needs.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item">
+                <div class="flex gap-0.5">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="text-sm text-white/85 font-light leading-relaxed italic">"The only garage I trust in Dubai for my Porsche 911 GT3. Hassan's team has a depth of technical knowledge that genuinely rivals the main dealership — at a fraction of the cost."</p>
+                <div class="flex items-center gap-3 pt-3 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-secondary-container/15 flex items-center justify-center font-mono text-xs font-bold text-white">MK</div>
+                    <div>
+                        <div class="font-display font-bold text-white text-sm">Mohammed Khalid</div>
+                        <div class="font-mono text-[9px] text-on-surface-variant">Porsche 911 GT3 Owner</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+                <div class="flex gap-0.5">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="text-sm text-white/85 font-light leading-relaxed italic">"Finding genuine parts for my classic Mercedes W123 was an exhausting search — until I found Hassan. Their sourcing network is remarkable and everything came with original manufacturer codes."</p>
+                <div class="flex items-center gap-3 pt-3 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-secondary-container/15 flex items-center justify-center font-mono text-xs font-bold text-white">SJ</div>
+                    <div>
+                        <div class="font-display font-bold text-white text-sm">Sarah Jenkins</div>
+                        <div class="font-mono text-[9px] text-on-surface-variant">Classic Mercedes Collector</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
+                <div class="flex gap-0.5">
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                    <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
+                </div>
+                <p class="text-sm text-white/85 font-light leading-relaxed italic">"My Land Cruiser got a full overhaul here. They used only genuine Toyota parts, provided a complete digital service report, and delivered it on the exact day promised. Outstanding."</p>
+                <div class="flex items-center gap-3 pt-3 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-secondary-container/15 flex items-center justify-center font-mono text-xs font-bold text-white">AB</div>
+                    <div>
+                        <div class="font-display font-bold text-white text-sm">Ahmed Bin Sulayem</div>
+                        <div class="font-mono text-[9px] text-on-surface-variant">Toyota Land Cruiser Owner</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────────── -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[900px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Common Questions</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Frequently Asked Questions</h2>
+        </div>
+        <div class="space-y-3 reveal-item" id="faq-container">
+            <div class="faq-item glass-card-premium rounded-2xl overflow-hidden">
+                <button class="faq-trigger w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-display font-bold text-white text-sm pr-4">Do you use genuine OEM parts or aftermarket alternatives?</span>
+                    <span class="material-symbols-outlined text-secondary-container shrink-0 transition-transform duration-300" style="font-size:20px">expand_more</span>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-xs text-on-surface-variant font-light leading-relaxed">
+                    We use exclusively genuine OEM (Original Equipment Manufacturer) parts sourced directly from licensed distributors. Every component comes with full manufacturer certification and serialised authentication. We have a strict zero-tolerance policy on counterfeit or grey-market components — your vehicle's integrity is never compromised.
+                </div>
+            </div>
+            <div class="faq-item glass-card-premium rounded-2xl overflow-hidden">
+                <button class="faq-trigger w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-display font-bold text-white text-sm pr-4">How long does a typical service or repair take?</span>
+                    <span class="material-symbols-outlined text-secondary-container shrink-0 transition-transform duration-300" style="font-size:20px">expand_more</span>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-xs text-on-surface-variant font-light leading-relaxed">
+                    A minor service typically takes 3-5 hours. Major services take 6-8 hours. Engine overhauls and complex mechanical repairs generally require 3-5 working days. We provide an accurate timeline at the point of diagnosis and keep you updated throughout via WhatsApp. We never deliver late without prior communication.
+                </div>
+            </div>
+            <div class="faq-item glass-card-premium rounded-2xl overflow-hidden">
+                <button class="faq-trigger w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-display font-bold text-white text-sm pr-4">Do you offer free pickup and delivery across Dubai?</span>
+                    <span class="material-symbols-outlined text-secondary-container shrink-0 transition-transform duration-300" style="font-size:20px">expand_more</span>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-xs text-on-surface-variant font-light leading-relaxed">
+                    Yes — we offer complimentary vehicle pickup and delivery across all Dubai zones. Simply book your appointment and provide your location. Our driver will collect your vehicle at your scheduled time and return it to the same address upon completion.
+                </div>
+            </div>
+            <div class="faq-item glass-card-premium rounded-2xl overflow-hidden">
+                <button class="faq-trigger w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-display font-bold text-white text-sm pr-4">Do you work on luxury and exotic vehicles like Ferrari and Lamborghini?</span>
+                    <span class="material-symbols-outlined text-secondary-container shrink-0 transition-transform duration-300" style="font-size:20px">expand_more</span>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-xs text-on-surface-variant font-light leading-relaxed">
+                    Yes. Our engineers are trained and equipped with brand-specific diagnostic systems for exotic and ultra-luxury marques. We have successfully serviced Ferrari, Lamborghini, Bentley, Rolls-Royce, Maserati, and Aston Martin vehicles. Every job uses brand-matched OEM components sourced through authorised supply channels.
+                </div>
+            </div>
+            <div class="faq-item glass-card-premium rounded-2xl overflow-hidden">
+                <button class="faq-trigger w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-display font-bold text-white text-sm pr-4">Is there a warranty on parts and labour?</span>
+                    <span class="material-symbols-outlined text-secondary-container shrink-0 transition-transform duration-300" style="font-size:20px">expand_more</span>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-xs text-on-surface-variant font-light leading-relaxed">
+                    All mechanical repairs and installed parts carry a documented service warranty. If any issue arises within the warranty period that is directly related to our work, we will rectify it at no additional charge. Warranty details are specified on your service invoice.
+                </div>
+            </div>
+            <div class="faq-item glass-card-premium rounded-2xl overflow-hidden">
+                <button class="faq-trigger w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                    <span class="font-display font-bold text-white text-sm pr-4">Can you source specific rare parts for classic or discontinued models?</span>
+                    <span class="material-symbols-outlined text-secondary-container shrink-0 transition-transform duration-300" style="font-size:20px">expand_more</span>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-xs text-on-surface-variant font-light leading-relaxed">
+                    In many cases, yes. Our global sourcing network extends to specialist distributors for discontinued model lines and classic vehicles. Submit your VIN and part specification through our sourcing wizard and we will research availability within 24-48 hours.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── APPOINTMENT CTA BANNER ──────────────────────────────────── -->
+<section class="py-20 relative z-10 overflow-hidden border-t border-white/5">
+    <div class="absolute inset-0 bg-secondary-container/5 pointer-events-none"></div>
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(214,4,29,0.06) 0%, transparent 70%)"></div>
+    <div class="max-w-[1440px] mx-auto px-gutter text-center relative z-10 reveal-item space-y-6">
+        <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block">Ready to Begin?</span>
+        <h2 class="font-display font-extrabold text-white" style="font-size: clamp(2rem, 4vw, 3.5rem)">Schedule Your Workshop Appointment</h2>
+        <p class="text-on-surface-variant text-sm max-w-xl mx-auto font-light leading-relaxed">Book online in under a minute. Free pickup across Dubai. Transparent quotes before we begin. No obligation, no pressure.</p>
+        <div class="flex flex-wrap gap-4 justify-center pt-4">
+            <a href="contact.html" class="btn-secondary-luxury text-white px-10 py-4 rounded-full font-bold text-[10px] uppercase tracking-[0.2em]">Request a Quote</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────────────────── -->
+<footer class="bg-surface-container-lowest border-t border-white/5 py-20 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-12 pb-16 border-b border-white/5">
+            <div class="col-span-2 md:col-span-1 space-y-5">
+                <img alt="Hassan Moustafa Automotive" class="h-20 w-auto rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg">
+                <p class="text-on-surface-variant text-xs font-light leading-6">Your trusted automotive partner in Dubai since 2006. Engineering excellence, OEM integrity, complete transparency.</p>
+                <div class="flex gap-3">
+                    <a class="w-8 h-8 rounded-full bg-white/5 border border-white/8 flex items-center justify-center text-on-surface-variant hover:text-secondary-container transition-colors" href="#"><span class="material-symbols-outlined" style="font-size:14px">public</span></a>
+                    <a class="w-8 h-8 rounded-full bg-white/5 border border-white/8 flex items-center justify-center text-on-surface-variant hover:text-secondary-container transition-colors" href="mailto:info@hassanmoustafa.ae"><span class="material-symbols-outlined" style="font-size:14px">alternate_email</span></a>
+                    <a class="w-8 h-8 rounded-full bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center text-[#25D366] hover:bg-[#25D366]/20 transition-colors" href="https://wa.me/97140000000" target="_blank"><span class="material-symbols-outlined" style="font-size:14px">chat</span></a>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Services</h4>
+                <ul class="space-y-2.5 text-on-surface-variant text-xs font-light">
+                    <li><a class="hover:text-white transition-colors" href="services.html">Engine Overhaul</a></li>
+                    <li><a class="hover:text-white transition-colors" href="services.html">Transmission Repair</a></li>
+                    <li><a class="hover:text-white transition-colors" href="services.html">Brake & Suspension</a></li>
+                    <li><a class="hover:text-white transition-colors" href="services.html">AC & Climate</a></li>
+                    <li><a class="hover:text-white transition-colors" href="services.html">Electrical Diagnostics</a></li>
+                    <li><a class="hover:text-white transition-colors" href="services.html">Body & Paint Work</a></li>
+                    <li><a class="hover:text-white transition-colors" href="spare-parts.html">Genuine Spare Parts</a></li>
+                </ul>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Company</h4>
+                <ul class="space-y-2.5 text-on-surface-variant text-xs font-light">
+                    <li><a class="hover:text-white transition-colors" href="about.html">About Us</a></li>
+                    <li><a class="hover:text-white transition-colors" href="services.html">All Services</a></li>
+                    <li><a class="hover:text-white transition-colors" href="spare-parts.html">Parts Catalog</a></li>
+                    <li><a class="hover:text-white transition-colors" href="contact.html">Book Appointment</a></li>
+                    <li><a class="hover:text-white transition-colors" href="contact.html">Emergency Service</a></li>
+                    <li><a class="hover:text-white transition-colors" href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="space-y-4">
+                <h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Workshop</h4>
+                <ul class="space-y-3 text-on-surface-variant text-xs font-light">
+                    <li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">location_on</span><span>Al Quoz Industrial Area 4,<br>Dubai, United Arab Emirates</span></li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">phone</span><span>+971 4 000 0000</span></li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">chat</span><span>+971 50 000 0000</span></li>
+                    <li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">schedule</span><span>Mon–Sat: 8:00 AM – 7:00 PM<br>Sun: Emergency Only</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 text-on-surface-variant text-[10px] font-light">
+            <p>© 2026 Hassan Moustafa Automotive Care & Spare Parts. All Rights Reserved.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+                <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+                <a class="hover:text-white transition-colors" href="#">Sitemap</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ── BOOKING MODAL ─────────────────────────────────────────────── -->
+<div id="booking-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-lg p-4">
+    <div class="glass-card-premium max-w-lg w-full p-8 rounded-2xl relative border border-white/8">
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-white transition-colors p-1">
+            <span class="material-symbols-outlined" style="font-size:22px">close</span>
+        </button>
+        <div class="flex items-center gap-3 mb-7">
+            <div class="w-8 h-8 rounded-lg bg-secondary-container/15 flex items-center justify-center">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">calendar_month</span>
+            </div>
+            <h3 class="font-display font-extrabold text-white text-xl uppercase tracking-wide">Book Appointment</h3>
+        </div>
+        <form id="modal-booking-form" class="space-y-4">
+            <div>
+                <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Full Name</label>
+                <input type="text" id="modal-name" placeholder="Your name" class="w-full p-3.5 rounded-xl luxury-input text-sm" required>
+            </div>
+            <div>
+                <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Select Service</label>
+                <select id="modal-service" class="w-full p-3.5 rounded-xl luxury-input text-sm" required>
+                    <option value="">Choose a service...</option>
+                    <option value="Engine Overhaul">Engine Overhaul</option>
+                    <option value="Transmission Care">Transmission Repair</option>
+                    <option value="Brake Service">Brake Service</option>
+                    <option value="AC Climate Control">AC & Climate Repair</option>
+                    <option value="Oil Change">Oil Change & Maintenance</option>
+                    <option value="Suspension & Steering">Suspension & Steering</option>
+                    <option value="Diagnostics & Electrical">Electrical Diagnostics</option>
+                    <option value="Body & Paint">Body & Paint Work</option>
+                    <option value="Battery Replacement">Battery Replacement</option>
+                    <option value="Tyre & Wheel">Tyre & Wheel Services</option>
+                    <option value="Pre-Purchase Inspection">Pre-Purchase Inspection</option>
+                    <option value="General Service">General Service</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Preferred Date</label>
+                    <input type="date" id="modal-date" class="w-full p-3.5 rounded-xl luxury-input text-sm" required>
+                </div>
+                <div>
+                    <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Preferred Time</label>
+                    <input type="time" id="modal-time" class="w-full p-3.5 rounded-xl luxury-input text-sm" required>
+                </div>
+            </div>
+            <button type="submit" class="w-full btn-primary-luxury text-white py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] mt-1">Confirm Reservation</button>
+        </form>
+    </div>
+</div>
+
+<!-- ── WHATSAPP FLOAT ────────────────────────────────────────────── -->
+<div class="fixed bottom-6 right-6 z-50">
+    <a href="https://wa.me/97140000000" target="_blank" class="flex items-center gap-2.5 bg-[#25D366] text-white px-5 py-3 rounded-full shadow-2xl shadow-[#25D366]/20 hover:scale-105 hover:shadow-[#25D366]/35 transition-all duration-300">
+        <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1">chat</span>
+        <span class="font-bold text-[10px] uppercase tracking-wider hidden md:inline">WhatsApp Us</span>
+    </a>
+</div>
+
+<!-- ── SCRIPTS ───────────────────────────────────────────────────── -->
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<script src="assets/js/shader-bg.js"></script>
+<script src="assets/js/gear-animation.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('.material-symbols-outlined');
+    const isOpen = !answer.classList.contains('hidden');
+    // Close all
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+    document.querySelectorAll('.faq-trigger .material-symbols-outlined').forEach(i => i.style.transform = '');
+    // Open clicked
+    if (!isOpen) {
+        answer.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+</script>
+</body>
+</html>

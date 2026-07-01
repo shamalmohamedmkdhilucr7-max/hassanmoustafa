@@ -1,0 +1,333 @@
+/* Hassan Moustafa Automotive Care - Luxury Design System Stylesheet */
+
+/* Color variables & design tokens */
+:root {
+    --bg-matte: #070707;
+    --bg-graphite: #0c0c0e;
+    --bg-titanium: #151518;
+    --accent-red: #d6041d;
+    --accent-crimson: #a30011;
+    --text-primary: #e5e2e1;
+    --text-secondary: #9a9a9f;
+    --border-titanium: rgba(255, 255, 255, 0.04);
+    --border-glow-hover: rgba(214, 4, 29, 0.35);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-matte);
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-matte);
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Monospace technical digits */
+.tech-digits {
+    font-family: 'Space Grotesk', 'Courier New', monospace;
+    letter-spacing: 0.02em;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-matte); }
+::-webkit-scrollbar-thumb {
+    background: #1e1e23;
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent-red); }
+
+/* ─── NAVIGATION ────────────────────────────────────────────── */
+.nav-glass {
+    background: rgba(7, 7, 7, 0.05);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border-bottom: 1px solid transparent;
+    transition: 
+        background 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        backdrop-filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.6s;
+}
+.nav-glass.scrolled {
+    background: rgba(10, 10, 12, 0.8);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 1px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── PREMIUM CARD ──────────────────────────────────────────── */
+.glass-card-premium {
+    position: relative;
+    background: rgba(14, 14, 16, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+        0 20px 60px rgba(0, 0, 0, 0.6);
+    transition: 
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.55s,
+        box-shadow 0.55s;
+    overflow: hidden;
+}
+.glass-card-premium::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.04) 0%,
+        rgba(255, 255, 255, 0.0) 40%,
+        rgba(214, 4, 29, 0.0) 60%,
+        rgba(214, 4, 29, 0.06) 100%
+    );
+    pointer-events: none;
+    transition: opacity 0.5s;
+    opacity: 0;
+}
+.glass-card-premium:hover {
+    transform: translateY(-6px) scale(1.005);
+    border-color: rgba(214, 4, 29, 0.2);
+    box-shadow: 
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+        0 30px 70px rgba(214, 4, 29, 0.07),
+        0 0 0 1px rgba(214, 4, 29, 0.08);
+}
+.glass-card-premium:hover::before { opacity: 1; }
+
+/* ─── CARBON FIBER TEXTURE ──────────────────────────────────── */
+.carbon-detail-bg {
+    background-image: 
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.015) 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
+/* ─── DIVIDERS ──────────────────────────────────────────────── */
+.divider-line {
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(255, 255, 255, 0.06) 20%,
+        rgba(255, 255, 255, 0.06) 80%,
+        transparent
+    );
+}
+
+/* ─── TIMELINE ──────────────────────────────────────────────── */
+.timeline-track {
+    background: linear-gradient(
+        to bottom,
+        var(--accent-red) 0%,
+        rgba(214, 4, 29, 0.15) 60%,
+        transparent 100%
+    );
+}
+
+/* ─── BUTTONS ───────────────────────────────────────────────── */
+.btn-primary-luxury {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-red);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    box-shadow: 
+        0 4px 24px rgba(214, 4, 29, 0.28),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    text-decoration: none;
+}
+.btn-primary-luxury::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.12), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.65s ease;
+}
+.btn-primary-luxury:hover {
+    background: #bf0018;
+    box-shadow:
+        0 8px 32px rgba(214, 4, 29, 0.42),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px) scale(1.015);
+}
+.btn-primary-luxury:hover::after { left: 200%; }
+.btn-primary-luxury:active { transform: translateY(0) scale(0.99); }
+
+.btn-secondary-luxury {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-primary);
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-secondary-luxury:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-1px) scale(1.015);
+}
+
+/* ─── SCROLL REVEAL ─────────────────────────────────────────── */
+.reveal-item {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(3px);
+    transition:
+        opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
+}
+.reveal-item.reveal-active {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 220ms; }
+.reveal-delay-3 { transition-delay: 340ms; }
+.reveal-delay-4 { transition-delay: 460ms; }
+
+/* ─── SCROLL INDICATOR ──────────────────────────────────────── */
+@keyframes mouseScrollBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(7px); opacity: 1; }
+}
+.scroll-indicator-dot { animation: mouseScrollBounce 2s ease-in-out infinite; }
+
+/* ─── LOGO WALL MARQUEE ─────────────────────────────────────── */
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+.animate-logo-scroll {
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll 20s linear infinite;
+}
+.animate-logo-scroll:hover { animation-play-state: paused; }
+
+/* ─── LUXURY FORM INPUTS ────────────────────────────────────── */
+.luxury-input {
+    background: rgba(20, 20, 24, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition:
+        border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.35s;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.luxury-input:focus {
+    border-color: rgba(214, 4, 29, 0.5);
+    box-shadow: 
+        0 0 0 3px rgba(214, 4, 29, 0.08),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    background-color: rgba(20, 20, 24, 0.75);
+    outline: none;
+}
+.luxury-input::placeholder { color: rgba(154, 154, 159, 0.5); }
+.luxury-input option {
+    background: #0c0c0e;
+    color: var(--text-primary);
+}
+
+/* ─── STAT COUNTER GLOW ─────────────────────────────────────── */
+.stat-glow {
+    text-shadow: 0 0 30px rgba(214, 4, 29, 0.3);
+}
+
+/* ─── HERO GRADIENT TEXT ────────────────────────────────────── */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+.gradient-text-animated {
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 40%, #d6041d 70%, #ff4d4d 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 6s ease infinite;
+}
+
+/* ─── SERVICE TAG BADGE ─────────────────────────────────────── */
+.service-badge {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(214, 4, 29, 0.3);
+    background: rgba(214, 4, 29, 0.08);
+    color: #d6041d;
+    backdrop-filter: blur(12px);
+}
+
+/* ─── PULSING GLOW DOT ──────────────────────────────────────── */
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(214, 4, 29, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(214, 4, 29, 0); }
+}
+.status-dot {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ─── CARD IMAGE ZOOM ───────────────────────────────────────── */
+.card-img-wrap { overflow: hidden; }
+.card-img-wrap img {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card-premium:hover .card-img-wrap img {
+    transform: scale(1.05);
+}
+
+/* ─── CERTIFICATION ROW ─────────────────────────────────────── */
+.cert-tag {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    color: rgba(255,255,255,0.35);
+    transition: all 0.3s;
+}
+.cert-tag:hover {
+    border-color: rgba(214, 4, 29, 0.4);
+    color: rgba(255,255,255,0.7);
+}

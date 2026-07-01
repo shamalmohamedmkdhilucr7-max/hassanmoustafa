@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="description" content="Complete automotive services by Hassan Moustafa Dubai — engine overhaul, transmission, brakes, suspension, AC repair, electrical diagnostics, oil change, body & paint, tyre services, pre-purchase inspection and more.">
+    <title>All Services | Hassan Moustafa Automotive Care – Dubai, UAE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#070707","surface-container":"#0c0c0e","surface-container-low":"#121214","surface-container-lowest":"#070707","secondary-container":"#d6041d","on-surface-variant":"#9a9a9f","on-surface":"#e5e2e1","primary":"#c9c6c5","outline-variant":"rgba(255,255,255,0.06)","outline":"#4e4e54"},spacing:{"section-gap":"140px","container-max":"1440px","gutter":"32px"},fontFamily:{"display":["Plus Jakarta Sans","system-ui","sans-serif"],"body":["Inter","system-ui","sans-serif"],"mono":["Space Grotesk","monospace"]}}}}
+    </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-secondary-container/80 selection:text-white carbon-detail-bg">
+
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-40 nav-glass">
+    <div class="flex justify-between items-center px-gutter py-4 max-w-[1440px] mx-auto">
+        <a href="index.html" class="flex items-center gap-3 shrink-0"><img alt="Hassan Moustafa" class="h-16 md:h-20 w-auto object-contain rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"></a>
+        <div class="hidden lg:flex items-center gap-9">
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="index.html">Home</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="about.html">About</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="services.html">Services</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="spare-parts.html">Spare Parts</a>
+            <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="contact.html">Contact</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="lg:hidden text-on-surface-variant hover:text-white transition-colors p-1"><span class="material-symbols-outlined" style="font-size:26px">menu</span></button>
+        </div>
+    </div>
+</nav>
+<div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-80 bg-surface-container border-l border-white/8 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl">
+    <div>
+        <div class="flex justify-between items-center mb-12"><img alt="Logo" class="h-14 w-auto rounded-lg shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"><button id="mobile-menu-close" class="text-on-surface-variant hover:text-white p-1"><span class="material-symbols-outlined" style="font-size:24px">close</span></button></div>
+        <div class="flex flex-col gap-7">
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="index.html">Home</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="about.html">About</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="services.html">Services</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="spare-parts.html">Spare Parts</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="contact.html">Contact</a>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE HERO -->
+<section class="pt-32 pb-20 relative z-10 border-b border-white/5" style="background-image: linear-gradient(to right, rgba(7,7,7,0.95), rgba(7,7,7,0.85)), url('https://images.unsplash.com/photo-1530047625168-4b29af70f44f?q=80&w=1800&auto=format&fit=crop'); background-size: cover; background-position: center;">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-3">Complete Workshop Capabilities</span>
+        <h1 class="font-display font-extrabold text-white leading-tight" style="font-size: clamp(2.2rem, 5vw, 4rem)">Our <span class="gradient-text-animated">Services</span></h1>
+        <p class="text-on-surface-variant text-sm mt-4 max-w-2xl font-light leading-relaxed">From routine oil changes to full engine reconstructions — every service at Hassan Moustafa is delivered with dealer-grade precision, genuine OEM components, and complete price transparency.</p>
+    </div>
+</section>
+
+<!-- MECHANICAL SERVICES -->
+<section class="py-section-gap relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="flex items-center gap-4 mb-12"><div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div><span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">Mechanical Services</span><div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div></div>
+
+        <!-- Engine Overhaul -->
+        <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap"><img alt="Engine block overhaul and cylinder head rebuild" class="w-full h-full object-cover" src="assets/images/service_engine.png"></div>
+            <div class="space-y-5">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">build</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">Engine Overhaul</h2></div>
+                <p class="text-on-surface-variant text-sm font-light leading-7">Your engine is the mechanical heart of your vehicle — and it demands the highest level of engineering precision. At Hassan Moustafa, our master technicians deliver comprehensive engine rebuilds that restore factory-level compression, timing, and power output.</p>
+                <ul class="space-y-2 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Complete cylinder block resurfacing and honing</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Crankshaft, camshaft and valve train replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Timing chain/belt kit fitment (OEM specification)</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Piston ring and gasket set renewal</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Compression testing and ECU recalibration</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Transmission -->
+        <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
+            <div class="space-y-5 md:order-1">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">settings_suggest</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">Transmission Repair</h2></div>
+                <p class="text-on-surface-variant text-sm font-light leading-7">Whether your vehicle runs an automatic torque-converter, a dual-clutch DCT/PDK unit, or a traditional manual gearbox — our workshop is fully equipped for complete transmission diagnosis, overhaul, and fluid management.</p>
+                <ul class="space-y-2 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Automatic and manual transmission rebuilds</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Clutch kit replacement and flywheel resurfacing</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Valve body overhaul and solenoid replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>ATF fluid flush with OEM-spec fluid</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>TCU software reset and adaptation</li>
+                </ul>
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap md:order-2"><img alt="Gearbox and transmission components" class="w-full h-full object-cover" src="assets/images/service_gearbox.png"></div>
+        </div>
+
+        <!-- Brake Repair -->
+        <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap"><img alt="Brake caliper and ceramic rotor service" class="w-full h-full object-cover" src="assets/images/service_brakes.png"></div>
+            <div class="space-y-5">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">emergency</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">Brake Repair</h2></div>
+                <p class="text-on-surface-variant text-sm font-light leading-7">Your braking system is the single most important safety system in your vehicle. We use exclusively genuine OEM brake pads, rotors, and fluids — delivering stopping performance identical to the factory specification.</p>
+                <ul class="space-y-2 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Front and rear brake pad and rotor replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Brake caliper rebuilding and piston service</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Hydraulic fluid flush and bleed</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Parking brake cable and electronic adjustment</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>ABS sensor diagnostics and replacement</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Suspension & Steering -->
+        <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
+            <div class="space-y-5 md:order-1">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">swap_driving_apps_wheel</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">Suspension & Steering</h2></div>
+                <p class="text-on-surface-variant text-sm font-light leading-7">A compromised suspension system affects everything — ride quality, tyre wear, handling precision, and ultimately your safety. Our suspension engineers address the full kinematic chain from strut top mount to lower control arm.</p>
+                <ul class="space-y-2 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Shock absorber and strut replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Control arm, ball joint and tie rod renewal</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Power steering rack overhaul and fluid change</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Anti-roll bar link and bush replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Computerised 4-wheel alignment</li>
+                </ul>
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap md:order-2"><img alt="Suspension coilover and control arm" class="w-full h-full object-cover" src="assets/images/service_suspension.png"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ELECTRICAL & CLIMATE -->
+<section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="flex items-center gap-4 mb-12"><div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div><span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">Electrical & Climate</span><div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div></div>
+
+        <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap"><img alt="Computerised ECU diagnostic scan" class="w-full h-full object-cover" src="assets/images/service_diagnostic.png"></div>
+            <div class="space-y-5">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">cable</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">Electrical Diagnostics</h2></div>
+                <p class="text-on-surface-variant text-sm font-light leading-7">Modern vehicles contain hundreds of electronic modules and thousands of metres of wiring. Our workshop is equipped with brand-specific diagnostic scanners — including Porsche PIWIS, BMW ISTA, and Mercedes-Benz XENTRY — to pinpoint issues other garages miss.</p>
+                <ul class="space-y-2 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Full OBD-II and brand-specific diagnostic scans</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Wiring harness repair and connector replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Sensor and actuator replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>ECU reprogramming and module coding</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Battery management and charging system diagnostics</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
+            <div class="space-y-5 md:order-1">
+                <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">ac_unit</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">AC & Climate Repair</h2></div>
+                <p class="text-on-surface-variant text-sm font-light leading-7">In the UAE climate, a malfunctioning AC system is not an inconvenience — it is a safety concern. Our climate control engineers use nitrogen-based leak detection and precision gas-weighing equipment to ensure every system performs at peak cooling efficiency.</p>
+                <ul class="space-y-2 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Nitrogen-based leak tracing and pressure testing</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Compressor rebuild and replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>R134a/R1234yf gas recharge with precision weighing</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Evaporator and condenser replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Full system flush and anti-bacterial cabin treatment</li>
+                </ul>
+            </div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap md:order-2"><img alt="AC compressor and climate system service" class="w-full h-full object-cover" src="assets/images/service_ac.png"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ADDITIONAL SERVICES GRID -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="flex items-center gap-4 mb-12"><div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent"></div><span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold shrink-0">Maintenance & Bodywork</span><div class="h-px flex-1 bg-gradient-to-l from-transparent via-white/10 to-transparent"></div></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">oil_barrel</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Oil Change & Lubrication</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Factory-recommended fully synthetic engine oil, OEM oil filter, all fluids topped up, computerised service reset, and a complimentary vehicle wash with every service.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">format_paint</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Car Painting</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Oven-baked panel repainting with computerised paint code matching. Multi-stage clearcoat application in our dedicated dust-free spray booth ensures a flawless factory-match finish.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">car_crash</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Dent Removal & Body Repair</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Paintless dent removal (PDR) for minor dings and full panel repair for collision damage. Structural straightening, filler work, and insurance documentation handled in-house.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">auto_detailing</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Car Detailing</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Full interior deep clean, leather conditioning, exterior paint decontamination, machine polishing, ceramic coating application, and paint protection film (PPF) fitment.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">battery_charging_full</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Battery Replacement</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Computerised load and cranking test, OEM-grade battery supply and fitment, terminal cleaning, charging system inspection, and ECU battery registration for BMW/Mercedes.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">tire_repair</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Tyre, Alignment & Balancing</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Premium tyre supply and fitment, computerised 4-wheel alignment, dynamic wheel balancing, tyre rotation, and TPMS sensor service for all vehicle types.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">search</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Pre-Purchase Inspection</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Buying a used vehicle? Our independent 50-point inspection covers mechanical, electrical, bodywork, paint depth, and accident history — delivering a comprehensive written report before you commit.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">local_shipping</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Pickup & Delivery</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Can't make it to the workshop? We offer complimentary vehicle collection from your home or office anywhere across Dubai and return it upon completion — no disruption to your schedule.</p>
+            </div>
+            <div class="glass-card-premium p-7 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+                <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">sos</span>
+                <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Emergency Assistance</h3>
+                <p class="text-xs text-on-surface-variant font-light leading-relaxed">Breakdowns don't keep business hours. Our emergency response team provides rapid roadside support, mobile diagnostics, and recovery across the UAE during extended operating hours.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── SERVICE PACKAGES ────────────────────────────────────────── -->
+<section class="py-section-gap relative z-10 border-t border-white/5">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="text-center mb-16 reveal-item">
+            <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Maintenance Packages</span>
+            <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Scheduled Service Plans</h2>
+            <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light leading-relaxed">Factory-scheduled maintenance tailored to your vehicle's kilometre milestones. All plans include VAT — no hidden additions.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Minor Service -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-6 reveal-item">
+                <div class="border-b border-white/8 pb-6">
+                    <span class="font-mono text-[9px] text-secondary-container uppercase tracking-widest font-bold block mb-1">Every 10,000 km</span>
+                    <h3 class="font-display font-bold text-white text-xl uppercase tracking-wider">Minor Service</h3>
+                    <p class="text-xs text-on-surface-variant font-light mt-2">The essential routine that keeps your engine clean and every major system checked and ready.</p>
+                </div>
+                <ul class="space-y-2.5 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Fully synthetic engine oil & filter replacement</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>50-point safety inspection</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>All lubricants and fluids top-up</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Tyre pressure check and inflation</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Brake pad wear inspection</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Air and cabin filter service</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Computerised health scan and service reset</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>All lights and bulbs check</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Complimentary vehicle wash</li>
+                </ul>
+            </div>
+            <!-- Major Service -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-6 reveal-item reveal-delay-1 border border-secondary-container/20" style="box-shadow:0 0 40px rgba(214,4,29,0.08)">
+                <div class="border-b border-white/8 pb-6">
+                    <span class="font-mono text-[9px] text-secondary-container uppercase tracking-widest font-bold block mb-1">Every 40,000 km · Most Popular</span>
+                    <h3 class="font-display font-bold text-white text-xl uppercase tracking-wider">Major Service</h3>
+                    <p class="text-xs text-on-surface-variant font-light mt-2">A comprehensive overhaul addressing every major system for vehicles reaching their intermediate mileage milestone.</p>
+                </div>
+                <ul class="space-y-2.5 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>All items included in Minor Service</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Full brake system service and caliper greasing</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Parking brake adjustment</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Spark plug inspection and cleaning</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Computerised service reset and calibration</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>4-wheel alignment check</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Tyre rotation and balancing</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Battery load test and charging check</li>
+                </ul>
+            </div>
+            <!-- Super Major -->
+            <div class="glass-card-premium p-8 rounded-2xl space-y-6 reveal-item reveal-delay-2">
+                <div class="border-b border-white/8 pb-6">
+                    <span class="font-mono text-[9px] text-secondary-container uppercase tracking-widest font-bold block mb-1">Every 80,000 km</span>
+                    <h3 class="font-display font-bold text-white text-xl uppercase tracking-wider">Super Major Service</h3>
+                    <p class="text-xs text-on-surface-variant font-light mt-2">A complete mechanical overhaul for high-mileage vehicles ensuring peak performance across all critical systems.</p>
+                </div>
+                <ul class="space-y-2.5 text-xs text-on-surface-variant font-light">
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>All items included in Major Service</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>New spark plug fitment (OEM grade)</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>New air filter and cabin filter fitment</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Fuel system cleaning and injector service</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Coolant and transmission fluid change</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Serpentine belt and tensioner inspection</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Full suspension and steering check</li>
+                    <li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:14px;font-variation-settings:'FILL' 1">check_circle</span>Full interior and exterior detailing</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-surface-container-lowest border-t border-white/5 py-20 relative z-10">
+    <div class="max-w-[1440px] mx-auto px-gutter">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-12 pb-16 border-b border-white/5">
+            <div class="col-span-2 md:col-span-1 space-y-5"><img alt="Hassan Moustafa" class="h-20 w-auto rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"><p class="text-on-surface-variant text-xs font-light leading-6">Your trusted automotive partner in Dubai since 2006.</p></div>
+            <div class="space-y-4"><h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Services</h4><ul class="space-y-2.5 text-on-surface-variant text-xs font-light"><li><a class="hover:text-white transition-colors" href="services.html">Engine Overhaul</a></li><li><a class="hover:text-white transition-colors" href="services.html">Transmission</a></li><li><a class="hover:text-white transition-colors" href="services.html">Brakes & Suspension</a></li><li><a class="hover:text-white transition-colors" href="services.html">AC & Climate</a></li><li><a class="hover:text-white transition-colors" href="services.html">Diagnostics</a></li></ul></div>
+            <div class="space-y-4"><h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Company</h4><ul class="space-y-2.5 text-on-surface-variant text-xs font-light"><li><a class="hover:text-white transition-colors" href="about.html">About Us</a></li><li><a class="hover:text-white transition-colors" href="spare-parts.html">Parts Catalog</a></li><li><a class="hover:text-white transition-colors" href="contact.html">Contact</a></li></ul></div>
+            <div class="space-y-4"><h4 class="font-mono font-bold text-white text-[10px] uppercase tracking-[0.2em]">Workshop</h4><ul class="space-y-3 text-on-surface-variant text-xs font-light"><li class="flex items-start gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">location_on</span><span>Al Quoz Industrial Area 4, Dubai</span></li><li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">phone</span><span>+971 4 000 0000</span></li><li class="flex items-center gap-2.5"><span class="material-symbols-outlined text-secondary-container shrink-0" style="font-size:16px">schedule</span><span>Mon–Sat: 8AM – 7PM</span></li></ul></div>
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 text-on-surface-variant text-[10px] font-light"><p>© 2026 Hassan Moustafa Automotive. All Rights Reserved.</p></div>
+    </div>
+</footer>
+
+
+
+<div class="fixed bottom-6 right-6 z-50"><a href="https://wa.me/97140000000" target="_blank" class="flex items-center gap-2.5 bg-[#25D366] text-white px-5 py-3 rounded-full shadow-2xl shadow-[#25D366]/20 hover:scale-105 transition-all duration-300"><span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1">chat</span><span class="font-bold text-[10px] uppercase tracking-wider hidden md:inline">WhatsApp Us</span></a></div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
