@@ -161,13 +161,66 @@
             <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Our Facility</h2>
             <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light leading-relaxed">A purpose-built automotive workshop equipped with the diagnostic and mechanical tools required to service every marque to its factory standard.</p>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item"><img alt="Professional diagnostic bay" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?q=80&w=800&auto=format&fit=crop"></div>
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-1"><img alt="Engine workshop with hydraulic lift" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=800&auto=format&fit=crop"></div>
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-2"><img alt="Spare parts inventory shelving" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?q=80&w=800&auto=format&fit=crop"></div>
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item"><img alt="Computerised wheel alignment machine" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=800&auto=format&fit=crop"></div>
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-1"><img alt="AC service and gas recharge station" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=800&auto=format&fit=crop"></div>
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap reveal-item reveal-delay-2"><img alt="Customer reception and consultation area" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <!-- Facility 1: Diagnostic Bay -->
+            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item">
+                <img alt="Advanced Diagnostics Bay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1507136566006-cfc505b114fc?q=80&w=800&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                    <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 01</span>
+                    <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Diagnostic Bay</h3>
+                    <p class="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">State-of-the-art ECU programming, coding, and OBD scan diagnostics.</p>
+                </div>
+            </div>
+
+            <!-- Facility 2: Mechanical Bay -->
+            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-1">
+                <img alt="Engine & Mechanical Service Bay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=800&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                    <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 02</span>
+                    <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Mechanical & Engine Bay</h3>
+                    <p class="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Heavy-duty lifts for transmission overhauls, engine rebuilding, and chassis repairs.</p>
+                </div>
+            </div>
+
+            <!-- Facility 3: Paint & Body Shop -->
+            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-2">
+                <img alt="Auto Body Paint Booth" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=800&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                    <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 03</span>
+                    <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Paint & Body Shop</h3>
+                    <p class="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Dust-free pressurized paint booths and computerised color-matching ovens.</p>
+                </div>
+            </div>
+
+            <!-- Facility 4: Wheel Alignment Station -->
+            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item">
+                <img alt="3D Laser Wheel Alignment" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?q=80&w=800&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                    <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 04</span>
+                    <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Wheel Alignment Station</h3>
+                    <p class="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Precision 3D laser alignment and high-speed dynamic wheel balancing.</p>
+                </div>
+            </div>
+
+            <!-- Facility 5: AC Service Lab -->
+            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-1">
+                <img alt="AC Repair and Gas Recharge Station" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=800&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                    <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 05</span>
+                    <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">AC & Climate Lab</h3>
+                    <p class="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Automated recovery, flushing, leak detection, and R134a/R1234yf gas recharge.</p>
+                </div>
+            </div>
+
+            <!-- Facility 6: Customer Lounge -->
+            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-2">
+                <img alt="Luxury Customer Lounge" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                    <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 06</span>
+                    <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Luxury Reception Lounge</h3>
+                    <p class="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Espresso bar, workstation desks, and glass panel views directly into the workshop bays.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
