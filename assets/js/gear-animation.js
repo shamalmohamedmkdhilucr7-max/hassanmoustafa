@@ -86,9 +86,15 @@
             mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
         });
 
+        let isVisible = false;
+        let animFrameId = null;
+
         // Animation Loop
         function animate() {
-            requestAnimationFrame(animate);
+            if (!isVisible) {
+                animFrameId = null;
+                return;
+            }
             
             // Continuous spinning
             group.rotation.y += 0.005;
@@ -99,6 +105,7 @@
             group.rotation.x += mouseY * 0.05;
             
             renderer.render(scene, camera);
+            animFrameId = requestAnimationFrame(animate);
         }
 
         // Window resize event handler
@@ -108,9 +115,39 @@
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
+            
+            // Check if visibility changed due to media query display none
+            const isDisplayed = container.offsetParent !== null;
+            if (!isDisplayed) {
+                isVisible = false;
+            } else if (isDisplayed && !isVisible) {
+                // If it is in viewport, trigger animation
+                checkIntersection();
+            }
         });
 
-        animate();
+        function checkIntersection() {
+            const isDisplayed = container.offsetParent !== null;
+            if (typeof IntersectionObserver !== 'undefined') {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const isDisp = container.offsetParent !== null;
+                        isVisible = entry.isIntersecting && isDisp;
+                        if (isVisible && !animFrameId) {
+                            animFrameId = requestAnimationFrame(animate);
+                        }
+                    });
+                }, { threshold: 0 });
+                observer.observe(container);
+            } else {
+                isVisible = isDisplayed;
+                if (isVisible && !animFrameId) {
+                    animFrameId = requestAnimationFrame(animate);
+                }
+            }
+        }
+
+        checkIntersection();
     }
 
     // Initialize all containers — works whether script runs before or after DOM is ready

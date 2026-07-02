@@ -35,9 +35,9 @@
               "outline": "#4e4e54"
             },
             spacing: {
-              "section-gap": "140px",
+              "section-gap": "var(--section-gap)",
               "container-max": "1440px",
-              "gutter": "32px",
+              "gutter": "var(--gutter)",
             },
             fontFamily: {
               "display": ["Plus Jakarta Sans", "system-ui", "sans-serif"],
@@ -72,6 +72,9 @@
     </div>
 </nav>
 
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu-overlay" class="fixed inset-0 z-40 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-500"></div>
+
 <!-- Mobile Menu -->
 <div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-80 bg-surface-container border-l border-white/8 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl">
     <div>
@@ -102,7 +105,7 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-secondary-container status-dot"></span>
                 <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.2em] font-bold">Workshop Open · Al Quoz Industrial Area 4, Dubai</span>
             </div>
-            <h1 class="font-display font-extrabold tracking-tight leading-[0.93] text-white" style="font-size: clamp(3rem, 7vw, 6.5rem)">
+            <h1 class="font-display font-extrabold tracking-tight leading-[0.93] text-white" style="font-size: clamp(2.2rem, 7vw, 6.5rem)">
                 PRECISION<br><span class="gradient-text-animated">AUTOMOTIVE</span><br>CARE
             </h1>
             <p class="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-lg font-light">
@@ -111,7 +114,7 @@
             <div class="flex flex-wrap gap-4 pt-2">
                 <a href="contact.html" class="btn-secondary-luxury text-white px-9 py-4 rounded-full font-bold text-[10px] uppercase tracking-[0.2em]">Get Free Quote</a>
             </div>
-            <div class="flex gap-10 pt-4 border-t border-white/6">
+            <div class="grid grid-cols-2 md:flex md:gap-10 gap-6 pt-4 border-t border-white/6">
                 <div>
                     <div class="font-mono text-2xl font-bold text-white tech-digits">20<span class="text-secondary-container">+</span></div>
                     <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Years Legacy</div>
@@ -208,7 +211,7 @@
 <section class="py-section-gap relative z-10 overflow-hidden">
     <div class="max-w-[1440px] mx-auto px-gutter grid md:grid-cols-2 gap-20 items-center">
         <div class="relative group reveal-item">
-            <div class="absolute -inset-3 border border-secondary-container/15 translate-x-6 translate-y-6 rounded-2xl -z-10 group-hover:translate-x-3 group-hover:translate-y-3 transition-all duration-600"></div>
+            <div class="absolute -inset-3 border border-secondary-container/15 translate-x-3 translate-y-3 md:translate-x-6 md:translate-y-6 rounded-2xl -z-10 group-hover:translate-x-1.5 group-hover:translate-y-1.5 md:group-hover:translate-x-3 md:group-hover:translate-y-3 transition-all duration-600"></div>
             <div class="w-full aspect-[16/9] bg-surface-container overflow-hidden rounded-2xl border border-white/5 card-img-wrap">
                 <img alt="Hassan Moustafa premium automotive workshop in Dubai" class="w-full h-full object-cover" src="assets/images/lc.jpeg">
             </div>
@@ -226,7 +229,7 @@
                 <p>At Hassan Moustafa Automotive, we are more than a garage — we are your dedicated long-term partner for maintaining the performance, safety, and value of your vehicle. Founded in 2006, we built our reputation on a foundation of engineering integrity, precision diagnostics, and uncompromising parts authenticity.</p>
                 <p>Our workshop handles every marque with equal attention — whether you drive a daily family saloon or a rare collector's supercar. From computerised ECU scans and cylinder head overhauls to full transmission rebuilds and genuine OEM parts sourcing, every job is done right, on time, and at a fair price.</p>
             </div>
-            <div class="flex gap-8 py-5 border-t border-b border-white/5">
+            <div class="grid grid-cols-3 gap-4 md:flex md:gap-8 py-5 border-t border-b border-white/5">
                 <div>
                     <div class="font-mono text-3xl font-bold text-white tech-digits">20<span class="text-secondary-container">+</span></div>
                     <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-widest mt-1">Years Legacy</div>
@@ -256,28 +259,28 @@
             <p class="text-on-surface-variant text-sm mt-3 max-w-xl mx-auto font-light leading-relaxed">Everything we do is built around your trust — from the moment you call to the moment your car is returned.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">verified_user</span>
                 </div>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">100% Genuine Parts</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">We maintain an absolute zero-tolerance policy on counterfeit components. Every part installed carries full manufacturer authentication and a serialised guarantee.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">groups</span>
                 </div>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Expert Engineers</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our certified technicians carry years of hands-on experience across German, Japanese, and British platforms — delivering diagnostic precision that rivals OEM dealerships.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">schedule</span>
                 </div>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">On-Time Delivery</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">We respect your schedule absolutely. Our workshop operates on structured job timelines with proactive SMS updates throughout your vehicle's service progression.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-3">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-3">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">receipt_long</span>
                 </div>
@@ -287,28 +290,28 @@
         </div>
         <!-- Second Row of WHY US -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">local_shipping</span>
                 </div>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Free Pickup & Delivery</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">We collect your vehicle from your home or office and return it at your convenience anywhere across Dubai — no drop-off hassle, no disruption to your day.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">support_agent</span>
                 </div>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Emergency Assistance</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Breakdowns don't keep business hours. Our emergency response service operates extended hours for urgent roadside support, diagnostics, and rapid recovery across the UAE.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">workspace_premium</span>
                 </div>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Warranty on All Work</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">All mechanical repairs and fitted parts carry a written service warranty. If anything isn't right, we fix it — no questions asked, at no additional cost to you.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-3">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-3">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:26px;font-variation-settings:'FILL' 1">psychology</span>
                 </div>
@@ -377,7 +380,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Mechanical Repairs -->
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">build</span>
                 </div>
@@ -385,7 +388,7 @@
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Full engine rebuilds, transmission overhauls, clutch replacements, and complete timing belt/chain kit renewals to OEM specifications.</p>
             </div>
             <!-- Brakes & Suspension -->
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">emergency</span>
                 </div>
@@ -393,7 +396,7 @@
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Genuine brake disc/pad fitment, shock absorber replacement, power steering rebuilds, and computerized wheel alignment checks.</p>
             </div>
             <!-- Advanced Diagnostics -->
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">cable</span>
                 </div>
@@ -401,7 +404,7 @@
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Computerized dealership-grade diagnostic scans, ECU reprogramming, sensor troubleshooting, and complex wiring harness repairs.</p>
             </div>
             <!-- Climate Control & AC -->
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-3">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-3">
                 <div class="w-12 h-12 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">ac_unit</span>
                 </div>
@@ -622,7 +625,7 @@
             <p class="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light">Hundreds of Dubai's discerning vehicle owners trust Hassan Moustafa for their most critical automotive needs.</p>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item">
                 <div class="flex gap-0.5">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
@@ -639,7 +642,7 @@
                     </div>
                 </div>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-1">
                 <div class="flex gap-0.5">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
@@ -656,7 +659,7 @@
                     </div>
                 </div>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-5 reveal-item reveal-delay-2">
                 <div class="flex gap-0.5">
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
                     <span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">star</span>
@@ -816,7 +819,7 @@
 
 <!-- ── BOOKING MODAL ─────────────────────────────────────────────── -->
 <div id="booking-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-lg p-4">
-    <div class="glass-card-premium max-w-lg w-full p-8 rounded-2xl relative border border-white/8">
+    <div class="glass-card-premium max-w-lg w-full p-6 sm:p-8 rounded-2xl relative border border-white/8">
         <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-white transition-colors p-1">
             <span class="material-symbols-outlined" style="font-size:22px">close</span>
         </button>

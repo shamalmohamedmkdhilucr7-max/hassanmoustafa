@@ -12,7 +12,7 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
-      tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#070707","surface-container":"#0c0c0e","surface-container-low":"#121214","surface-container-lowest":"#070707","secondary-container":"#d6041d","on-surface-variant":"#9a9a9f","on-surface":"#e5e2e1","primary":"#c9c6c5","outline-variant":"rgba(255,255,255,0.06)","outline":"#4e4e54"},spacing:{"section-gap":"140px","container-max":"1440px","gutter":"32px"},fontFamily:{"display":["Plus Jakarta Sans","system-ui","sans-serif"],"body":["Inter","system-ui","sans-serif"],"mono":["Space Grotesk","monospace"]}}}}
+      tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#070707","surface-container":"#0c0c0e","surface-container-low":"#121214","surface-container-lowest":"#070707","secondary-container":"#d6041d","on-surface-variant":"#9a9a9f","on-surface":"#e5e2e1","primary":"#c9c6c5","outline-variant":"rgba(255,255,255,0.06)","outline":"#4e4e54"},spacing:{"section-gap":"var(--section-gap)","container-max":"1440px","gutter":"var(--gutter)"},fontFamily:{"display":["Plus Jakarta Sans","system-ui","sans-serif"],"body":["Inter","system-ui","sans-serif"],"mono":["Space Grotesk","monospace"]}}}}
     </script>
 </head>
 <body class="bg-surface text-on-surface selection:bg-secondary-container/80 selection:text-white carbon-detail-bg">
@@ -33,6 +33,11 @@
         </div>
     </div>
 </nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu-overlay" class="fixed inset-0 z-40 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-500"></div>
+
+<!-- Mobile Menu -->
 <div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-80 bg-surface-container border-l border-white/8 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl">
     <div><div class="flex justify-between items-center mb-12"><img alt="Logo" class="h-14 w-auto rounded-lg shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"><button id="mobile-menu-close" class="text-on-surface-variant hover:text-white p-1"><span class="material-symbols-outlined" style="font-size:24px">close</span></button></div><div class="flex flex-col gap-7"><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="index.html">Home</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="about.html">About</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="services.html">Services</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="spare-parts.html">Spare Parts</a><a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="contact.html">Contact</a></div></div>
 </div>
@@ -50,7 +55,7 @@
 <section class="py-section-gap relative z-10">
     <div class="max-w-[1440px] mx-auto px-gutter grid md:grid-cols-2 gap-20 items-center">
         <div class="relative group reveal-item">
-            <div class="absolute -inset-3 border border-secondary-container/15 translate-x-6 translate-y-6 rounded-2xl -z-10 group-hover:translate-x-3 group-hover:translate-y-3 transition-all duration-600"></div>
+            <div class="absolute -inset-3 border border-secondary-container/15 translate-x-3 translate-y-3 md:translate-x-6 md:translate-y-6 rounded-2xl -z-10 group-hover:translate-x-1.5 group-hover:translate-y-1.5 md:group-hover:translate-x-3 md:group-hover:translate-y-3 transition-all duration-600"></div>
             <div class="w-full aspect-[3/2] bg-surface-container overflow-hidden rounded-2xl border border-white/5 card-img-wrap">
                 <img alt="Hassan Moustafa workshop interior with luxury vehicles" class="w-full h-full object-cover" src="assets/images/lc_new.jpeg">
             </div>
@@ -70,14 +75,14 @@
 <!-- MISSION & VISION -->
 <section class="py-section-gap bg-surface-container-lowest border-t border-white/5 relative z-10">
     <div class="max-w-[1440px] mx-auto px-gutter grid md:grid-cols-2 gap-8">
-        <div class="glass-card-premium p-10 rounded-2xl space-y-5 reveal-item">
+        <div class="glass-card-premium p-6 sm:p-10 rounded-2xl space-y-5 reveal-item">
             <div class="w-14 h-14 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:30px;font-variation-settings:'FILL' 1">flag</span>
             </div>
             <h3 class="font-display font-extrabold text-white text-xl uppercase tracking-wider">Our Mission</h3>
             <p class="text-on-surface-variant text-sm font-light leading-7">To deliver dealer-grade automotive care that is accessible, transparent, and built on the principle that every vehicle owner deserves honest engineering — without the premium dealership markup. We exist to protect your investment, extend your vehicle's lifespan, and keep you safely on the road.</p>
         </div>
-        <div class="glass-card-premium p-10 rounded-2xl space-y-5 reveal-item reveal-delay-1">
+        <div class="glass-card-premium p-6 sm:p-10 rounded-2xl space-y-5 reveal-item reveal-delay-1">
             <div class="w-14 h-14 rounded-xl bg-secondary-container/10 flex items-center justify-center">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:30px;font-variation-settings:'FILL' 1">visibility</span>
             </div>
@@ -95,32 +100,32 @@
             <h2 class="font-display font-extrabold text-white" style="font-size: clamp(1.8rem, 3vw, 3rem)">Our Core Values</h2>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">verified_user</span>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Parts Authenticity</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Zero tolerance for counterfeit components. Every part we fit is sourced from licensed OEM distributors and carries full manufacturer serialisation and traceability.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">receipt_long</span>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Complete Transparency</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Every quotation itemises labour, parts, and VAT individually. We share diagnostic evidence with you directly. No hidden fees, no surprise line items, no ambiguity.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">precision_manufacturing</span>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Engineering Precision</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our technicians follow manufacturer-defined service procedures exactly. Torque specifications, fluid volumes, and calibration sequences are adhered to without compromise.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">schedule</span>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Punctual Delivery</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">We provide accurate job timelines at the point of diagnosis. Proactive updates are sent throughout the service cycle. We never deliver late without prior communication.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-1">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">handshake</span>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Customer First</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">Our relationship with you extends beyond a single service. We track your vehicle's maintenance history, send proactive service reminders, and treat your car as if it were our own.</p>
             </div>
-            <div class="glass-card-premium p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
+            <div class="glass-card-premium p-6 sm:p-8 rounded-2xl space-y-4 reveal-item reveal-delay-2">
                 <span class="material-symbols-outlined text-secondary-container" style="font-size:28px;font-variation-settings:'FILL' 1">workspace_premium</span>
                 <h3 class="font-display font-bold text-white text-sm uppercase tracking-wider">Warranty Backed</h3>
                 <p class="text-xs text-on-surface-variant font-light leading-relaxed">All mechanical repairs and installed parts carry a documented warranty. If any issue arises within the warranty period, we rectify it at no additional charge — no questions asked.</p>
@@ -164,7 +169,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <!-- Facility 1: Diagnostic Bay -->
             <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item">
-                <img alt="Advanced Diagnostics Bay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1507136566006-cfc505b114fc?q=80&w=800&auto=format&fit=crop">
+                <img alt="Advanced Diagnostics Bay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=800&auto=format&fit=crop">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
                     <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 01</span>
                     <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Diagnostic Bay</h3>
@@ -174,7 +179,7 @@
 
             <!-- Facility 2: Mechanical Bay -->
             <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-1">
-                <img alt="Engine & Mechanical Service Bay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=800&auto=format&fit=crop">
+                <img alt="Engine & Mechanical Service Bay" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?q=80&w=800&auto=format&fit=crop">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
                     <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 02</span>
                     <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Mechanical & Engine Bay</h3>
@@ -204,7 +209,7 @@
 
             <!-- Facility 5: AC Service Lab -->
             <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-1">
-                <img alt="AC Repair and Gas Recharge Station" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=800&auto=format&fit=crop">
+                <img alt="AC Repair and Gas Recharge Station" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1635437536607-b8572f443763?q=80&w=800&auto=format&fit=crop">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
                     <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 05</span>
                     <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">AC & Climate Lab</h3>
@@ -214,7 +219,7 @@
 
             <!-- Facility 6: Customer Lounge -->
             <div class="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap reveal-item reveal-delay-2">
-                <img alt="Luxury Customer Lounge" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop">
+                <img alt="Luxury Customer Lounge" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=800&auto=format&fit=crop">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
                     <span class="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 06</span>
                     <h3 class="font-display font-extrabold text-white text-sm uppercase tracking-wider">Luxury Reception Lounge</h3>
@@ -270,7 +275,7 @@
 
 <!-- BOOKING MODAL -->
 <div id="booking-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 backdrop-blur-lg p-4">
-    <div class="glass-card-premium max-w-lg w-full p-8 rounded-2xl relative border border-white/8">
+    <div class="glass-card-premium max-w-lg w-full p-6 sm:p-8 rounded-2xl relative border border-white/8">
         <button id="close-modal-btn" class="absolute top-4 right-4 text-on-surface-variant hover:text-white transition-colors p-1"><span class="material-symbols-outlined" style="font-size:22px">close</span></button>
         <div class="flex items-center gap-3 mb-7"><div class="w-8 h-8 rounded-lg bg-secondary-container/15 flex items-center justify-center"><span class="material-symbols-outlined text-secondary-container" style="font-size:18px;font-variation-settings:'FILL' 1">calendar_month</span></div><h3 class="font-display font-extrabold text-white text-xl uppercase tracking-wide">Book Appointment</h3></div>
         <form id="modal-booking-form" class="space-y-4">

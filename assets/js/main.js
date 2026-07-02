@@ -52,33 +52,58 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 4. Mobile slide-out drawer navigator
+    // 4. Mobile slide-out drawer navigator with overlay backdrop
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
 
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('translate-x-full');
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
-        });
+    function openMobileMenu() {
+        if (mobileMenu) mobileMenu.classList.remove('translate-x-full');
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            mobileMenuOverlay.classList.add('opacity-100', 'pointer-events-auto');
+        }
+        document.body.style.overflow = 'hidden'; // Stop background scrolling
     }
 
-    if (mobileMenuCloseBtn && mobileMenu) {
-        mobileMenuCloseBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-            document.body.style.overflow = '';
-        });
+    function closeMobileMenu() {
+        if (mobileMenu) mobileMenu.classList.add('translate-x-full');
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+            mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
+        }
+        document.body.style.overflow = '';
     }
 
-    // 5. Highlight Current Active Route in Header navbar
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+    }
+    if (mobileMenuCloseBtn) {
+        mobileMenuCloseBtn.addEventListener('click', closeMobileMenu);
+    }
+    if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+    }
+
+    // 5. Highlight Current Active Route in Header navbar & Mobile Menu
     const activePath = window.location.pathname.split("/").pop();
+    
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => {
         const linkPath = link.getAttribute('href');
         if (linkPath === activePath || (activePath === '' && linkPath === 'index.html')) {
             link.classList.add('text-secondary-container', 'font-bold', 'border-b-2', 'border-secondary-container');
             link.classList.remove('text-on-surface-variant');
+        }
+    });
+
+    const mobileLinks = document.querySelectorAll('#mobile-menu a');
+    mobileLinks.forEach(link => {
+        const linkPath = link.getAttribute('href');
+        if (linkPath === activePath || (activePath === '' && linkPath === 'index.html')) {
+            link.classList.add('text-secondary-container');
+            link.classList.remove('text-white');
         }
     });
 

@@ -128,7 +128,14 @@
             }
         });
 
+        let isVisible = true;
+        let animFrameId = null;
+
         function render(t) {
+            if (!isVisible) {
+                animFrameId = null;
+                return;
+            }
             if (typeof ResizeObserver === 'undefined') syncSize();
             
             // Handle viewport resize mapping
@@ -139,10 +146,22 @@
             if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
             
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-            requestAnimationFrame(render);
+            animFrameId = requestAnimationFrame(render);
         }
 
-        requestAnimationFrame(render);
+        if (typeof IntersectionObserver !== 'undefined') {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isVisible = entry.isIntersecting;
+                    if (isVisible && !animFrameId) {
+                        animFrameId = requestAnimationFrame(render);
+                    }
+                });
+            }, { threshold: 0 });
+            observer.observe(canvas);
+        } else {
+            animFrameId = requestAnimationFrame(render);
+        }
     }
 
     // Initialize all canvas elements — works whether script runs before or after DOM is ready

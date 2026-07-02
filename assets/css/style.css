@@ -11,6 +11,23 @@
     --text-secondary: #9a9a9f;
     --border-titanium: rgba(255, 255, 255, 0.04);
     --border-glow-hover: rgba(214, 4, 29, 0.35);
+    
+    /* Responsive Spacing variables */
+    --gutter: 16px;
+    --section-gap: 60px;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --gutter: 32px;
+        --section-gap: 140px;
+    }
+}
+
+/* Mobile menu overlay backdrop blur */
+#mobile-menu-overlay {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 /* Base Reset */
