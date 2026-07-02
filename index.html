@@ -130,20 +130,25 @@
   <!-- Sticky viewport-pinned stage -->
   <div id="sh-sticky" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#070707;">
 
-    <!-- Layer 0 — Blurred ambient fill (removes black bars on any aspect ratio) -->
-    <video id="sh-blur" muted playsinline preload="auto"
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-             filter:blur(32px) brightness(0.28) saturate(1.6);
-             transform:scale(1.1) translateZ(0);pointer-events:none;will-change:transform;">
+    <!-- Offscreen hidden video element used as frame source -->
+    <video id="sh-video" muted playsinline preload="auto" style="position:fixed;pointer-events:none;opacity:0.001;width:1px;height:1px;top:0;left:0;z-index:-100;">
       <source src="assets/video/hero.mp4" type="video/mp4">
     </video>
 
-    <!-- Layer 1 — Main video (full frame, never cropped) -->
-    <video id="sh-video" muted playsinline preload="auto"
+    <!-- Layer 0 — Blurred ambient fill (removes black bars on any aspect ratio) -->
+    <canvas id="sh-canvas-blur" 
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+             filter:blur(32px) brightness(0.28) saturate(1.6);
+             transform:scale(1.1) translateZ(0);pointer-events:none;will-change:transform;
+             opacity:0;transition:opacity 0.8s ease;">
+    </canvas>
+
+    <!-- Layer 1 — Main canvas (always fully visible, never cropped) -->
+    <canvas id="sh-canvas-main" 
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-             transform:translateZ(0);pointer-events:none;will-change:transform;">
-      <source src="assets/video/hero.mp4" type="video/mp4">
-    </video>
+             transform:translateZ(0);pointer-events:none;will-change:transform;
+             opacity:0;transition:opacity 0.8s ease;">
+    </canvas>
 
     <!-- Layer 2 — Top-to-bottom cinematic gradient -->
     <div aria-hidden="true" style="position:absolute;inset:0;z-index:10;pointer-events:none;
@@ -275,112 +280,164 @@
 (function () {
   'use strict';
 
-  var container = document.getElementById('sh-container');
-  var sticky    = document.getElementById('sh-sticky');
-  var vMain     = document.getElementById('sh-video');
-  var vBlur     = document.getElementById('sh-blur');
-  var text      = document.getElementById('sh-text');
-  var hint      = document.getElementById('sh-hint');
-  var bar       = document.getElementById('sh-bar');
+  var container   = document.getElementById('sh-container');
+  var video       = document.getElementById('sh-video');
+  var canvasMain  = document.getElementById('sh-canvas-main');
+  var canvasBlur  = document.getElementById('sh-canvas-blur');
+  var text        = document.getElementById('sh-text');
+  var hint        = document.getElementById('sh-hint');
+  var bar         = document.getElementById('sh-bar');
 
-  if (!container || !vMain) return;
+  if (!container || !video || !canvasMain || !canvasBlur) return;
 
-  /* ── state ── */
-  var duration   = 0;
-  var ready      = false;
-  var targetT    = 0;
-  var smoothT    = 0;
-  var rafId      = null;
-  var lastScrollY = -1;
+  var ctxMain = canvasMain.getContext('2d');
+  var ctxBlur = canvasBlur.getContext('2d');
 
-  /* ── init once video metadata arrives ── */
-  function onMeta() {
-    duration = vMain.duration;
-    if (!isFinite(duration) || duration <= 0) return;
-    ready = true;
-    vMain.pause();
-    if (vBlur) vBlur.pause();
-    // Set first frame
-    vMain.currentTime = 0;
-    if (vBlur) vBlur.currentTime = 0;
+  var duration = 0;
+  var ready = false;
+  var isSeeking = false;
+  var pendingSeek = false;
+  
+  var targetProgress = 0;
+  var currentProgress = 0;
+  var targetT = 0;
+  var smoothT = 0;
+  var isLoopActive = false;
+
+  // Append video to body to satisfy iOS Safari DOM attachment requirement
+  document.body.appendChild(video);
+
+  function initDimensions() {
+    if (video.videoWidth === 0) return;
+    
+    // Set actual rendering dimensions
+    canvasMain.width = video.videoWidth;
+    canvasMain.height = video.videoHeight;
+    
+    // Performance optimization: downscale blurred background canvas to save GPU bandwith/fillrate
+    canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
+    canvasBlur.height = Math.max(32, Math.floor(video.videoHeight / 8));
+    
+    // First render
+    renderFrame();
+    
+    canvasMain.style.opacity = '1';
+    canvasBlur.style.opacity = '1';
   }
 
-  vMain.addEventListener('loadedmetadata', onMeta);
-  vMain.addEventListener('canplay', function () { if (!ready) onMeta(); });
+  function renderFrame() {
+    try {
+      ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
+      ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
+    } catch (e) {
+      // Handle brief errors if frame is not fully initialized
+    }
+  }
 
-  /* ── scroll handler ── */
+  function onMeta() {
+    duration = video.duration;
+    if (!isFinite(duration) || duration <= 0) return;
+    ready = true;
+    video.pause();
+    initDimensions();
+    onScroll();
+  }
+
+  video.addEventListener('loadedmetadata', onMeta);
+  video.addEventListener('canplay', function() { if (!ready) onMeta(); });
+  
+  // Backup triggers
+  if (video.readyState >= 1) {
+    onMeta();
+  }
+
   function onScroll() {
     if (!ready) return;
 
-    var scrollY      = window.scrollY;
+    var scrollY = window.scrollY;
     var containerTop = container.getBoundingClientRect().top + scrollY;
-    var scrollable   = container.offsetHeight - window.innerHeight;
-    var scrolled     = Math.max(0, Math.min(scrollY - containerTop, scrollable));
-    var progress     = scrollable > 0 ? scrolled / scrollable : 0;
+    var scrollable = container.offsetHeight - window.innerHeight;
+    var scrolled = Math.max(0, Math.min(scrollY - containerTop, scrollable));
+    
+    targetProgress = scrollable > 0 ? scrolled / scrollable : 0;
+    targetT = targetProgress * duration;
 
-    targetT = progress * duration;
-
-    /* text: fade + rise between 0–35% progress */
-    var tOpacity  = progress < 0.12 ? 1 : Math.max(0, 1 - (progress - 0.12) / 0.23);
-    var tTranslate = progress * 70;
-    if (text) {
-      text.style.opacity   = tOpacity;
-      text.style.transform = 'translateY(' + (-tTranslate) + 'px)';
+    // Direct update for scroll UI components
+    if (bar) {
+      bar.style.width = (targetProgress * 100).toFixed(2) + '%';
+    }
+    if (hint) {
+      hint.style.opacity = targetProgress < 0.025 ? '0.55' : '0';
     }
 
-    /* scroll hint */
-    if (hint) hint.style.opacity = progress < 0.025 ? '0.55' : '0';
-
-    /* kick RAF if needed */
-    if (rafId === null) rafId = requestAnimationFrame(tick);
+    // Activate the loop if scroll occurred
+    if (!isLoopActive) {
+      isLoopActive = true;
+      requestAnimationFrame(tick);
+    }
   }
 
-  /* ── RAF tick: lerp currentTime toward target ── */
   function tick() {
-    rafId = null;
+    var diff = targetProgress - currentProgress;
+    var timeDiff = targetT - smoothT;
 
-    var diff = targetT - smoothT;
-
-    /* Use tight lerp for smooth but still direct feel */
-    if (Math.abs(diff) < 0.0008) {
+    // Interpolation for luxury inertia feel
+    if (Math.abs(diff) < 0.0001) {
+      currentProgress = targetProgress;
       smoothT = targetT;
     } else {
-      smoothT += diff * 0.22;
+      currentProgress += diff * 0.18; // Apple-like easing factor
+      smoothT += timeDiff * 0.18;
     }
 
-    /* Only seek if change is noticeable (>= 1 frame at 60fps ≈ 0.016s) */
-    if (Math.abs(vMain.currentTime - smoothT) >= 0.014) {
-      vMain.currentTime = smoothT;
-      if (vBlur) vBlur.currentTime = smoothT;
+    // Update text transparency and parallax transformation
+    if (text) {
+      var tOpacity = currentProgress < 0.12 ? 1 : Math.max(0, 1 - (currentProgress - 0.12) / 0.23);
+      var tTranslate = currentProgress * 70;
+      text.style.opacity = tOpacity;
+      text.style.transform = 'translateY(' + (-tTranslate) + 'px) translateZ(0)';
     }
 
-    /* Progress bar — direct from scroll progress (no lerp for instant feel) */
-    if (bar) {
-      var scrollY      = window.scrollY;
-      var containerTop = container.getBoundingClientRect().top + scrollY;
-      var scrollable   = container.offsetHeight - window.innerHeight;
-      var scrolled     = Math.max(0, Math.min(scrollY - containerTop, scrollable));
-      var p            = scrollable > 0 ? scrolled / scrollable : 0;
-      bar.style.width  = (p * 100).toFixed(2) + '%';
+    // Seek the video using locked queue pattern
+    if (!isSeeking) {
+      if (Math.abs(video.currentTime - smoothT) >= 0.015) {
+        isSeeking = true;
+        video.currentTime = smoothT;
+      }
+    } else {
+      pendingSeek = true;
     }
 
-    /* Keep running while not settled */
-    if (Math.abs(targetT - smoothT) > 0.001) {
-      rafId = requestAnimationFrame(tick);
+    // If settled, stop the animation frame loop
+    if (Math.abs(diff) < 0.0001 && !isSeeking) {
+      isLoopActive = false;
+      return;
     }
+
+    requestAnimationFrame(tick);
   }
+
+  video.addEventListener('seeked', function() {
+    isSeeking = false;
+    renderFrame();
+    
+    if (pendingSeek) {
+      pendingSeek = false;
+      if (!isLoopActive) {
+        isLoopActive = true;
+        requestAnimationFrame(tick);
+      }
+    }
+  });
 
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', initDimensions, { passive: true });
 
-  /* Initial call in case page loads mid-scroll */
-  if (document.readyState === 'complete') {
-    onScroll();
-  } else {
-    window.addEventListener('load', onScroll);
-  }
-
+  // Initial activation
+  setTimeout(onScroll, 100);
 }());
 </script>
+
 
 
 <!-- ── BRAND MARQUEE ────────────────────────────────────────────── -->
