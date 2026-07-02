@@ -131,9 +131,23 @@
   <div id="sh-sticky" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#070707;">
 
     <!-- Offscreen hidden video element used as frame source -->
-    <video id="sh-video" muted playsinline preload="auto" style="position:fixed;pointer-events:none;opacity:0.001;width:1px;height:1px;top:0;left:0;z-index:-100;">
+    <video id="sh-video" muted playsinline preload="auto" style="position:absolute;pointer-events:none;opacity:0.001;width:1px;height:1px;top:0;left:0;z-index:-100;">
       <source src="assets/video/hero.mp4" type="video/mp4">
     </video>
+
+    <!-- Premium Loader Overlay -->
+    <div id="sh-loader" style="position:absolute;inset:0;z-index:90;background:#070707;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1);pointer-events:none;">
+      <div style="font-family:'Space Grotesk',monospace;font-size:10px;color:#d6041d;
+        text-transform:uppercase;letter-spacing:0.35em;margin-bottom:14px;font-weight:700;">
+        ENCODING PRESTIGE
+      </div>
+      <div style="width:140px;height:1px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden;border-radius:1px;">
+        <div id="sh-loader-bar" style="position:absolute;top:0;left:0;bottom:0;width:0%;
+          background:#d6041d;transition:width 0.3s ease;will-change:width;"></div>
+      </div>
+    </div>
 
     <!-- Layer 0 — Blurred ambient fill (removes black bars on any aspect ratio) -->
     <canvas id="sh-canvas-blur" 
@@ -287,6 +301,8 @@
   var text        = document.getElementById('sh-text');
   var hint        = document.getElementById('sh-hint');
   var bar         = document.getElementById('sh-bar');
+  var loader      = document.getElementById('sh-loader');
+  var loaderBar   = document.getElementById('sh-loader-bar');
 
   if (!container || !video || !canvasMain || !canvasBlur) return;
 
@@ -297,15 +313,13 @@
   var ready = false;
   var isSeeking = false;
   var pendingSeek = false;
+  var seekStartTime = 0;
   
   var targetProgress = 0;
   var currentProgress = 0;
   var targetT = 0;
   var smoothT = 0;
   var isLoopActive = false;
-
-  // Append video to body to satisfy iOS Safari DOM attachment requirement
-  document.body.appendChild(video);
 
   function initDimensions() {
     if (video.videoWidth === 0) return;
@@ -314,7 +328,7 @@
     canvasMain.width = video.videoWidth;
     canvasMain.height = video.videoHeight;
     
-    // Performance optimization: downscale blurred background canvas to save GPU bandwith/fillrate
+    // Performance optimization: downscale blurred background canvas to save GPU bandwidth/fillrate
     canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
     canvasBlur.height = Math.max(32, Math.floor(video.videoHeight / 8));
     
@@ -326,32 +340,72 @@
   }
 
   function renderFrame() {
+    if (video.videoWidth > 0 && canvasMain.width !== video.videoWidth) {
+      initDimensions();
+    }
     try {
       ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
       ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
     } catch (e) {
-      // Handle brief errors if frame is not fully initialized
+      // Handle frame initialization errors silently
+    }
+  }
+
+  function hideLoader() {
+    if (loader) {
+      if (loaderBar) loaderBar.style.width = '100%';
+      setTimeout(function() {
+        loader.style.opacity = '0';
+        setTimeout(function() {
+          loader.style.display = 'none';
+        }, 600);
+      }, 300);
     }
   }
 
   function onMeta() {
+    if (ready) return;
     duration = video.duration;
     if (!isFinite(duration) || duration <= 0) return;
     ready = true;
     video.pause();
     initDimensions();
+    hideLoader();
     onScroll();
   }
 
+  // Preloading progress updates
+  video.addEventListener('progress', function() {
+    if (video.duration > 0 && video.buffered.length > 0) {
+      var buffered = video.buffered.end(video.buffered.length - 1);
+      var pct = Math.floor((buffered / video.duration) * 100);
+      if (loaderBar) {
+        loaderBar.style.width = Math.min(95, pct) + '%';
+      }
+    }
+  });
+
   video.addEventListener('loadedmetadata', onMeta);
-  video.addEventListener('canplay', function() { if (!ready) onMeta(); });
+  video.addEventListener('canplay', onMeta);
+  video.addEventListener('canplaythrough', onMeta);
   
-  // Backup triggers
+  // Backup triggers: if video metadata is already loaded
   if (video.readyState >= 1) {
     onMeta();
+  } else {
+    // Explicitly force metadata retrieval
+    video.load();
+  }
+
+  // Double backup trigger on viewport interaction
+  function forceInitOnScroll() {
+    if (!ready && video.duration && isFinite(video.duration) && video.duration > 0) {
+      onMeta();
+    }
   }
 
   function onScroll() {
+    forceInitOnScroll();
     if (!ready) return;
 
     var scrollY = window.scrollY;
@@ -362,7 +416,7 @@
     targetProgress = scrollable > 0 ? scrolled / scrollable : 0;
     targetT = targetProgress * duration;
 
-    // Direct update for scroll UI components
+    // Direct update for scroll UI progress bar
     if (bar) {
       bar.style.width = (targetProgress * 100).toFixed(2) + '%';
     }
@@ -370,7 +424,7 @@
       hint.style.opacity = targetProgress < 0.025 ? '0.55' : '0';
     }
 
-    // Activate the loop if scroll occurred
+    // Activate rendering loop
     if (!isLoopActive) {
       isLoopActive = true;
       requestAnimationFrame(tick);
@@ -381,13 +435,13 @@
     var diff = targetProgress - currentProgress;
     var timeDiff = targetT - smoothT;
 
-    // Interpolation for luxury inertia feel
+    // Apple-like inertia easing factor
     if (Math.abs(diff) < 0.0001) {
       currentProgress = targetProgress;
       smoothT = targetT;
     } else {
-      currentProgress += diff * 0.18; // Apple-like easing factor
-      smoothT += timeDiff * 0.18;
+      currentProgress += diff * 0.16;
+      smoothT += timeDiff * 0.16;
     }
 
     // Update text transparency and parallax transformation
@@ -398,17 +452,24 @@
       text.style.transform = 'translateY(' + (-tTranslate) + 'px) translateZ(0)';
     }
 
-    // Seek the video using locked queue pattern
+    // Seek the video using a deadlock-resistant queue pattern
     if (!isSeeking) {
       if (Math.abs(video.currentTime - smoothT) >= 0.015) {
         isSeeking = true;
+        seekStartTime = Date.now();
         video.currentTime = smoothT;
       }
     } else {
-      pendingSeek = true;
+      // Deadlock protection: if seek takes longer than 150ms, unlock
+      if (Date.now() - seekStartTime > 150) {
+        isSeeking = false;
+        pendingSeek = true;
+      } else {
+        pendingSeek = true;
+      }
     }
 
-    // If settled, stop the animation frame loop
+    // Stop requestAnimationFrame loop if progress has fully settled
     if (Math.abs(diff) < 0.0001 && !isSeeking) {
       isLoopActive = false;
       return;
@@ -433,8 +494,9 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', initDimensions, { passive: true });
 
-  // Initial activation
+  // Initial activation triggers
   setTimeout(onScroll, 100);
+  setTimeout(onScroll, 500);
 }());
 </script>
 
