@@ -94,64 +94,200 @@
     </div>
 </div>
 
-<!-- ── HERO ─────────────────────────────────────────────────────── -->
-<section class="relative min-h-screen flex items-center pt-20 overflow-hidden" style="background-image: linear-gradient(to right, rgba(7,7,7,0.92), rgba(7,7,7,0.85)), url('https://images.unsplash.com/photo-1617886322168-72b886573c3c?q=80&w=1800&auto=format&fit=crop'); background-size: cover; background-position: center;">
-    <canvas class="shader-canvas absolute inset-0 w-full h-full z-0 opacity-40 pointer-events-none"></canvas>
-    <div class="absolute inset-0 z-0 pointer-events-none" style="background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 30%, rgba(7,7,7,0.85) 100%)"></div>
+<!-- ── HERO VIDEO ───────────────────────────────────────────────── -->
+<section id="hero" class="relative w-full overflow-hidden" style="height:100svh;min-height:600px;">
 
-    <div class="max-w-[1440px] mx-auto px-gutter grid lg:grid-cols-12 gap-10 items-center relative z-10 w-full py-20">
-        <div class="lg:col-span-7 space-y-8">
-            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-secondary-container/25 bg-secondary-container/5 backdrop-blur-sm">
-                <span class="w-1.5 h-1.5 rounded-full bg-secondary-container status-dot"></span>
-                <span class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.2em] font-bold">Workshop Open · Al Quoz Industrial Area 4, Dubai</span>
-            </div>
-            <h1 class="font-display font-extrabold tracking-tight leading-[0.93] text-white" style="font-size: clamp(2.2rem, 7vw, 6.5rem)">
-                PRECISION<br><span class="gradient-text-animated">AUTOMOTIVE</span><br>CARE
-            </h1>
-            <p class="font-body text-on-surface-variant text-base md:text-lg leading-relaxed max-w-lg font-light">
-                Trusted UAE specialists delivering dealer-grade diagnostics, certified OEM replacement components, and master engineering overhauls for premium European and Japanese marques since 2006.
-            </p>
-            <div class="flex flex-wrap gap-4 pt-2">
-                <a href="contact.html" class="btn-secondary-luxury text-white px-9 py-4 rounded-full font-bold text-[10px] uppercase tracking-[0.2em]">Get Free Quote</a>
-            </div>
-            <div class="grid grid-cols-2 md:flex md:gap-10 gap-6 pt-4 border-t border-white/6">
-                <div>
-                    <div class="font-mono text-2xl font-bold text-white tech-digits">20<span class="text-secondary-container">+</span></div>
-                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Years Legacy</div>
-                </div>
-                <div>
-                    <div class="font-mono text-2xl font-bold text-white tech-digits">10k<span class="text-secondary-container">+</span></div>
-                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Vehicles Served</div>
-                </div>
-                <div>
-                    <div class="font-mono text-2xl font-bold text-white tech-digits">100<span class="text-secondary-container">%</span></div>
-                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">OEM Guarantee</div>
-                </div>
-                <div>
-                    <div class="font-mono text-2xl font-bold text-white tech-digits">50<span class="text-secondary-container">+</span></div>
-                    <div class="font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.15em] mt-0.5">Brands Covered</div>
-                </div>
-            </div>
-        </div>
-        <div class="lg:col-span-5 relative h-[480px] hidden lg:block">
-            <div class="threejs-container absolute inset-0 w-full h-full"></div>
-            <div class="absolute bottom-8 left-4 glass-card-premium px-5 py-3 rounded-xl flex items-center gap-3 border border-white/8">
-                <span class="material-symbols-outlined text-secondary-container" style="font-size:20px;font-variation-settings:'FILL' 1">verified</span>
-                <div>
-                    <div class="font-mono text-[9px] text-white font-bold uppercase tracking-wider">Certified Workshop</div>
-                    <div class="font-body text-[9px] text-on-surface-variant">ISO 9001 · TUV · Denso Accredited</div>
-                </div>
-            </div>
-        </div>
+  <!-- VIDEO WRAPPER: full-bleed with blurred extension to fill any black bars -->
+  <div id="hero-video-wrap" class="absolute inset-0 w-full h-full overflow-hidden" style="background:#070707;">
+
+    <!-- Blurred ambient clone (fills letterbox / pillarbox areas) -->
+    <video id="hero-bg-blur"
+      autoplay muted loop playsinline preload="auto"
+      aria-hidden="true"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(28px) brightness(0.35) saturate(1.4);transform:scale(1.08);will-change:transform;pointer-events:none;">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+    </video>
+
+    <!-- Main video: always fully visible, never cropped -->
+    <video id="hero-video"
+      autoplay muted loop playsinline preload="auto"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;will-change:transform;pointer-events:none;transition:opacity 1.2s ease;">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Dark cinematic gradient overlay -->
+  <div class="absolute inset-0 z-10 pointer-events-none"
+    style="background:linear-gradient(
+      to bottom,
+      rgba(7,7,7,0.55) 0%,
+      rgba(7,7,7,0.25) 30%,
+      rgba(7,7,7,0.25) 60%,
+      rgba(7,7,7,0.70) 85%,
+      rgba(7,7,7,1.00) 100%
+    );"></div>
+
+  <!-- Side vignette -->
+  <div class="absolute inset-0 z-10 pointer-events-none"
+    style="background:linear-gradient(to right,rgba(7,7,7,0.55) 0%,transparent 20%,transparent 80%,rgba(7,7,7,0.55) 100%);"></div>
+
+  <!-- ── HERO CONTENT ──────────────────────────────────────────── -->
+  <div id="hero-content" class="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
+    style="will-change:transform;padding-top:80px;">
+
+    <!-- Status pill -->
+    <div class="hero-fade-in inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-8"
+      style="background:rgba(214,4,29,0.08);border:1px solid rgba(214,4,29,0.25);backdrop-filter:blur(12px);animation-delay:0.1s;">
+      <span class="status-dot w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+      <span class="font-mono text-[9px] text-secondary-container uppercase tracking-[0.25em] font-bold">Workshop Open · Al Quoz Industrial Area 4, Dubai</span>
     </div>
 
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 opacity-40">
-        <span class="font-mono text-[8px] tracking-[0.3em] uppercase text-white/50">Scroll to Explore</span>
-        <div class="w-5 h-8 rounded-full border border-white/20 flex justify-center items-start pt-1.5">
-            <div class="w-1 h-1.5 rounded-full bg-secondary-container scroll-indicator-dot"></div>
-        </div>
+    <!-- Main heading -->
+    <h1 class="hero-fade-in font-display font-black text-white leading-[0.92] tracking-tight mb-6"
+      style="font-size:clamp(2.6rem,8vw,7.5rem);text-shadow:0 4px 40px rgba(0,0,0,0.7);animation-delay:0.25s;">
+      Hassan&nbsp;<span class="gradient-text-animated">Moustafa</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="hero-fade-in font-mono text-white/70 uppercase tracking-[0.22em] font-medium mb-4"
+      style="font-size:clamp(0.62rem,1.6vw,0.9rem);letter-spacing:0.22em;animation-delay:0.4s;">
+      Premium Spare Parts &amp; Professional Garage Services
+    </p>
+
+    <!-- Divider line -->
+    <div class="hero-fade-in flex items-center gap-5 mb-6" style="animation-delay:0.5s;">
+      <div style="width:48px;height:1px;background:linear-gradient(to right,transparent,rgba(214,4,29,0.7));"></div>
+      <p class="font-mono text-[10px] text-secondary-container uppercase tracking-[0.3em]">Engineered for Performance · Trusted Across Dubai</p>
+      <div style="width:48px;height:1px;background:linear-gradient(to left,transparent,rgba(214,4,29,0.7));"></div>
     </div>
+
+    <!-- CTA buttons -->
+    <div class="hero-fade-in flex flex-wrap items-center justify-center gap-4 mb-14" style="animation-delay:0.6s;">
+      <a href="contact.html" id="cta-primary"
+        class="group relative overflow-hidden px-10 py-4 rounded-full font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-400"
+        style="background:linear-gradient(135deg,#d6041d,#9a0014);box-shadow:0 0 0 0 rgba(214,4,29,0.4);border:1px solid rgba(214,4,29,0.5);">
+        <span class="relative z-10 flex items-center gap-2">
+          <span class="material-symbols-outlined" style="font-size:15px;font-variation-settings:'FILL' 1">calendar_month</span>
+          Book a Service
+        </span>
+        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+      </a>
+      <a href="services.html" id="cta-secondary"
+        class="group relative overflow-hidden px-10 py-4 rounded-full font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-white transition-all duration-400"
+        style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(12px);">
+        <span class="relative z-10 flex items-center gap-2">
+          Explore Services
+          <span class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1" style="font-size:15px">arrow_forward</span>
+        </span>
+        <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-8 transition-opacity duration-300"></div>
+      </a>
+    </div>
+
+    <!-- Stats row -->
+    <div class="hero-fade-in flex flex-wrap justify-center gap-8 sm:gap-14" style="animation-delay:0.75s;">
+      <div class="text-center">
+        <div class="font-mono text-white font-black leading-none" style="font-size:clamp(1.5rem,3vw,2.2rem);">20<span class="text-secondary-container">+</span></div>
+        <div class="font-mono text-[8px] text-white/40 uppercase tracking-[0.2em] mt-1">Years Legacy</div>
+      </div>
+      <div class="text-center">
+        <div class="font-mono text-white font-black leading-none" style="font-size:clamp(1.5rem,3vw,2.2rem);">10k<span class="text-secondary-container">+</span></div>
+        <div class="font-mono text-[8px] text-white/40 uppercase tracking-[0.2em] mt-1">Vehicles Served</div>
+      </div>
+      <div class="text-center">
+        <div class="font-mono text-white font-black leading-none" style="font-size:clamp(1.5rem,3vw,2.2rem);">100<span class="text-secondary-container">%</span></div>
+        <div class="font-mono text-[8px] text-white/40 uppercase tracking-[0.2em] mt-1">OEM Guarantee</div>
+      </div>
+      <div class="text-center">
+        <div class="font-mono text-white font-black leading-none" style="font-size:clamp(1.5rem,3vw,2.2rem);">50<span class="text-secondary-container">+</span></div>
+        <div class="font-mono text-[8px] text-white/40 uppercase tracking-[0.2em] mt-1">Brands Covered</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-50">
+    <span class="font-mono text-[7px] tracking-[0.35em] uppercase text-white/50">Scroll to Explore</span>
+    <div class="w-5 h-8 rounded-full flex justify-center items-start pt-1.5" style="border:1px solid rgba(255,255,255,0.2);">
+      <div class="w-1 h-1.5 rounded-full bg-secondary-container scroll-indicator-dot"></div>
+    </div>
+  </div>
 </section>
+
+<!-- ── HERO STYLES & SCRIPTS ────────────────────────────────────── -->
+<style>
+  /* Fade-in animation for hero content */
+  .hero-fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: heroFadeUp 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+  @keyframes heroFadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CTA primary hover glow */
+  #cta-primary:hover {
+    box-shadow: 0 0 32px 6px rgba(214,4,29,0.45), 0 8px 24px rgba(0,0,0,0.5);
+    transform: translateY(-2px);
+  }
+  #cta-secondary:hover {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  /* Smooth parallax: content drifts upward as user scrolls */
+  #hero-content {
+    transition: transform 0.05s linear;
+  }
+</style>
+
+<script>
+(function() {
+  // ── Parallax scroll ──────────────────────────────────────────
+  const heroContent = document.getElementById('hero-content');
+  const heroSection = document.getElementById('hero');
+  let ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        const scrollY = window.scrollY;
+        const heroH = heroSection ? heroSection.offsetHeight : window.innerHeight;
+        if (scrollY < heroH) {
+          const progress = scrollY / heroH;
+          if (heroContent) {
+            heroContent.style.transform = 'translateY(' + (scrollY * 0.28) + 'px)';
+            heroContent.style.opacity = Math.max(0, 1 - progress * 2.2);
+          }
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── Video quality fallback for slow connections ──────────────
+  const video = document.getElementById('hero-video');
+  const videoBg = document.getElementById('hero-bg-blur');
+
+  if (video) {
+    video.addEventListener('canplaythrough', function() {
+      video.style.opacity = '1';
+    });
+    // GPU acceleration hint
+    video.style.transform = 'translateZ(0)';
+    if (videoBg) videoBg.style.transform = 'scale(1.08) translateZ(0)';
+  }
+
+  // ── Nav scroll effect (already handled by main.js but ensure hero works) ──
+})();
+</script>
+
+
 
 <!-- ── BRAND MARQUEE ────────────────────────────────────────────── -->
 <section class="py-8 border-y border-outline-variant overflow-hidden bg-surface-container-lowest">
