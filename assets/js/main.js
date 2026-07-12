@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 navbar.classList.remove('scrolled');
             }
         }
-        window.addEventListener('scroll', checkScroll);
+        window.addEventListener('scroll', checkScroll, { passive: true });
         checkScroll(); // Run once on startup to sync initial reload
     }
 
@@ -39,14 +39,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. Magnetic Hover Button Interaction (Fluid 3D Scale & Pull)
     document.querySelectorAll('.magnetic-button').forEach(button => {
+        let rect = null;
+        button.addEventListener('mouseenter', () => {
+            rect = button.getBoundingClientRect();
+        });
         button.addEventListener('mousemove', (e) => {
-            const rect = button.getBoundingClientRect();
+            if (!rect) rect = button.getBoundingClientRect(); // fallback
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
             button.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px) scale(1.025)`;
             button.style.boxShadow = `0 10px 30px rgba(214, 4, 29, 0.15)`;
         });
         button.addEventListener('mouseleave', () => {
+            rect = null;
             button.style.transform = '';
             button.style.boxShadow = '';
         });

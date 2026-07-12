@@ -336,22 +336,28 @@
     }
   }, 3500);
 
+  var cachedContainerTop = 0;
+  var cachedScrollable = 0;
+
   function initDimensions() {
-    if (video.videoWidth === 0) return;
+    if (!container) return;
     
-    // Set actual rendering dimensions
-    canvasMain.width = video.videoWidth;
-    canvasMain.height = video.videoHeight;
-    
-    // Performance optimization: downscale blurred background canvas to save GPU bandwidth/fillrate
-    canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
-    canvasBlur.height = Math.max(32, Math.floor(video.videoHeight / 8));
-    
-    // First render
-    renderFrame();
-    
-    canvasMain.style.opacity = '1';
-    canvasBlur.style.opacity = '1';
+    // Cache dimensions to prevent layout thrashing on scroll
+    cachedContainerTop = container.getBoundingClientRect().top + window.scrollY;
+    cachedScrollable = Math.max(0, container.offsetHeight - window.innerHeight);
+
+    if (video && video.videoWidth > 0) {
+      canvasMain.width = video.videoWidth;
+      canvasMain.height = video.videoHeight;
+      
+      canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
+      canvasBlur.height = Math.max(32, Math.floor(video.videoHeight / 8));
+      
+      renderFrame();
+      
+      canvasMain.style.opacity = '1';
+      canvasBlur.style.opacity = '1';
+    }
   }
 
   function renderFrame() {
@@ -361,9 +367,7 @@
     try {
       ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
       ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
-    } catch (e) {
-      // Handle frame initialization errors silently
-    }
+    } catch (e) {}
   }
 
   function hideLoader() {
@@ -388,7 +392,6 @@
     if (!isFinite(duration) || duration <= 0) return;
     ready = true;
 
-    // Warm up the browser decoder by playing and pausing immediately
     var playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.then(function() {
@@ -410,7 +413,6 @@
     }
   }
 
-  // Preloading progress updates
   video.addEventListener('progress', function() {
     if (video.duration > 0 && video.buffered.length > 0) {
       var buffered = video.buffered.end(video.buffered.length - 1);
@@ -425,15 +427,12 @@
   video.addEventListener('canplay', onMeta);
   video.addEventListener('canplaythrough', onMeta);
   
-  // Backup triggers: if video metadata is already loaded
   if (video.readyState >= 1) {
     onMeta();
   } else {
-    // Explicitly force metadata retrieval
     video.load();
   }
 
-  // Double backup trigger on viewport interaction
   function forceInitOnScroll() {
     if (!ready && video.duration && isFinite(video.duration) && video.duration > 0) {
       onMeta();
@@ -445,14 +444,16 @@
     if (!ready) return;
 
     var scrollY = window.scrollY;
-    var containerTop = container.getBoundingClientRect().top + scrollY;
-    var scrollable = container.offsetHeight - window.innerHeight;
-    var scrolled = Math.max(0, Math.min(scrollY - containerTop, scrollable));
     
-    targetProgress = scrollable > 0 ? scrolled / scrollable : 0;
+    // Fallback if dimensions weren't cached properly
+    if (cachedScrollable === 0) {
+        initDimensions();
+    }
+
+    var scrolled = Math.max(0, Math.min(scrollY - cachedContainerTop, cachedScrollable));
+    targetProgress = cachedScrollable > 0 ? scrolled / cachedScrollable : 0;
     targetT = targetProgress * duration;
 
-    // Direct update for scroll UI progress bar
     if (bar) {
       bar.style.width = (targetProgress * 100).toFixed(2) + '%';
     }
@@ -460,7 +461,6 @@
       hint.style.opacity = targetProgress < 0.025 ? '0.55' : '0';
     }
 
-    // Activate rendering loop
     if (!isLoopActive) {
       isLoopActive = true;
       requestAnimationFrame(tick);
@@ -471,16 +471,14 @@
     var diff = targetProgress - currentProgress;
     var timeDiff = targetT - smoothT;
 
-    // Apple-like inertia easing factor
     if (Math.abs(diff) < 0.0001) {
       currentProgress = targetProgress;
       smoothT = targetT;
     } else {
-      currentProgress += diff * 0.16;
-      smoothT += timeDiff * 0.16;
+      currentProgress += diff * 0.12; // slightly smoother interpolation
+      smoothT += timeDiff * 0.12;
     }
 
-    // Update text transparency and parallax transformation
     if (text) {
       var tOpacity = currentProgress < 0.12 ? 1 : Math.max(0, 1 - (currentProgress - 0.12) / 0.23);
       var tTranslate = currentProgress * 70;
@@ -488,32 +486,20 @@
       text.style.transform = 'translateY(' + (-tTranslate) + 'px) translateZ(0)';
     }
 
-    // Seek the video using a deadlock-resistant queue pattern
+    // Smooth seeking without aborting/deadlocking the browser decoder
     if (!isSeeking) {
-      if (Math.abs(video.currentTime - smoothT) >= 0.015) {
+      if (Math.abs(video.currentTime - smoothT) >= 0.03) { // slightly higher threshold to prevent micro-stutters
         isSeeking = true;
-        seekStartTime = Date.now();
-        // Clamp seek time to protect boundaries
         var safeT = Math.max(0, Math.min(smoothT, duration - 0.02));
         video.currentTime = safeT;
       }
-    } else {
-      // Deadlock protection: if seek takes longer than 150ms, unlock
-      if (Date.now() - seekStartTime > 150) {
-        isSeeking = false;
-        pendingSeek = true;
-      } else {
-        pendingSeek = true;
-      }
     }
 
-    // Render frame if the video time has changed to ensure smooth RAF synchronization
     if (video.currentTime !== lastRenderedTime) {
       renderFrame();
       lastRenderedTime = video.currentTime;
     }
 
-    // Stop requestAnimationFrame loop if progress has fully settled
     if (Math.abs(diff) < 0.0001 && !isSeeking) {
       isLoopActive = false;
       return;
@@ -525,14 +511,6 @@
   video.addEventListener('seeked', function() {
     isSeeking = false;
     renderFrame();
-    
-    if (pendingSeek) {
-      pendingSeek = false;
-      if (!isLoopActive) {
-        isLoopActive = true;
-        requestAnimationFrame(tick);
-      }
-    }
   });
 
   // Tab visibility changes: suspend/resume animations
@@ -884,27 +862,27 @@
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/porsche.png" alt="PORSCHE" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/porsche.png" alt="PORSCHE" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">PORSCHE</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/bmw.png" alt="BMW" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/bmw.png" alt="BMW" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">BMW</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/mercedes-benz.png" alt="MERCEDES" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/mercedes-benz.png" alt="MERCEDES" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MERCEDES</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/audi.png" alt="AUDI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/audi.png" alt="AUDI" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">AUDI</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/volkswagen.png" alt="VOLKSWAGEN" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/volkswagen.png" alt="VOLKSWAGEN" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">VOLKSWAGEN</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/opel.png" alt="OPEL" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/opel.png" alt="OPEL" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">OPEL</span>
                 </div>
             </div>
@@ -919,27 +897,27 @@
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/toyota.png" alt="TOYOTA" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/toyota.png" alt="TOYOTA" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">TOYOTA</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/lexus.png" alt="LEXUS" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/lexus.png" alt="LEXUS" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">LEXUS</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/nissan.png" alt="NISSAN" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/nissan.png" alt="NISSAN" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">NISSAN</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/infiniti.png" alt="INFINITI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/infiniti.png" alt="INFINITI" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">INFINITI</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/honda.png" alt="HONDA" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/honda.png" alt="HONDA" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">HONDA</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/mitsubishi.png" alt="MITSUBISHI" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/mitsubishi.png" alt="MITSUBISHI" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MITSUBISHI</span>
                 </div>
             </div>
@@ -954,27 +932,27 @@
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/ferrari.png" alt="FERRARI" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/ferrari.png" alt="FERRARI" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">FERRARI</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/lamborghini.png" alt="LAMBORGHINI" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/lamborghini.png" alt="LAMBORGHINI" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">LAMBORGHINI</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/bentley.png" alt="BENTLEY" class="h-8 w-auto object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
+                    <img src="assets/images/brands/bentley.png" alt="BENTLEY" class="h-10 w-20 object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">BENTLEY</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/rolls-royce.jpg" alt="ROLLS-ROYCE" class="h-8 w-auto object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
+                    <img src="assets/images/brands/rolls-royce.jpg" alt="ROLLS-ROYCE" class="h-10 w-20 object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">ROLLS-ROYCE</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/maserati.png" alt="MASERATI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/maserati.png" alt="MASERATI" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MASERATI</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/aston-martin.png" alt="ASTON MARTIN" class="h-8 w-auto object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
+                    <img src="assets/images/brands/aston-martin.png" alt="ASTON MARTIN" class="h-10 w-20 object-contain mx-auto mb-2 opacity-85 group-hover:opacity-100 transition-opacity" style="filter: invert(1);">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">ASTON MARTIN</span>
                 </div>
             </div>
@@ -989,15 +967,15 @@
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/land-rover.png" alt="LAND ROVER" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/land-rover.png" alt="LAND ROVER" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">LAND ROVER</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/jaguar.png" alt="JAGUAR" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/jaguar.png" alt="JAGUAR" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">JAGUAR</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/ford.png" alt="FORD" class="h-8 w-auto object-contain mx-auto mb-2">
+                    <img src="assets/images/brands/ford.png" alt="FORD" class="h-10 w-20 object-contain mx-auto mb-2">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">FORD</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
@@ -1005,11 +983,11 @@
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">CADILLAC</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/hyundai.png" alt="HYUNDAI" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/hyundai.png" alt="HYUNDAI" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">HYUNDAI</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/kia.png" alt="KIA" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/kia.png" alt="KIA" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">KIA</span>
                 </div>
             </div>
@@ -1024,31 +1002,31 @@
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/byd.png" alt="BYD" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/byd.svg" alt="BYD" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">BYD</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/jetour.png" alt="JETOUR" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/jetour.svg" alt="JETOUR" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">JETOUR</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/geely.png" alt="GEELY" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/geely.png" alt="GEELY" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">GEELY</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/changan.png" alt="CHANGAN" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/changan.png" alt="CHANGAN" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">CHANGAN</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/mg.png" alt="MG" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/mg.svg" alt="MG" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">MG</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/jac.png" alt="JAC" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/jac.png" alt="JAC" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">JAC</span>
                 </div>
                 <div class="glass-card-premium group p-4 rounded-xl text-center flex flex-col items-center justify-center min-h-[90px] border-secondary-container/15 shadow-[0_0_15px_rgba(214,4,29,0.03)] hover:border-secondary-container/40 transition-all duration-300">
-                    <img src="assets/images/brands/rox.png" alt="ROX" class="h-8 w-auto object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
+                    <img src="assets/images/brands/rox.jpg" alt="ROX" class="h-10 w-20 object-contain mx-auto mb-2 filter brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity">
                     <span class="font-display font-bold text-white text-[10px] block uppercase tracking-wider">ROX</span>
                 </div>
             </div>
