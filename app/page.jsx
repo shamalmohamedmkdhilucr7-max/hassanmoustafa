@@ -42,6 +42,8 @@ function ScrollHero() {
   const barRef      = useRef(null);
   const overlayRef  = useRef(null);
 
+  const durationRef = useRef(0);
+
   // useLenis fires every RAF frame with Lenis's already-interpolated scroll value.
   // We write ONLY to CSS transform/opacity — GPU-composited, zero lag.
   useLenis((lenis) => {
@@ -50,11 +52,17 @@ function ScrollHero() {
     const scrollable = Math.max(1, containerRef.current.offsetHeight - window.innerHeight);
     const p          = Math.max(0, Math.min(-rect.top / scrollable, 1));
 
-    // Video: subtle parallax zoom — GPU layer, no decode cost
+    // Video: scrub time
     const video = videoRef.current;
-    if (video) {
-      const scale = 1 + p * 0.18;
-      video.style.transform = `scale(${scale}) translateY(${p * 30}px) translateZ(0)`;
+    if (video && durationRef.current > 0) {
+      const targetTime = Math.max(0, Math.min(p * durationRef.current, durationRef.current - 0.01));
+      if (Math.abs(video.currentTime - targetTime) > 0.03) {
+        if (typeof video.fastSeek === 'function') {
+           video.fastSeek(targetTime);
+        } else {
+           video.currentTime = targetTime;
+        }
+      }
     }
 
     // Scroll-driven darkening overlay
@@ -78,14 +86,29 @@ function ScrollHero() {
     if (hint) hint.style.opacity = p < 0.02 ? '0.55' : '0';
   });
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onMeta = () => {
+      if (video.duration && isFinite(video.duration)) {
+        durationRef.current = video.duration;
+      }
+    };
+    
+    video.addEventListener('loadedmetadata', onMeta);
+    if (video.readyState >= 1) onMeta();
+    return () => video.removeEventListener('loadedmetadata', onMeta);
+  }, []);
+
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
       <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#070707' }}>
 
-        {/* Video plays on loop — no seeking = zero lag */}
+        {/* Video scrubbed via scroll */}
         <video
           ref={videoRef}
-          muted playsInline autoPlay loop
+          muted playsInline preload="auto"
           src="/assets/video/hero.mp4"
           style={{
             position: 'absolute', inset: 0,
