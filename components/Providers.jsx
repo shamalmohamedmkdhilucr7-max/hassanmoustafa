@@ -1,7 +1,7 @@
 'use client';
 import { ModalProvider } from '@/context/ModalContext';
 import { ToastProvider } from '@/context/ToastContext';
-import { ReactLenis } from '@studio-freight/react-lenis';
+import { ReactLenis } from 'lenis/react';
 
 export default function Providers({ children }) {
   return (

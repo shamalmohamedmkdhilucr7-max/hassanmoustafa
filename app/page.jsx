@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useModal } from '@/context/ModalContext';
 import { RevealSection } from '@/hooks/useReveal';
-import { useLenis } from '@studio-freight/react-lenis';
+import { useLenis } from 'lenis/react';
 const brands = ['PORSCHE','MERCEDES-BENZ','BMW','AUDI','LEXUS','TOYOTA','NISSAN','FERRARI','LAND ROVER','JAGUAR','MASERATI'];
 
 const whyUs = [
