@@ -47,43 +47,107 @@ function ScrollHero() {
   const loaderBarRef = useRef(null);
 
   const [ready, setReady] = useState(false);
-  const [duration, setDuration] = useState(0);
 
-  // Lenis hook fires every frame, perfect for scrubbing
+  // Two-stage interpolation refs — never cause re-renders
+  const targetProgressRef = useRef(0);
+  const smoothProgressRef = useRef(0);
+  const durationRef = useRef(0);
+  const rafRef = useRef(null);
+
+  // Stage 1: useLenis reads the Lenis smooth scroll position each frame
   useLenis((lenis) => {
-    if (!ready || !containerRef.current) return;
+    if (!containerRef.current) return;
     const container = containerRef.current;
-    const video = videoRef.current;
-    const canvasMain = canvasMainRef.current;
-    const canvasBlur = canvasBlurRef.current;
-    const text = textRef.current;
-    const hint = hintRef.current;
-    const bar = barRef.current;
-
-    const containerTop = container.getBoundingClientRect().top + window.scrollY;
     const scrollable = Math.max(0, container.offsetHeight - window.innerHeight);
     if (scrollable <= 0) return;
-
-    // Use Lenis scroll position instead of window.scrollY
-    const scrolled = Math.max(0, Math.min(lenis.scroll - containerTop, scrollable));
-    const targetProgress = scrolled / scrollable;
-    const targetT = targetProgress * duration;
-
-    // Direct UI updates based on smooth scroll
-    if (bar) bar.style.width = (targetProgress * 100).toFixed(2) + '%';
-    if (hint) hint.style.opacity = targetProgress < 0.025 ? '0.55' : '0';
-
-    if (text) {
-      const tOp = targetProgress < 0.12 ? 1 : Math.max(0, 1 - (targetProgress - 0.12) / 0.23);
-      text.style.opacity = tOp;
-      text.style.transform = `translateY(${-(targetProgress * 70)}px) translateZ(0)`;
-    }
-
-    if (video && Math.abs(video.currentTime - targetT) >= 0.03) {
-      video.currentTime = Math.max(0, Math.min(targetT, duration - 0.02));
-    }
+    const containerTop = container.getBoundingClientRect().top + lenis.scroll;
+    const scrolled = Math.max(0, Math.min(lenis.scroll - containerTop + lenis.scroll, scrollable));
+    // Simpler: use offsetTop which is stable
+    const rect = container.getBoundingClientRect();
+    const scrolledSimple = Math.max(0, Math.min(-rect.top, scrollable));
+    targetProgressRef.current = scrolledSimple / scrollable;
   });
 
+  // Stage 2: Dedicated RAF — applies a second lerp pass over the Lenis value
+  // This decouples video seek speed from page scroll speed, removing any jank
+  useEffect(() => {
+    if (!ready) return;
+    let alive = true;
+    let renderPending = false;
+
+    const canvasMain = canvasMainRef.current;
+    const canvasBlur = canvasBlurRef.current;
+    const video = videoRef.current;
+    if (!canvasMain || !canvasBlur || !video) return;
+
+    const ctxMain = canvasMain.getContext('2d');
+    const ctxBlur = canvasBlur.getContext('2d');
+
+    function drawFrame() {
+      if (!renderPending) {
+        renderPending = true;
+        requestAnimationFrame(() => {
+          try {
+            if (canvasMain.width > 0 && video.readyState >= 2) {
+              ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
+              ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
+            }
+          } catch (e) {}
+          renderPending = false;
+        });
+      }
+    }
+
+    video.addEventListener('seeked', drawFrame);
+    video.addEventListener('timeupdate', drawFrame);
+
+    function tick() {
+      if (!alive) return;
+
+      // Exponential ease-out lerp — feather smooth, cinematic deceleration
+      const diff = targetProgressRef.current - smoothProgressRef.current;
+      smoothProgressRef.current += diff * 0.07;
+      const p = smoothProgressRef.current;
+      const dur = durationRef.current;
+
+      const text = textRef.current;
+      const hint = hintRef.current;
+      const bar = barRef.current;
+
+      // Progress bar
+      if (bar) bar.style.width = (p * 100).toFixed(2) + '%';
+
+      // Scroll hint
+      if (hint) hint.style.opacity = p < 0.02 ? '0.55' : '0';
+
+      // Hero text — parallax + fade
+      if (text) {
+        const opacity = p < 0.12 ? 1 : Math.max(0, 1 - (p - 0.12) / 0.22);
+        text.style.opacity = opacity;
+        text.style.transform = `translateY(${-(p * 80)}px) translateZ(0)`;
+      }
+
+      // Video scrub — only seek when change is meaningful (>1 frame at 60fps)
+      if (video && dur > 0) {
+        const targetT = Math.max(0, Math.min(p * dur, dur - 0.016));
+        if (Math.abs(video.currentTime - targetT) >= 0.016) {
+          video.currentTime = targetT;
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      alive = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      video.removeEventListener('seeked', drawFrame);
+      video.removeEventListener('timeupdate', drawFrame);
+    };
+  }, [ready]);
+
+  // Video loading & metadata
   useEffect(() => {
     const container = containerRef.current;
     const video = videoRef.current;
@@ -96,15 +160,11 @@ function ScrollHero() {
 
     const ctxMain = canvasMain.getContext('2d');
     const ctxBlur = canvasBlur.getContext('2d');
-    
     let loaderTimeout;
-    let renderRequested = false;
 
     loaderTimeout = setTimeout(() => {
-      if (!ready) {
-        if (video.duration && isFinite(video.duration) && video.duration > 0) onMeta();
-        else { hideLoader(); canvasMain.style.opacity = '1'; canvasBlur.style.opacity = '1'; }
-      }
+      if (video.duration && isFinite(video.duration) && video.duration > 0) onMeta();
+      else { hideLoader(); canvasMain.style.opacity = '1'; canvasBlur.style.opacity = '1'; }
     }, 3500);
 
     function initDimensions() {
@@ -112,59 +172,42 @@ function ScrollHero() {
         canvasMain.width = video.videoWidth; canvasMain.height = video.videoHeight;
         canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
         canvasBlur.height = Math.max(32, Math.floor(video.videoHeight / 8));
-        renderFrame();
+        try {
+          if (video.readyState >= 2) {
+            ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
+            ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
+          }
+        } catch (e) {}
         canvasMain.style.opacity = '1'; canvasBlur.style.opacity = '1';
-      }
-    }
-
-    function renderFrame() {
-      if (!renderRequested) {
-        renderRequested = true;
-        requestAnimationFrame(() => {
-          try { 
-            if(canvasMain.width > 0 && video.readyState >= 2) {
-              ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height); 
-              ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height); 
-            }
-          } catch(e) {}
-          renderRequested = false;
-        });
       }
     }
 
     function hideLoader() {
       clearTimeout(loaderTimeout);
-      if (loader) { 
-        if (loaderBar) loaderBar.style.width = '100%'; 
-        setTimeout(() => { 
-          loader.style.opacity = '0'; 
-          setTimeout(() => { loader.style.display = 'none'; }, 600); 
-        }, 300); 
+      if (loader) {
+        if (loaderBar) loaderBar.style.width = '100%';
+        setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; }, 600); }, 300);
       }
     }
 
     function onMeta() {
       const dur = video.duration;
       if (!isFinite(dur) || dur <= 0) return;
-      setDuration(dur);
-      setReady(true);
+      durationRef.current = dur;
       const p = video.play();
-      const after = () => { video.pause(); initDimensions(); hideLoader(); };
+      const after = () => { video.pause(); initDimensions(); hideLoader(); setReady(true); };
       if (p) p.then(after).catch(after); else after();
     }
 
-    video.addEventListener('seeked', () => { renderFrame(); });
-    video.addEventListener('timeupdate', () => { renderFrame(); });
     video.addEventListener('loadedmetadata', onMeta);
     video.addEventListener('canplay', onMeta);
-    
     video.addEventListener('progress', () => {
       if (video.duration > 0 && video.buffered.length > 0) {
         const pct = Math.floor((video.buffered.end(video.buffered.length - 1) / video.duration) * 100);
         if (loaderBar) loaderBar.style.width = Math.min(95, pct) + '%';
       }
     });
-    
+
     if (video.readyState >= 1) onMeta(); else video.load();
     window.addEventListener('resize', initDimensions, { passive: true });
 
@@ -172,7 +215,7 @@ function ScrollHero() {
       clearTimeout(loaderTimeout);
       window.removeEventListener('resize', initDimensions);
     };
-  }, [ready]);
+  }, []);
 
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
