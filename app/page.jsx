@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useModal } from '@/context/ModalContext';
 import { RevealSection } from '@/hooks/useReveal';
-
+import { useLenis } from '@studio-freight/react-lenis';
 const brands = ['PORSCHE','MERCEDES-BENZ','BMW','AUDI','LEXUS','TOYOTA','NISSAN','FERRARI','LAND ROVER','JAGUAR','MASERATI'];
 
 const whyUs = [
@@ -46,7 +46,12 @@ function ScrollHero() {
   const loaderRef = useRef(null);
   const loaderBarRef = useRef(null);
 
-  useEffect(() => {
+  const [ready, setReady] = useState(false);
+  const [duration, setDuration] = useState(0);
+
+  // Lenis hook fires every frame, perfect for scrubbing
+  useLenis((lenis) => {
+    if (!ready || !containerRef.current) return;
     const container = containerRef.current;
     const video = videoRef.current;
     const canvasMain = canvasMainRef.current;
@@ -54,6 +59,36 @@ function ScrollHero() {
     const text = textRef.current;
     const hint = hintRef.current;
     const bar = barRef.current;
+
+    const containerTop = container.getBoundingClientRect().top + window.scrollY;
+    const scrollable = Math.max(0, container.offsetHeight - window.innerHeight);
+    if (scrollable <= 0) return;
+
+    // Use Lenis scroll position instead of window.scrollY
+    const scrolled = Math.max(0, Math.min(lenis.scroll - containerTop, scrollable));
+    const targetProgress = scrolled / scrollable;
+    const targetT = targetProgress * duration;
+
+    // Direct UI updates based on smooth scroll
+    if (bar) bar.style.width = (targetProgress * 100).toFixed(2) + '%';
+    if (hint) hint.style.opacity = targetProgress < 0.025 ? '0.55' : '0';
+
+    if (text) {
+      const tOp = targetProgress < 0.12 ? 1 : Math.max(0, 1 - (targetProgress - 0.12) / 0.23);
+      text.style.opacity = tOp;
+      text.style.transform = `translateY(${-(targetProgress * 70)}px) translateZ(0)`;
+    }
+
+    if (video && Math.abs(video.currentTime - targetT) >= 0.03) {
+      video.currentTime = Math.max(0, Math.min(targetT, duration - 0.02));
+    }
+  });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const video = videoRef.current;
+    const canvasMain = canvasMainRef.current;
+    const canvasBlur = canvasBlurRef.current;
     const loader = loaderRef.current;
     const loaderBar = loaderBarRef.current;
 
@@ -61,12 +96,11 @@ function ScrollHero() {
 
     const ctxMain = canvasMain.getContext('2d');
     const ctxBlur = canvasBlur.getContext('2d');
-    let duration = 0, ready = false, isSeeking = false;
-    let targetProgress = 0, currentProgress = 0, targetT = 0, smoothT = 0;
-    let isLoopActive = false, lastRenderedTime = -1;
-    let cachedContainerTop = 0, cachedScrollable = 0;
+    
+    let loaderTimeout;
+    let renderRequested = false;
 
-    const loaderTimeout = setTimeout(() => {
+    loaderTimeout = setTimeout(() => {
       if (!ready) {
         if (video.duration && isFinite(video.duration) && video.duration > 0) onMeta();
         else { hideLoader(); canvasMain.style.opacity = '1'; canvasBlur.style.opacity = '1'; }
@@ -74,8 +108,6 @@ function ScrollHero() {
     }, 3500);
 
     function initDimensions() {
-      cachedContainerTop = container.getBoundingClientRect().top + window.scrollY;
-      cachedScrollable = Math.max(0, container.offsetHeight - window.innerHeight);
       if (video.videoWidth > 0) {
         canvasMain.width = video.videoWidth; canvasMain.height = video.videoHeight;
         canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
@@ -86,75 +118,61 @@ function ScrollHero() {
     }
 
     function renderFrame() {
-      try { ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height); ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height); } catch(e) {}
+      if (!renderRequested) {
+        renderRequested = true;
+        requestAnimationFrame(() => {
+          try { 
+            if(canvasMain.width > 0 && video.readyState >= 2) {
+              ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height); 
+              ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height); 
+            }
+          } catch(e) {}
+          renderRequested = false;
+        });
+      }
     }
 
     function hideLoader() {
       clearTimeout(loaderTimeout);
-      if (loader) { if (loaderBar) loaderBar.style.width = '100%'; setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; }, 600); }, 300); }
+      if (loader) { 
+        if (loaderBar) loaderBar.style.width = '100%'; 
+        setTimeout(() => { 
+          loader.style.opacity = '0'; 
+          setTimeout(() => { loader.style.display = 'none'; }, 600); 
+        }, 300); 
+      }
     }
 
     function onMeta() {
-      if (ready) return;
-      duration = video.duration;
-      if (!isFinite(duration) || duration <= 0) return;
-      ready = true;
+      const dur = video.duration;
+      if (!isFinite(dur) || dur <= 0) return;
+      setDuration(dur);
+      setReady(true);
       const p = video.play();
-      const after = () => { video.pause(); initDimensions(); hideLoader(); onScroll(); };
+      const after = () => { video.pause(); initDimensions(); hideLoader(); };
       if (p) p.then(after).catch(after); else after();
     }
 
-    function onScroll() {
-      if (!ready) return;
-      if (cachedScrollable === 0) initDimensions();
-      const scrolled = Math.max(0, Math.min(window.scrollY - cachedContainerTop, cachedScrollable));
-      targetProgress = cachedScrollable > 0 ? scrolled / cachedScrollable : 0;
-      targetT = targetProgress * duration;
-      if (bar) bar.style.width = (targetProgress * 100).toFixed(2) + '%';
-      if (hint) hint.style.opacity = targetProgress < 0.025 ? '0.55' : '0';
-      if (!isLoopActive) { isLoopActive = true; requestAnimationFrame(tick); }
-    }
-
-    function tick() {
-      const diff = targetProgress - currentProgress;
-      const timeDiff = targetT - smoothT;
-      if (Math.abs(diff) < 0.0001) { currentProgress = targetProgress; smoothT = targetT; }
-      else { currentProgress += diff * 0.12; smoothT += timeDiff * 0.12; }
-      if (text) {
-        const tOp = currentProgress < 0.12 ? 1 : Math.max(0, 1 - (currentProgress - 0.12) / 0.23);
-        text.style.opacity = tOp;
-        text.style.transform = `translateY(${-(currentProgress * 70)}px) translateZ(0)`;
-      }
-      if (!isSeeking && Math.abs(video.currentTime - smoothT) >= 0.03) {
-        isSeeking = true;
-        video.currentTime = Math.max(0, Math.min(smoothT, duration - 0.02));
-      }
-      if (video.currentTime !== lastRenderedTime) { renderFrame(); lastRenderedTime = video.currentTime; }
-      if (Math.abs(diff) < 0.0001 && !isSeeking) { isLoopActive = false; return; }
-      requestAnimationFrame(tick);
-    }
-
-    video.addEventListener('seeked', () => { isSeeking = false; renderFrame(); });
+    video.addEventListener('seeked', () => { renderFrame(); });
+    video.addEventListener('timeupdate', () => { renderFrame(); });
     video.addEventListener('loadedmetadata', onMeta);
     video.addEventListener('canplay', onMeta);
+    
     video.addEventListener('progress', () => {
       if (video.duration > 0 && video.buffered.length > 0) {
         const pct = Math.floor((video.buffered.end(video.buffered.length - 1) / video.duration) * 100);
         if (loaderBar) loaderBar.style.width = Math.min(95, pct) + '%';
       }
     });
+    
     if (video.readyState >= 1) onMeta(); else video.load();
-
-    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', initDimensions, { passive: true });
-    setTimeout(onScroll, 100); setTimeout(onScroll, 500);
 
     return () => {
       clearTimeout(loaderTimeout);
-      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', initDimensions);
     };
-  }, []);
+  }, [ready]);
 
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
