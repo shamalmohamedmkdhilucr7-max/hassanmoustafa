@@ -348,3 +348,26 @@ body {
     border-color: rgba(214, 4, 29, 0.4);
     color: rgba(255,255,255,0.7);
 }
+
+/* ─── PERFORMANCE & ACCESSIBILITY OPTIMIZATIONS ─────────────── */
+.ease-luxury {
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.overscroll-contain-y {
+    overscroll-behavior-y: contain;
+}
+
+.touch-target-safe {
+    min-width: 48px;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Enforce hardware acceleration */
+.will-change-transform-opacity {
+    will-change: transform, opacity;
+}
+

@@ -20,7 +20,7 @@
 <!-- NAV -->
 <nav class="fixed top-0 w-full z-40 nav-glass">
     <div class="flex justify-between items-center px-gutter py-4 max-w-[1440px] mx-auto">
-        <a href="index.html" class="flex items-center gap-3 shrink-0"><img alt="Hassan Moustafa" class="h-16 md:h-20 w-auto object-contain rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"></a>
+        <a href="index.html" class="flex items-center gap-3 shrink-0"><img alt="Hassan Moustafa" class="h-14 md:h-20 w-auto object-contain rounded-xl shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg" width="80" height="80"></a>
         <div class="hidden lg:flex items-center gap-9">
             <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="index.html">Home</a>
             <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="about.html">About</a>
@@ -29,20 +29,37 @@
             <a class="text-on-surface-variant hover:text-white text-xs tracking-[0.15em] uppercase font-semibold transition-colors duration-300 font-mono" href="contact.html">Contact</a>
         </div>
         <div class="flex items-center gap-4">
-            <button id="mobile-menu-btn" class="lg:hidden text-on-surface-variant hover:text-white transition-colors p-1"><span class="material-symbols-outlined" style="font-size:26px">menu</span></button>
+            <button id="mobile-menu-btn" class="lg:hidden touch-target-safe text-on-surface-variant hover:text-white transition-colors" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu"><span class="material-symbols-outlined" style="font-size:26px" aria-hidden="true">menu</span></button>
         </div>
     </div>
 </nav>
-<div id="mobile-menu" class="fixed inset-y-0 right-0 z-50 w-80 bg-surface-container border-l border-white/8 p-8 flex flex-col justify-between transform translate-x-full transition-transform duration-500 ease-in-out shadow-2xl">
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu-overlay" class="fixed inset-0 z-40 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"></div>
+
+<!-- Glassmorphic Mobile Drawer -->
+<div id="mobile-menu"
+     class="fixed inset-y-0 right-0 z-50 w-[min(320px,90vw)] flex flex-col justify-between
+            border-l border-white/8 p-8 shadow-2xl overscroll-contain-y
+            transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]
+            will-change-transform"
+     style="background:rgba(12,12,14,0.88);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);"
+     aria-label="Mobile navigation" role="dialog" aria-modal="true">
     <div>
-        <div class="flex justify-between items-center mb-12"><img alt="Logo" class="h-14 w-auto rounded-lg shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg"><button id="mobile-menu-close" class="text-on-surface-variant hover:text-white p-1"><span class="material-symbols-outlined" style="font-size:24px">close</span></button></div>
-        <div class="flex flex-col gap-7">
-            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="index.html">Home</a>
-            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="about.html">About</a>
-            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="services.html">Services</a>
-            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="spare-parts.html">Spare Parts</a>
-            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors" href="contact.html">Contact</a>
+        <div class="flex justify-between items-center mb-12">
+            <img alt="Logo" class="h-12 w-auto rounded-lg shadow-lg border border-white/10" src="assets/images/logo-3d.jpeg" width="48" height="48">
+            <button id="mobile-menu-close" class="touch-target-safe text-on-surface-variant hover:text-white transition-colors" aria-label="Close navigation menu"><span class="material-symbols-outlined" style="font-size:24px" aria-hidden="true">close</span></button>
         </div>
+        <nav class="flex flex-col gap-6">
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors duration-300 py-1" href="index.html">Home</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors duration-300 py-1" href="about.html">About</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors duration-300 py-1" href="services.html">Services</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors duration-300 py-1" href="spare-parts.html">Spare Parts</a>
+            <a class="text-2xl font-bold font-display hover:text-secondary-container transition-colors duration-300 py-1" href="contact.html">Contact</a>
+        </nav>
+    </div>
+    <div class="pt-8 border-t border-white/8">
+        <a href="contact.html" class="block w-full text-center btn-primary-luxury py-3.5 rounded-xl text-[10px] uppercase tracking-[0.2em] font-bold">Book Appointment</a>
     </div>
 </div>
 
@@ -62,7 +79,7 @@
 
         <!-- Engine Overhaul -->
         <div class="grid md:grid-cols-2 gap-14 items-center mb-24 reveal-item">
-            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap"><img alt="Engine block overhaul and cylinder head rebuild" class="w-full h-full object-cover" src="assets/images/service_engine.png"></div>
+            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 card-img-wrap"><img alt="Engine block overhaul and cylinder head rebuild" class="w-full h-full object-cover" src="assets/images/service_engine.png" loading="lazy" decoding="async"></div>
             <div class="space-y-5">
                 <div class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-container" style="font-size:24px;font-variation-settings:'FILL' 1">build</span><h2 class="font-display font-extrabold text-white text-2xl uppercase tracking-wider">Engine Overhaul</h2></div>
                 <p class="text-on-surface-variant text-sm font-light leading-7">Your engine is the mechanical heart of your vehicle — and it demands the highest level of engineering precision. At Hassan Moustafa, our master technicians deliver comprehensive engine rebuilds that restore factory-level compression, timing, and power output.</p>
