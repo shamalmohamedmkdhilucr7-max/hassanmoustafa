@@ -46,106 +46,47 @@ function ScrollHero() {
   const loaderRef = useRef(null);
   const loaderBarRef = useRef(null);
 
-  const [ready, setReady] = useState(false);
+  const readyRef = useRef(false);
 
-  // Two-stage interpolation refs — never cause re-renders
-  const targetProgressRef = useRef(0);
-  const smoothProgressRef = useRef(0);
-  const durationRef = useRef(0);
-  const rafRef = useRef(null);
-
-  // Stage 1: useLenis reads the Lenis smooth scroll position each frame
+  // useLenis fires every animation frame with Lenis's already-smooth scroll value.
+  // We drive video.currentTime directly from it — no extra lerp = no lag.
   useLenis((lenis) => {
-    if (!containerRef.current) return;
+    if (!readyRef.current || !containerRef.current) return;
     const container = containerRef.current;
+    const rect = container.getBoundingClientRect();
     const scrollable = Math.max(0, container.offsetHeight - window.innerHeight);
     if (scrollable <= 0) return;
-    const containerTop = container.getBoundingClientRect().top + lenis.scroll;
-    const scrolled = Math.max(0, Math.min(lenis.scroll - containerTop + lenis.scroll, scrollable));
-    // Simpler: use offsetTop which is stable
-    const rect = container.getBoundingClientRect();
-    const scrolledSimple = Math.max(0, Math.min(-rect.top, scrollable));
-    targetProgressRef.current = scrolledSimple / scrollable;
-  });
 
-  // Stage 2: Dedicated RAF — applies a second lerp pass over the Lenis value
-  // This decouples video seek speed from page scroll speed, removing any jank
-  useEffect(() => {
-    if (!ready) return;
-    let alive = true;
-    let renderPending = false;
+    // progress: 0 at top of hero, 1 at bottom
+    const progress = Math.max(0, Math.min(-rect.top / scrollable, 1));
 
-    const canvasMain = canvasMainRef.current;
-    const canvasBlur = canvasBlurRef.current;
     const video = videoRef.current;
-    if (!canvasMain || !canvasBlur || !video) return;
+    const text = textRef.current;
+    const hint = hintRef.current;
+    const bar = barRef.current;
+    const dur = durationRef.current;
 
-    const ctxMain = canvasMain.getContext('2d');
-    const ctxBlur = canvasBlur.getContext('2d');
+    // Progress bar
+    if (bar) bar.style.width = (progress * 100).toFixed(2) + '%';
 
-    function drawFrame() {
-      if (!renderPending) {
-        renderPending = true;
-        requestAnimationFrame(() => {
-          try {
-            if (canvasMain.width > 0 && video.readyState >= 2) {
-              ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
-              ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
-            }
-          } catch (e) {}
-          renderPending = false;
-        });
-      }
+    // Scroll hint
+    if (hint) hint.style.opacity = progress < 0.02 ? '0.55' : '0';
+
+    // Hero text parallax + fade
+    if (text) {
+      const opacity = progress < 0.12 ? 1 : Math.max(0, 1 - (progress - 0.12) / 0.22);
+      text.style.opacity = opacity;
+      text.style.transform = `translateY(${-(progress * 80)}px) translateZ(0)`;
     }
 
-    video.addEventListener('seeked', drawFrame);
-    video.addEventListener('timeupdate', drawFrame);
-
-    function tick() {
-      if (!alive) return;
-
-      // Exponential ease-out lerp — feather smooth, cinematic deceleration
-      const diff = targetProgressRef.current - smoothProgressRef.current;
-      smoothProgressRef.current += diff * 0.07;
-      const p = smoothProgressRef.current;
-      const dur = durationRef.current;
-
-      const text = textRef.current;
-      const hint = hintRef.current;
-      const bar = barRef.current;
-
-      // Progress bar
-      if (bar) bar.style.width = (p * 100).toFixed(2) + '%';
-
-      // Scroll hint
-      if (hint) hint.style.opacity = p < 0.02 ? '0.55' : '0';
-
-      // Hero text — parallax + fade
-      if (text) {
-        const opacity = p < 0.12 ? 1 : Math.max(0, 1 - (p - 0.12) / 0.22);
-        text.style.opacity = opacity;
-        text.style.transform = `translateY(${-(p * 80)}px) translateZ(0)`;
+    // Video scrub — Lenis value is already smooth, set directly
+    if (video && dur > 0) {
+      const t = Math.max(0, Math.min(progress * dur, dur - 0.016));
+      if (Math.abs(video.currentTime - t) >= 0.016) {
+        video.currentTime = t;
       }
-
-      // Video scrub — only seek when change is meaningful (>1 frame at 60fps)
-      if (video && dur > 0) {
-        const targetT = Math.max(0, Math.min(p * dur, dur - 0.016));
-        if (Math.abs(video.currentTime - targetT) >= 0.016) {
-          video.currentTime = targetT;
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(tick);
     }
-
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      alive = false;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      video.removeEventListener('seeked', drawFrame);
-      video.removeEventListener('timeupdate', drawFrame);
-    };
-  }, [ready]);
+  });
 
   // Video loading & metadata
   useEffect(() => {
@@ -195,7 +136,7 @@ function ScrollHero() {
       if (!isFinite(dur) || dur <= 0) return;
       durationRef.current = dur;
       const p = video.play();
-      const after = () => { video.pause(); initDimensions(); hideLoader(); setReady(true); };
+      const after = () => { video.pause(); initDimensions(); hideLoader(); readyRef.current = true; };
       if (p) p.then(after).catch(after); else after();
     }
 
@@ -208,12 +149,26 @@ function ScrollHero() {
       }
     });
 
+    // Redraw canvas whenever the video seeks to a new frame
+    function drawCanvas() {
+      try {
+        if (canvasMain.width > 0 && video.readyState >= 2) {
+          ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
+          ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
+        }
+      } catch (e) {}
+    }
+    video.addEventListener('seeked', drawCanvas);
+    video.addEventListener('timeupdate', drawCanvas);
+
     if (video.readyState >= 1) onMeta(); else video.load();
     window.addEventListener('resize', initDimensions, { passive: true });
 
     return () => {
       clearTimeout(loaderTimeout);
       window.removeEventListener('resize', initDimensions);
+      video.removeEventListener('seeked', drawCanvas);
+      video.removeEventListener('timeupdate', drawCanvas);
     };
   }, []);
 
