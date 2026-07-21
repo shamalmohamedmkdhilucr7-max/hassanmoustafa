@@ -55,7 +55,8 @@ function ScrollHero() {
 
     // Wait for video metadata to know duration
     const initGSAP = () => {
-      const dur = video.duration || 1;
+      // Safely get duration to prevent JS crash (which would freeze Lenis)
+      const dur = (video.duration && isFinite(video.duration) && video.duration > 0) ? video.duration : 1;
       
       // Video scrubbing timeline
       const tl = gsap.timeline({
@@ -64,12 +65,14 @@ function ScrollHero() {
           start: "top top",
           end: "bottom bottom",
           scrub: 0.5, // 0.5s smoothing for buttery feel
+          pin: stickyRef.current, // Use GSAP native pin instead of CSS sticky
+          anticipatePin: 1
         }
       });
 
       // 1. Scrub video time
       tl.to(video, {
-        currentTime: dur - 0.01, // Don't go all the way to exact end
+        currentTime: dur - 0.05, // Safe margin from end
         ease: "none",
         duration: 1
       }, 0);
@@ -114,10 +117,11 @@ function ScrollHero() {
 
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
-      <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#070707' }}>
+      <div ref={stickyRef} style={{ width: '100%', height: '100vh', overflow: 'hidden', background: '#070707' }}>
 
         {/* Video scrubbed via GSAP */}
         <video
+
           ref={videoRef}
           muted playsInline preload="auto"
           src="/assets/video/hero.mp4"
