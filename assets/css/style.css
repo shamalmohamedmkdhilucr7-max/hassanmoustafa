@@ -255,45 +255,84 @@ body {
 .animate-logo-scroll:hover { animation-play-state: paused; }
 
 /* ─── LUXURY FORM INPUTS ────────────────────────────────────── */
-.luxury-input {
-    background: rgba(20, 20, 24, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    transition:
-        border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-        background-color 0.35s;
-    appearance: none;
-    -webkit-appearance: none;
-}
-.luxury-input:focus {
-    border-color: rgba(214, 4, 29, 0.5);
-    box-shadow: 
-        0 0 0 3px rgba(214, 4, 29, 0.08),
-        inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    background-color: rgba(20, 20, 24, 0.75);
-    outline: none;
-}
-.luxury-input::placeholder { color: rgba(154, 154, 159, 0.5); }
-.luxury-input option {
-    background: #0c0c0e;
-    color: var(--text-primary);
+.luxury-input,
+input.luxury-input,
+select.luxury-input,
+textarea.luxury-input,
+[type='text'].luxury-input,
+[type='email'].luxury-input,
+[type='tel'].luxury-input,
+[type='date'].luxury-input,
+[type='time'].luxury-input {
+    background-color: #121216 !important;
+    background: #121216 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    font-family: 'Inter', sans-serif !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
 }
 
+.luxury-input:focus,
+input.luxury-input:focus,
+select.luxury-input:focus,
+textarea.luxury-input:focus,
+[type='text'].luxury-input:focus,
+[type='email'].luxury-input:focus,
+[type='tel'].luxury-input:focus,
+[type='date'].luxury-input:focus,
+[type='time'].luxury-input:focus {
+    border-color: rgba(214, 4, 29, 0.6) !important;
+    box-shadow: 0 0 0 3px rgba(214, 4, 29, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+    background-color: #18181e !important;
+    background: #18181e !important;
+    color: #ffffff !important;
+    outline: none !important;
+}
+
+.luxury-input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.luxury-input option {
+    background-color: #0c0c0e !important;
+    color: #ffffff !important;
+}
+
+/* Fix browser autofill dark theme */
 .luxury-input:-webkit-autofill,
 .luxury-input:-webkit-autofill:hover, 
 .luxury-input:-webkit-autofill:focus, 
 .luxury-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #141418 inset !important;
-    -webkit-text-fill-color: var(--text-primary) !important;
+    -webkit-box-shadow: 0 0 0 1000px #121216 inset !important;
+    box-shadow: 0 0 0 1000px #121216 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Fix date/time picker background overriding on some browsers */
+/* Fix Date & Time Picker text color & icons across WebKit browsers */
+.luxury-input::-webkit-datetime-edit,
+.luxury-input::-webkit-datetime-edit-fields-wrapper,
+.luxury-input::-webkit-datetime-edit-text,
+.luxury-input::-webkit-datetime-edit-month-field,
+.luxury-input::-webkit-datetime-edit-day-field,
+.luxury-input::-webkit-datetime-edit-year-field,
+.luxury-input::-webkit-datetime-edit-hour-field,
+.luxury-input::-webkit-datetime-edit-minute-field,
+.luxury-input::-webkit-datetime-edit-ampm-field {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
 .luxury-input::-webkit-calendar-picker-indicator {
-    filter: invert(1);
+    filter: invert(1) brightness(1) !important;
+    cursor: pointer !important;
+    opacity: 0.8;
+}
+.luxury-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
 }
 
 /* ─── STAT COUNTER GLOW ─────────────────────────────────────── */
