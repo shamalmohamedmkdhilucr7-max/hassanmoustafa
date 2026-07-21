@@ -140,15 +140,9 @@
                     </select>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Preferred Date</label>
-                        <input type="date" id="con-date" class="w-full p-3.5 rounded-xl luxury-input text-white text-xs font-medium" required>
-                    </div>
-                    <div>
-                        <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Preferred Time</label>
-                        <input type="time" id="con-time" class="w-full p-3.5 rounded-xl luxury-input text-white text-xs font-medium" required>
-                    </div>
+                <div>
+                    <label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Preferred Date</label>
+                    <input type="date" id="con-date" class="w-full p-3.5 rounded-xl luxury-input text-white text-xs font-medium" required>
                 </div>
 
                 <div>
@@ -252,7 +246,7 @@
         <form id="modal-booking-form" class="space-y-4">
             <div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Full Name</label><input type="text" placeholder="Your name" class="w-full p-3.5 rounded-xl luxury-input text-sm" required></div>
             <div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Select Service</label><select id="modal-service" class="w-full p-3.5 rounded-xl luxury-input text-sm" required><option value="">Choose a service...</option><option>Engine Overhaul</option><option>Transmission Repair</option><option>Brake Service</option><option>AC & Climate</option><option>General Service</option></select></div>
-            <div class="grid grid-cols-2 gap-4"><div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Date</label><input type="date" id="modal-date" class="w-full p-3.5 rounded-xl luxury-input text-sm" required></div><div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Time</label><input type="time" id="modal-time" class="w-full p-3.5 rounded-xl luxury-input text-sm" required></div></div>
+            <div><label class="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Date</label><input type="date" id="modal-date" class="w-full p-3.5 rounded-xl luxury-input text-sm" required></div>
             <button type="submit" class="w-full btn-primary-luxury text-white py-4 rounded-xl font-bold uppercase tracking-[0.2em] text-[10px] mt-1">Confirm Reservation</button>
         </form>
     </div>
@@ -283,13 +277,12 @@
             const phone = document.getElementById('con-phone').value;
             const service = document.getElementById('con-service').value;
             const date = document.getElementById('con-date').value;
-            const time = document.getElementById('con-time').value;
 
             const bookings = JSON.parse(localStorage.getItem('hm_bookings') || '[]');
-            bookings.push({ name, phone, service, date, time, source: 'contact_page', timestamp: Date.now() });
+            bookings.push({ name, phone, service, date, source: 'contact_page', timestamp: Date.now() });
             localStorage.setItem('hm_bookings', JSON.stringify(bookings));
 
-            window.showToast(`Reservation submitted! Confirmed for ${name} on ${date} at ${time}.`);
+            window.showToast(`Reservation submitted! Confirmed for ${name} on ${date}.`);
             contactForm.reset();
         });
     }

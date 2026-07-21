@@ -163,14 +163,13 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const service = document.getElementById('modal-service')?.value;
             const date    = document.getElementById('modal-date')?.value;
-            const time    = document.getElementById('modal-time')?.value;
 
             const bookings = JSON.parse(localStorage.getItem('hm_bookings') || '[]');
-            bookings.push({ service, date, time, timestamp: Date.now() });
+            bookings.push({ service, date, timestamp: Date.now() });
             localStorage.setItem('hm_bookings', JSON.stringify(bookings));
 
             closeModal();
-            window.showToast(`Appointment booked for ${date} at ${time}!`);
+            window.showToast(`Appointment booked for ${date}!`);
             modalBookingForm.reset();
         });
     }
