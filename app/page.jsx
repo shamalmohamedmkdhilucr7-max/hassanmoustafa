@@ -34,78 +34,89 @@ const faqs = [
   { q: 'Do you offer a warranty on repairs?', a: 'All our mechanical repairs and parts installations are covered by a service warranty. Duration varies by job type — we will confirm your exact warranty period with your service invoice.' },
 ];
 
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 function ScrollHero() {
   const containerRef = useRef(null);
+  const stickyRef   = useRef(null);
   const videoRef    = useRef(null);
   const textRef     = useRef(null);
   const hintRef     = useRef(null);
   const barRef      = useRef(null);
   const overlayRef  = useRef(null);
 
-  const durationRef = useRef(0);
-
-  // useLenis fires every RAF frame with Lenis's already-interpolated scroll value.
-  // We write ONLY to CSS transform/opacity — GPU-composited, zero lag.
-  useLenis((lenis) => {
-    if (!containerRef.current) return;
-    const rect       = containerRef.current.getBoundingClientRect();
-    const scrollable = Math.max(1, containerRef.current.offsetHeight - window.innerHeight);
-    const p          = Math.max(0, Math.min(-rect.top / scrollable, 1));
-
-    // Video: scrub time
-    const video = videoRef.current;
-    if (video && durationRef.current > 0) {
-      const targetTime = Math.max(0, Math.min(p * durationRef.current, durationRef.current - 0.01));
-      if (Math.abs(video.currentTime - targetTime) > 0.03) {
-        if (typeof video.fastSeek === 'function') {
-           video.fastSeek(targetTime);
-        } else {
-           video.currentTime = targetTime;
-        }
-      }
-    }
-
-    // Scroll-driven darkening overlay
-    const overlay = overlayRef.current;
-    if (overlay) overlay.style.opacity = (p * 0.65).toFixed(3);
-
-    // Hero text: parallax up + fade out
-    const text = textRef.current;
-    if (text) {
-      const opacity = p < 0.12 ? 1 : Math.max(0, 1 - (p - 0.12) / 0.22);
-      text.style.opacity = opacity;
-      text.style.transform = `translateY(${-(p * 90)}px) translateZ(0)`;
-    }
-
-    // Progress bar
-    const bar = barRef.current;
-    if (bar) bar.style.width = (p * 100).toFixed(2) + '%';
-
-    // Scroll hint
-    const hint = hintRef.current;
-    if (hint) hint.style.opacity = p < 0.02 ? '0.55' : '0';
-  });
-
-  useEffect(() => {
+  useGSAP(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const onMeta = () => {
-      if (video.duration && isFinite(video.duration)) {
-        durationRef.current = video.duration;
-      }
+    // Wait for video metadata to know duration
+    const initGSAP = () => {
+      const dur = video.duration || 1;
+      
+      // Video scrubbing timeline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.5, // 0.5s smoothing for buttery feel
+        }
+      });
+
+      // 1. Scrub video time
+      tl.to(video, {
+        currentTime: dur - 0.01, // Don't go all the way to exact end
+        ease: "none",
+        duration: 1
+      }, 0);
+
+      // 2. Parallax and fade text
+      tl.to(textRef.current, {
+        y: -150,
+        opacity: 0,
+        ease: "power2.inOut",
+        duration: 0.3
+      }, 0);
+
+      // 3. Fade out scroll hint immediately
+      tl.to(hintRef.current, {
+        opacity: 0,
+        ease: "power1.out",
+        duration: 0.05
+      }, 0);
+
+      // 4. Darkening overlay
+      tl.to(overlayRef.current, {
+        opacity: 0.65,
+        ease: "none",
+        duration: 1
+      }, 0);
+
+      // 5. Progress bar width
+      tl.fromTo(barRef.current, { width: "0%" }, {
+        width: "100%",
+        ease: "none",
+        duration: 1
+      }, 0);
     };
-    
-    video.addEventListener('loadedmetadata', onMeta);
-    if (video.readyState >= 1) onMeta();
-    return () => video.removeEventListener('loadedmetadata', onMeta);
-  }, []);
+
+    if (video.readyState >= 1) {
+      initGSAP();
+    } else {
+      video.addEventListener('loadedmetadata', initGSAP);
+      return () => video.removeEventListener('loadedmetadata', initGSAP);
+    }
+  }, { scope: containerRef });
 
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
-      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#070707' }}>
+      <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#070707' }}>
 
-        {/* Video scrubbed via scroll */}
+        {/* Video scrubbed via GSAP */}
         <video
           ref={videoRef}
           muted playsInline preload="auto"
@@ -115,7 +126,6 @@ function ScrollHero() {
             width: '100%', height: '100%',
             objectFit: 'cover',
             transformOrigin: 'center center',
-            willChange: 'transform',
           }}
         />
 
