@@ -36,162 +36,70 @@ const faqs = [
 
 function ScrollHero() {
   const containerRef = useRef(null);
-  const stickyRef = useRef(null);
-  const videoRef = useRef(null);
-  const canvasMainRef = useRef(null);
-  const canvasBlurRef = useRef(null);
-  const textRef = useRef(null);
-  const hintRef = useRef(null);
-  const barRef = useRef(null);
-  const loaderRef = useRef(null);
-  const loaderBarRef = useRef(null);
+  const videoRef    = useRef(null);
+  const textRef     = useRef(null);
+  const hintRef     = useRef(null);
+  const barRef      = useRef(null);
+  const overlayRef  = useRef(null);
 
-  const readyRef = useRef(false);
-
-  // useLenis fires every animation frame with Lenis's already-smooth scroll value.
-  // We drive video.currentTime directly from it — no extra lerp = no lag.
+  // useLenis fires every RAF frame with Lenis's already-interpolated scroll value.
+  // We write ONLY to CSS transform/opacity — GPU-composited, zero lag.
   useLenis((lenis) => {
-    if (!readyRef.current || !containerRef.current) return;
-    const container = containerRef.current;
-    const rect = container.getBoundingClientRect();
-    const scrollable = Math.max(0, container.offsetHeight - window.innerHeight);
-    if (scrollable <= 0) return;
+    if (!containerRef.current) return;
+    const rect       = containerRef.current.getBoundingClientRect();
+    const scrollable = Math.max(1, containerRef.current.offsetHeight - window.innerHeight);
+    const p          = Math.max(0, Math.min(-rect.top / scrollable, 1));
 
-    // progress: 0 at top of hero, 1 at bottom
-    const progress = Math.max(0, Math.min(-rect.top / scrollable, 1));
-
+    // Video: subtle parallax zoom — GPU layer, no decode cost
     const video = videoRef.current;
+    if (video) {
+      const scale = 1 + p * 0.18;
+      video.style.transform = `scale(${scale}) translateY(${p * 30}px) translateZ(0)`;
+    }
+
+    // Scroll-driven darkening overlay
+    const overlay = overlayRef.current;
+    if (overlay) overlay.style.opacity = (p * 0.65).toFixed(3);
+
+    // Hero text: parallax up + fade out
     const text = textRef.current;
-    const hint = hintRef.current;
-    const bar = barRef.current;
-    const dur = durationRef.current;
+    if (text) {
+      const opacity = p < 0.12 ? 1 : Math.max(0, 1 - (p - 0.12) / 0.22);
+      text.style.opacity = opacity;
+      text.style.transform = `translateY(${-(p * 90)}px) translateZ(0)`;
+    }
 
     // Progress bar
-    if (bar) bar.style.width = (progress * 100).toFixed(2) + '%';
+    const bar = barRef.current;
+    if (bar) bar.style.width = (p * 100).toFixed(2) + '%';
 
     // Scroll hint
-    if (hint) hint.style.opacity = progress < 0.02 ? '0.55' : '0';
-
-    // Hero text parallax + fade
-    if (text) {
-      const opacity = progress < 0.12 ? 1 : Math.max(0, 1 - (progress - 0.12) / 0.22);
-      text.style.opacity = opacity;
-      text.style.transform = `translateY(${-(progress * 80)}px) translateZ(0)`;
-    }
-
-    // Video scrub — Lenis value is already smooth, set directly
-    if (video && dur > 0) {
-      const t = Math.max(0, Math.min(progress * dur, dur - 0.016));
-      if (Math.abs(video.currentTime - t) >= 0.016) {
-        video.currentTime = t;
-      }
-    }
+    const hint = hintRef.current;
+    if (hint) hint.style.opacity = p < 0.02 ? '0.55' : '0';
   });
-
-  // Video loading & metadata
-  useEffect(() => {
-    const container = containerRef.current;
-    const video = videoRef.current;
-    const canvasMain = canvasMainRef.current;
-    const canvasBlur = canvasBlurRef.current;
-    const loader = loaderRef.current;
-    const loaderBar = loaderBarRef.current;
-
-    if (!container || !video || !canvasMain || !canvasBlur) return;
-
-    const ctxMain = canvasMain.getContext('2d');
-    const ctxBlur = canvasBlur.getContext('2d');
-    let loaderTimeout;
-
-    loaderTimeout = setTimeout(() => {
-      if (video.duration && isFinite(video.duration) && video.duration > 0) onMeta();
-      else { hideLoader(); canvasMain.style.opacity = '1'; canvasBlur.style.opacity = '1'; }
-    }, 3500);
-
-    function initDimensions() {
-      if (video.videoWidth > 0) {
-        canvasMain.width = video.videoWidth; canvasMain.height = video.videoHeight;
-        canvasBlur.width = Math.max(32, Math.floor(video.videoWidth / 8));
-        canvasBlur.height = Math.max(32, Math.floor(video.videoHeight / 8));
-        try {
-          if (video.readyState >= 2) {
-            ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
-            ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
-          }
-        } catch (e) {}
-        canvasMain.style.opacity = '1'; canvasBlur.style.opacity = '1';
-      }
-    }
-
-    function hideLoader() {
-      clearTimeout(loaderTimeout);
-      if (loader) {
-        if (loaderBar) loaderBar.style.width = '100%';
-        setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; }, 600); }, 300);
-      }
-    }
-
-    function onMeta() {
-      const dur = video.duration;
-      if (!isFinite(dur) || dur <= 0) return;
-      durationRef.current = dur;
-      const p = video.play();
-      const after = () => { video.pause(); initDimensions(); hideLoader(); readyRef.current = true; };
-      if (p) p.then(after).catch(after); else after();
-    }
-
-    video.addEventListener('loadedmetadata', onMeta);
-    video.addEventListener('canplay', onMeta);
-    video.addEventListener('progress', () => {
-      if (video.duration > 0 && video.buffered.length > 0) {
-        const pct = Math.floor((video.buffered.end(video.buffered.length - 1) / video.duration) * 100);
-        if (loaderBar) loaderBar.style.width = Math.min(95, pct) + '%';
-      }
-    });
-
-    // Redraw canvas whenever the video seeks to a new frame
-    function drawCanvas() {
-      try {
-        if (canvasMain.width > 0 && video.readyState >= 2) {
-          ctxMain.drawImage(video, 0, 0, canvasMain.width, canvasMain.height);
-          ctxBlur.drawImage(video, 0, 0, canvasBlur.width, canvasBlur.height);
-        }
-      } catch (e) {}
-    }
-    video.addEventListener('seeked', drawCanvas);
-    video.addEventListener('timeupdate', drawCanvas);
-
-    if (video.readyState >= 1) onMeta(); else video.load();
-    window.addEventListener('resize', initDimensions, { passive: true });
-
-    return () => {
-      clearTimeout(loaderTimeout);
-      window.removeEventListener('resize', initDimensions);
-      video.removeEventListener('seeked', drawCanvas);
-      video.removeEventListener('timeupdate', drawCanvas);
-    };
-  }, []);
 
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
-      <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#070707' }}>
-        <video ref={videoRef} muted playsInline preload="auto" src="/assets/video/hero.mp4"
-          style={{ position:'absolute',top:0,left:0,width:'100%',height:'100%',objectFit:'cover',pointerEvents:'none',opacity:0.001,zIndex:-100 }} />
+      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#070707' }}>
 
-        {/* Loader */}
-        <div ref={loaderRef} style={{ position:'absolute',inset:0,zIndex:90,background:'#070707',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',transition:'opacity 0.6s',pointerEvents:'none' }}>
-          <div style={{ fontFamily:'Space Grotesk,monospace',fontSize:10,color:'#d6041d',textTransform:'uppercase',letterSpacing:'0.35em',marginBottom:14,fontWeight:700 }}>ENCODING PRESTIGE</div>
-          <div style={{ width:140,height:1,background:'rgba(255,255,255,0.08)',position:'relative',overflow:'hidden',borderRadius:1 }}>
-            <div ref={loaderBarRef} style={{ position:'absolute',top:0,left:0,bottom:0,width:0,background:'#d6041d',transition:'width 0.3s ease',willChange:'width' }} />
-          </div>
-        </div>
+        {/* Video plays on loop — no seeking = zero lag */}
+        <video
+          ref={videoRef}
+          muted playsInline autoPlay loop
+          src="/assets/video/hero.mp4"
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            transformOrigin: 'center center',
+            willChange: 'transform',
+          }}
+        />
 
-        {/* Blur canvas */}
-        <canvas ref={canvasBlurRef} style={{ position:'absolute',inset:0,width:'100%',height:'100%',filter:'blur(32px) brightness(0.28) saturate(1.6)',transform:'scale(1.1) translateZ(0)',pointerEvents:'none',willChange:'transform',opacity:0,transition:'opacity 0.8s ease' }} />
-        {/* Main canvas */}
-        <canvas ref={canvasMainRef} style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'contain',transform:'translateZ(0)',pointerEvents:'none',willChange:'transform',opacity:0,transition:'opacity 0.8s ease' }} />
+        {/* Scroll-driven darkening overlay */}
+        <div ref={overlayRef} aria-hidden="true" style={{ position:'absolute',inset:0,zIndex:5,background:'#070707',opacity:0,pointerEvents:'none' }} />
 
-        {/* Gradient overlays */}
+        {/* Static gradient overlays */}
         <div aria-hidden="true" style={{ position:'absolute',inset:0,zIndex:10,pointerEvents:'none',background:'linear-gradient(to bottom,rgba(7,7,7,0.62) 0%,rgba(7,7,7,0.08) 18%,rgba(7,7,7,0.08) 68%,rgba(7,7,7,0.72) 87%,rgba(7,7,7,1) 100%)' }} />
         <div aria-hidden="true" style={{ position:'absolute',inset:0,zIndex:10,pointerEvents:'none',background:'linear-gradient(to right,rgba(7,7,7,0.52) 0%,transparent 16%,transparent 84%,rgba(7,7,7,0.52) 100%)' }} />
 
@@ -213,7 +121,7 @@ function ScrollHero() {
             <div style={{ width:44,height:1,background:'linear-gradient(to left,transparent,rgba(214,4,29,0.75))' }} />
           </div>
           <div className="h-el" style={{ animationDelay:'0.54s',display:'flex',flexWrap:'wrap',gap:14,justifyContent:'center',marginBottom:52 }}>
-            <Link href="/contact" style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'14px 38px',borderRadius:999,background:'linear-gradient(135deg,#d6041d,#9a0014)',border:'1px solid rgba(214,4,29,0.55)',fontFamily:'Space Grotesk,monospace',fontSize:10,fontWeight:700,color:'#fff',textDecoration:'none',textTransform:'uppercase',letterSpacing:'0.18em',boxShadow:'0 0 0 0 rgba(214,4,29,0.35)',transition:'all 0.35s' }}>
+            <Link href="/contact" style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'14px 38px',borderRadius:999,background:'linear-gradient(135deg,#d6041d,#9a0014)',border:'1px solid rgba(214,4,29,0.55)',fontFamily:'Space Grotesk,monospace',fontSize:10,fontWeight:700,color:'#fff',textDecoration:'none',textTransform:'uppercase',letterSpacing:'0.18em',transition:'all 0.35s' }}>
               <span className="material-symbols-outlined" style={{ fontSize:14,fontVariationSettings:"'FILL' 1" }}>calendar_month</span> Book a Service
             </Link>
             <Link href="/services" style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'14px 38px',borderRadius:999,background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.18)',backdropFilter:'blur(14px)',fontFamily:'Space Grotesk,monospace',fontSize:10,fontWeight:700,color:'#fff',textDecoration:'none',textTransform:'uppercase',letterSpacing:'0.18em',transition:'all 0.35s' }}>
@@ -223,7 +131,7 @@ function ScrollHero() {
           <div className="h-el" style={{ animationDelay:'0.66s',display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'28px 52px' }}>
             {[['20+','Years Legacy'],['10k+','Vehicles Served'],['100%','OEM Guarantee'],['50+','Brands Covered']].map(([val,label]) => (
               <div key={label} style={{ textAlign:'center' }}>
-                <div style={{ fontFamily:'Space Grotesk,monospace',fontWeight:900,color:'#fff',fontSize:'clamp(1.4rem,2.6vw,2rem)' }}>{val.replace('+','')}<span style={{ color:'#d6041d' }}>{val.includes('+') ? '+' : val.includes('%') ? '' : ''}</span></div>
+                <div style={{ fontFamily:'Space Grotesk,monospace',fontWeight:900,color:'#fff',fontSize:'clamp(1.4rem,2.6vw,2rem)' }}>{val.replace('+','')}<span style={{ color:'#d6041d' }}>{val.includes('+') ? '+' : ''}</span></div>
                 <div style={{ fontFamily:'Space Grotesk,monospace',fontSize:8,color:'rgba(255,255,255,0.32)',textTransform:'uppercase',letterSpacing:'0.2em',marginTop:5 }}>{label}</div>
               </div>
             ))}
