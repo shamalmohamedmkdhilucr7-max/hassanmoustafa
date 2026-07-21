@@ -71,7 +71,17 @@ function ScrollHero() {
         const i = images[frame.value - 1];
         const hRatio = canvas.width / i.width;
         const vRatio = canvas.height / i.height;
-        const ratio  = Math.max(hRatio, vRatio);
+        
+        // On desktop, use cover (Math.max).
+        // On mobile (portrait), full cover zooms way too far into the center, 
+        // cutting off the car. We'll use a hybrid scale for mobile.
+        let ratio = Math.max(hRatio, vRatio);
+        if (canvas.width < 768) {
+           // Zoom slightly beyond horizontal fit to give it some scale, 
+           // but leave letterboxing (black bars) so the car is fully visible.
+           ratio = hRatio * 1.5; 
+        }
+
         const centerShift_x = (canvas.width - i.width*ratio) / 2;
         const centerShift_y = (canvas.height - i.height*ratio) / 2;
         context.clearRect(0,0,canvas.width, canvas.height);
