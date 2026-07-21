@@ -40,6 +40,7 @@
 html {
     scroll-behavior: smooth;
     background-color: var(--bg-matte);
+    color-scheme: dark;
 }
 
 body {
@@ -279,6 +280,20 @@ body {
 .luxury-input option {
     background: #0c0c0e;
     color: var(--text-primary);
+}
+
+.luxury-input:-webkit-autofill,
+.luxury-input:-webkit-autofill:hover, 
+.luxury-input:-webkit-autofill:focus, 
+.luxury-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #141418 inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Fix date/time picker background overriding on some browsers */
+.luxury-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
 }
 
 /* ─── STAT COUNTER GLOW ─────────────────────────────────────── */
