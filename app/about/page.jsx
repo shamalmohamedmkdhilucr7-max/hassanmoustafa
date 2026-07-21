@@ -162,6 +162,45 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Our Facility */}
+      <section className="py-[var(--section-gap)] relative z-10 border-t border-white/5">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <RevealSection className="text-center mb-16">
+            <span className="font-mono text-[10px] text-secondary-container uppercase tracking-[0.25em] font-bold block mb-2">Workshop & Equipment</span>
+            <h2 className="font-display font-extrabold text-white" style={{ fontSize:'clamp(1.8rem,3vw,3rem)' }}>Our Facility</h2>
+            <p className="text-on-surface-variant text-sm mt-3 max-w-lg mx-auto font-light leading-relaxed">A purpose-built automotive workshop equipped with the diagnostic and mechanical tools required to service every marque to its factory standard.</p>
+          </RevealSection>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <RevealSection className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap">
+              <img alt="Advanced Diagnostics Bay" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=800&auto=format&fit=crop" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                <span className="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 01</span>
+                <h3 className="font-display font-extrabold text-white text-sm uppercase tracking-wider">Diagnostic Bay</h3>
+                <p className="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">State-of-the-art ECU programming, coding, and OBD scan diagnostics.</p>
+              </div>
+            </RevealSection>
+            
+            <RevealSection delay="reveal-delay-1" className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap">
+              <img alt="Engine & Mechanical Service Bay" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/mustang_engine_bay.png" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                <span className="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 02</span>
+                <h3 className="font-display font-extrabold text-white text-sm uppercase tracking-wider">Mechanical & Engine Bay</h3>
+                <p className="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Heavy-duty lifts for transmission overhauls, engine rebuilding, and chassis repairs.</p>
+              </div>
+            </RevealSection>
+
+            <RevealSection delay="reveal-delay-2" className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/5 group card-img-wrap">
+              <img alt="Auto Body Paint Booth" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=800&auto=format&fit=crop" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300">
+                <span className="font-mono text-[8px] text-secondary-container uppercase tracking-widest font-bold mb-1">Facility 03</span>
+                <h3 className="font-display font-extrabold text-white text-sm uppercase tracking-wider">Paint & Body Shop</h3>
+                <p className="text-on-surface-variant text-[11px] font-light mt-1.5 leading-relaxed">Dust-free pressurized paint booths and computerised color-matching ovens.</p>
+              </div>
+            </RevealSection>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-20 relative z-10 border-t border-white/5">
         <div className="max-w-[1440px] mx-auto px-8 text-center">
