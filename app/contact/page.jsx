@@ -28,6 +28,14 @@ export default function ContactPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
+    
+    // Anti-spam honeypot check
+    if (data.website_url) {
+      e.target.reset();
+      setPhotos([]);
+      return;
+    }
+
     const bookings = JSON.parse(localStorage.getItem('hm_bookings') || '[]');
     bookings.push({ ...data, source: 'contact_page', timestamp: Date.now() });
     localStorage.setItem('hm_bookings', JSON.stringify(bookings));
@@ -56,6 +64,10 @@ export default function ContactPage() {
           <RevealSection className="lg:col-span-7 glass-card-premium p-10 rounded-2xl">
             <h3 className="text-white font-display font-extrabold text-xl mb-8 uppercase tracking-wide">Workshop Scheduler</h3>
             <form onSubmit={handleSubmit} className="space-y-5 text-xs font-semibold">
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <label htmlFor="website_url">Website URL (Leave blank)</label>
+                <input type="text" name="website_url" id="website_url" tabIndex="-1" autoComplete="off" />
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Your Name</label>

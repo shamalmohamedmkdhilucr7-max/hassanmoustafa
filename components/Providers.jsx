@@ -5,6 +5,7 @@ import { ToastProvider } from '@/context/ToastContext';
 import { ReactLenis, useLenis } from 'lenis/react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import CookieBanner from './CookieBanner';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,6 +28,7 @@ export default function Providers({ children }) {
       <ModalProvider>
         <ToastProvider>
           {children}
+          <CookieBanner />
         </ToastProvider>
       </ModalProvider>
     </ReactLenis>

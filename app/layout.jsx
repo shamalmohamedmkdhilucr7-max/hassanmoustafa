@@ -26,8 +26,48 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
-  title: 'Hassan Moustafa Automotive Care – Sharjah, UAE',
+  metadataBase: new URL('https://hassanmoustafa.vercel.app'),
+  title: {
+    default: 'Hassan Moustafa Automotive Care – Sharjah, UAE',
+    template: '%s | Hassan Moustafa',
+  },
   description: 'Premium automotive workshop in Sharjah, UAE. Engine overhaul, transmission repair, AC service, ECU diagnostics and genuine spare parts.',
+  keywords: ['automotive repair', 'Sharjah garage', 'car service UAE', 'engine overhaul', 'ECU diagnostics', 'genuine spare parts', 'German car repair Sharjah'],
+  authors: [{ name: 'Hassan Moustafa Automotive Care' }],
+  creator: 'Hassan Moustafa Automotive Care',
+  openGraph: {
+    type: 'website',
+    locale: 'en_AE',
+    url: 'https://hassanmoustafa.vercel.app',
+    title: 'Hassan Moustafa Automotive Care',
+    description: 'Premium automotive workshop in Sharjah, UAE.',
+    siteName: 'Hassan Moustafa Automotive Care',
+    images: [
+      {
+        url: '/assets/images/logo.jpeg',
+        width: 1200,
+        height: 630,
+        alt: 'Hassan Moustafa Automotive Care',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hassan Moustafa Automotive Care',
+    description: 'Premium automotive workshop in Sharjah, UAE.',
+    images: ['/assets/images/logo.jpeg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }) {

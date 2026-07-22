@@ -21,6 +21,15 @@ export default function BookingModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    
+    // Anti-spam honeypot
+    if (data.website_url) {
+      formRef.current.reset();
+      closeModal();
+      return;
+    }
+
     const service = formRef.current.querySelector('#modal-service')?.value;
     const date    = formRef.current.querySelector('#modal-date')?.value;
     const bookings = JSON.parse(localStorage.getItem('hm_bookings') || '[]');
@@ -47,9 +56,13 @@ export default function BookingModal() {
           <h3 className="font-display font-extrabold text-white text-xl uppercase tracking-wide">Book Appointment</h3>
         </div>
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+          <div style={{ display: 'none' }} aria-hidden="true">
+            <label htmlFor="modal_website_url">Website URL</label>
+            <input type="text" name="website_url" id="modal_website_url" tabIndex="-1" autoComplete="off" />
+          </div>
           <div>
             <label className="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Full Name</label>
-            <input type="text" placeholder="Your name" className="w-full p-3.5 rounded-xl luxury-input text-sm" required />
+            <input type="text" name="name" placeholder="Your name" className="w-full p-3.5 rounded-xl luxury-input text-sm" required />
           </div>
           <div>
             <label className="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Select Service</label>

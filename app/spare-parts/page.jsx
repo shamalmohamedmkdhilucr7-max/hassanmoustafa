@@ -41,6 +41,13 @@ export default function SparePartsPage() {
   const handlePartsSubmit = (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.target));
+    
+    // Anti-spam honeypot
+    if (data.website_url) {
+      e.target.reset();
+      return;
+    }
+
     const requests = JSON.parse(localStorage.getItem('hm_parts') || '[]');
     requests.push({ ...data, timestamp: Date.now() });
     localStorage.setItem('hm_parts', JSON.stringify(requests));
@@ -191,6 +198,10 @@ export default function SparePartsPage() {
           </RevealSection>
           <RevealSection>
             <form onSubmit={handlePartsSubmit} className="glass-card-premium p-8 rounded-2xl space-y-5">
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <label htmlFor="parts_website_url">Website URL</label>
+                <input type="text" name="website_url" id="parts_website_url" tabIndex="-1" autoComplete="off" />
+              </div>
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label className="block font-mono text-[9px] text-on-surface-variant uppercase tracking-[0.2em] mb-1.5">Your Name</label>
