@@ -106,9 +106,6 @@ function ScrollHero({ onProgress, onLoaded }) {
         const vRatio = canvas.height / i.height;
         
         let ratio = Math.max(hRatio, vRatio);
-        if (canvas.width < 768) {
-           ratio = hRatio * 1.5; 
-        }
 
         const centerShift_x = (canvas.width - i.width*ratio) / 2;
         const centerShift_y = (canvas.height - i.height*ratio) / 2;
