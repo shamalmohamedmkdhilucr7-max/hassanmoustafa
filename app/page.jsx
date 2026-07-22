@@ -47,7 +47,6 @@ function ScrollHero({ onProgress, onLoaded }) {
   const textRef     = useRef(null);
   const hintRef     = useRef(null);
   const barRef      = useRef(null);
-  const overlayRef  = useRef(null);
 
   const [isDesktop, setIsDesktop] = useState(true);
 
@@ -107,13 +106,6 @@ function ScrollHero({ onProgress, onLoaded }) {
         opacity: 0,
         ease: "power1.out",
         duration: 0.05
-      }, 0);
-
-      // 4. Darkening overlay
-      tl.to(overlayRef.current, {
-        opacity: 0.65,
-        ease: "none",
-        duration: 1
       }, 0);
 
       // 5. Progress bar width
@@ -190,13 +182,6 @@ function ScrollHero({ onProgress, onLoaded }) {
             transformOrigin: 'center center',
           }}
         />
-
-        {/* Scroll-driven darkening overlay */}
-        <div ref={overlayRef} aria-hidden="true" style={{ position:'absolute',inset:0,zIndex:5,background:'#070707',opacity:0,pointerEvents:'none' }} />
-
-        {/* Static gradient overlays */}
-        <div aria-hidden="true" style={{ position:'absolute',inset:0,zIndex:10,pointerEvents:'none',background:'linear-gradient(to bottom,rgba(7,7,7,0.62) 0%,rgba(7,7,7,0.08) 18%,rgba(7,7,7,0.08) 68%,rgba(7,7,7,0.72) 87%,rgba(7,7,7,1) 100%)' }} />
-        <div aria-hidden="true" style={{ position:'absolute',inset:0,zIndex:10,pointerEvents:'none',background:'linear-gradient(to right,rgba(7,7,7,0.52) 0%,transparent 16%,transparent 84%,rgba(7,7,7,0.52) 100%)' }} />
 
         {/* Hero text */}
         <div ref={textRef} style={{ position:'absolute',inset:0,zIndex:20,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'0 1.5rem',paddingTop:80,willChange:'opacity,transform' }}>
