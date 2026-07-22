@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useModal } from '@/context/ModalContext';
 import { RevealSection } from '@/hooks/useReveal';
@@ -40,7 +40,7 @@ import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-function ScrollHero() {
+function ScrollHero({ onProgress, onLoaded }) {
   const containerRef = useRef(null);
   const stickyRef   = useRef(null);
   const canvasRef   = useRef(null);
@@ -59,6 +59,27 @@ function ScrollHero() {
 
     // Load initial frame
     const img = new Image();
+    
+    let loadedCount = 0;
+    const totalToPreload = frameCount;
+    
+    const handleImgLoad = () => {
+      loadedCount++;
+      if (onProgress) {
+        onProgress(Math.floor((loadedCount / totalToPreload) * 100));
+      }
+      if (loadedCount >= totalToPreload) {
+        if (onLoaded) onLoaded();
+      }
+    };
+
+    img.onload = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      render();
+      handleImgLoad();
+    };
+    img.onerror = handleImgLoad; // prevent infinite loading if missing
     img.src = currentFrame(1);
     
     // We maintain an array of images so we don't fetch them constantly
@@ -87,12 +108,6 @@ function ScrollHero() {
         context.clearRect(0,0,canvas.width, canvas.height);
         context.drawImage(i, 0,0, i.width, i.height, centerShift_x, centerShift_y, i.width*ratio, i.height*ratio);
       }
-    };
-
-    img.onload = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render();
     };
 
     // Resize handler
@@ -157,6 +172,8 @@ function ScrollHero() {
     // Preload remaining images asynchronously so they are ready when scrolling
     for (let i = 1; i < frameCount; i++) {
       const preloadImg = new Image();
+      preloadImg.onload = handleImgLoad;
+      preloadImg.onerror = handleImgLoad;
       preloadImg.src = currentFrame(i + 1);
       images[i] = preloadImg;
     }
@@ -239,16 +256,49 @@ function ScrollHero() {
 export default function HomePage() {
   const { openModal } = useModal();
   const [openFaq, setOpenFaq] = useState(-1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
 
   return (
     <>
+      {/* Global Preloader */}
+      <div 
+        style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: '#070707', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          opacity: isLoading ? 1 : 0,
+          pointerEvents: isLoading ? 'all' : 'none',
+          transition: 'opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1)',
+        }}
+      >
+        <img 
+          src="/assets/images/logo.jpeg" 
+          alt="Hassan Moustafa Logo" 
+          style={{ width: 140, height: 'auto', marginBottom: 40, opacity: 0.9, filter: 'contrast(1.2)' }}
+        />
+        <div style={{ width: 240, height: 2, background: 'rgba(255,255,255,0.1)', borderRadius: 2, overflow: 'hidden' }}>
+          <div style={{
+            height: '100%', width: `${loadProgress}%`,
+            background: '#d6041d',
+            transition: 'width 0.1s linear'
+          }} />
+        </div>
+        <div style={{ marginTop: 16, fontFamily: 'Space Grotesk, monospace', fontSize: 10, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+          {loadProgress === 100 ? 'INITIALIZING EXPERIENCE...' : `LOADING ASSETS ${loadProgress}%`}
+        </div>
+      </div>
+
       {/* Inject hero animations */}
       <style>{`
         @keyframes hFadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
         .h-el{opacity:0;animation:hFadeUp 0.9s cubic-bezier(0.22,1,0.36,1) forwards;}
       `}</style>
 
-      <ScrollHero />
+      <ScrollHero 
+        onProgress={(p) => setLoadProgress(p)} 
+        onLoaded={() => setTimeout(() => setIsLoading(false), 200)} 
+      />
 
       {/* Brand Marquee */}
       <section className="py-8 border-y border-outline-variant overflow-hidden bg-surface-container-lowest">
@@ -397,5 +447,3 @@ export default function HomePage() {
   );
 }
 
-// useState needed at top level
-import { useState } from 'react';
