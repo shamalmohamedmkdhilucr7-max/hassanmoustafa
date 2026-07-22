@@ -44,6 +44,7 @@ function ScrollHero({ onProgress, onLoaded }) {
   const containerRef = useRef(null);
   const stickyRef   = useRef(null);
   const canvasRef   = useRef(null);
+  const videoRef    = useRef(null);
   const textRef     = useRef(null);
   const hintRef     = useRef(null);
   const barRef      = useRef(null);
@@ -59,92 +60,117 @@ function ScrollHero({ onProgress, onLoaded }) {
   }, []);
 
   const frameCount = 140;
-  const currentFrame = (index) => isDesktop 
-    ? `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`
-    : `/assets/hero-sequence-mobile/${String(index).padStart(4, '0')}.jpg`;
+  const currentFrame = (index) => `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`;
 
   useGSAP(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext("2d");
-
-    // Load initial frame
-    const img = new Image();
-    
-    let loadedCount = 0;
-    const totalToPreload = frameCount;
-    
-    const handleImgLoad = () => {
-      loadedCount++;
-      if (onProgress) {
-        onProgress(Math.floor((loadedCount / totalToPreload) * 100));
-      }
-      if (loadedCount >= totalToPreload) {
-        if (onLoaded) onLoaded();
-      }
-    };
-
-    img.onload = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render();
-      handleImgLoad();
-    };
-    img.onerror = handleImgLoad; // prevent infinite loading if missing
-    img.src = currentFrame(1);
-    
-    // We maintain an array of images so we don't fetch them constantly
-    const images = [];
-    images[0] = img;
-
-    const render = () => {
-      // Scale image to cover canvas
-      const currentIdx = Math.round(frame.value) - 1;
-      if (images[currentIdx]) {
-        const i = images[currentIdx];
-        const hRatio = canvas.width / i.width;
-        const vRatio = canvas.height / i.height;
-        
-        let ratio = Math.max(hRatio, vRatio);
-
-        const centerShift_x = (canvas.width - i.width*ratio) / 2;
-        const centerShift_y = (canvas.height - i.height*ratio) / 2;
-        context.clearRect(0,0,canvas.width, canvas.height);
-        context.drawImage(i, 0,0, i.width, i.height, centerShift_x, centerShift_y, i.width*ratio, i.height*ratio);
-      }
-    };
-
-    // Resize handler
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render();
-    });
-
-    const frame = { value: 1 };
-    
-    // Video scrubbing timeline
+    // Shared timeline
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.2, // Tighter smoothing for image sequence
+        scrub: 0.2, // Tighter smoothing
         pin: stickyRef.current,
         anticipatePin: 1
       }
     });
 
-    // 1. Scrub image sequence
-    tl.to(frame, {
-      value: frameCount,
-      snap: "value",
-      ease: "none",
-      duration: 1,
-      onUpdate: render // Draw the new frame
-    }, 0);
+    if (isDesktop) {
+      // Desktop: Canvas image sequence
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const context = canvas.getContext("2d");
+        const img = new Image();
+        
+        let loadedCount = 0;
+        const totalToPreload = frameCount;
+        
+        const handleImgLoad = () => {
+          loadedCount++;
+          if (onProgress) onProgress(Math.floor((loadedCount / totalToPreload) * 100));
+          if (loadedCount >= totalToPreload && onLoaded) onLoaded();
+        };
 
-    // 2. Parallax and fade text
+        img.onload = () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          render();
+          handleImgLoad();
+        };
+        img.onerror = handleImgLoad;
+        img.src = currentFrame(1);
+        
+        const images = [];
+        images[0] = img;
+
+        const render = () => {
+          const currentIdx = Math.round(frame.value) - 1;
+          if (images[currentIdx]) {
+            const i = images[currentIdx];
+            const hRatio = canvas.width / i.width;
+            const vRatio = canvas.height / i.height;
+            let ratio = Math.max(hRatio, vRatio);
+
+            const centerShift_x = (canvas.width - i.width*ratio) / 2;
+            const centerShift_y = (canvas.height - i.height*ratio) / 2;
+            context.clearRect(0,0,canvas.width, canvas.height);
+            context.drawImage(i, 0,0, i.width, i.height, centerShift_x, centerShift_y, i.width*ratio, i.height*ratio);
+          }
+        };
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 768) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
+          }
+        });
+
+        const frame = { value: 1 };
+        
+        tl.to(frame, {
+          value: frameCount,
+          snap: "value",
+          ease: "none",
+          duration: 1,
+          onUpdate: render
+        }, 0);
+
+        for (let i = 1; i < frameCount; i++) {
+          const preloadImg = new Image();
+          preloadImg.onload = handleImgLoad;
+          preloadImg.onerror = handleImgLoad;
+          preloadImg.src = currentFrame(i + 1);
+          images[i] = preloadImg;
+        }
+      }
+    } else {
+      // Mobile: Video Scrubbing
+      const video = videoRef.current;
+      if (video) {
+        const videoTime = { currentTime: 0 };
+        const setScrubTimeline = () => {
+          tl.to(videoTime, {
+            currentTime: video.duration || 1,
+            ease: "none",
+            duration: 1,
+            onUpdate: () => {
+              if (video.readyState >= 1) {
+                video.currentTime = videoTime.currentTime;
+              }
+            }
+          }, 0);
+        };
+
+        if (video.readyState >= 1) {
+          setScrubTimeline();
+        } else {
+          video.addEventListener('loadedmetadata', setScrubTimeline);
+        }
+      }
+    }
+
+    // Shared animations (text, hint, bar)
     tl.to(textRef.current, {
       y: -150,
       opacity: 0,
@@ -152,29 +178,55 @@ function ScrollHero({ onProgress, onLoaded }) {
       duration: 0.3
     }, 0);
 
-    // 3. Fade out scroll hint immediately
     tl.to(hintRef.current, {
       opacity: 0,
       ease: "power1.out",
       duration: 0.05
     }, 0);
 
-    // 4. Progress bar width
     tl.fromTo(barRef.current, { width: "0%" }, {
       width: "100%",
       ease: "none",
       duration: 1
     }, 0);
 
-    // Preload remaining images asynchronously so they are ready when scrolling
-    for (let i = 1; i < frameCount; i++) {
-      const preloadImg = new Image();
-      preloadImg.onload = handleImgLoad;
-      preloadImg.onerror = handleImgLoad;
-      preloadImg.src = currentFrame(i + 1);
-      images[i] = preloadImg;
-    }
   }, { scope: containerRef, dependencies: [isDesktop] });
+
+  // Handle video load progress for mobile
+  useEffect(() => {
+    if (isDesktop) return; // Desktop uses image preload logic above
+    
+    const video = videoRef.current;
+    if (!video) {
+      if (onLoaded) onLoaded();
+      return;
+    }
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      if (progress > 90) progress = 90;
+      if (onProgress) onProgress(progress);
+    }, 100);
+
+    const handleCanPlayThrough = () => {
+      clearInterval(interval);
+      if (onProgress) onProgress(100);
+      if (onLoaded) onLoaded();
+    };
+
+    if (video.readyState >= 3) { 
+      handleCanPlayThrough();
+    } else {
+      video.addEventListener('canplaythrough', handleCanPlayThrough);
+      setTimeout(handleCanPlayThrough, 3000); 
+    }
+
+    return () => {
+      clearInterval(interval);
+      video.removeEventListener('canplaythrough', handleCanPlayThrough);
+    };
+  }, [isDesktop]);
 
   return (
     <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
@@ -187,6 +239,24 @@ function ScrollHero({ onProgress, onLoaded }) {
             width: '100%', height: '100%',
             objectFit: 'cover',
             transformOrigin: 'center center',
+            display: isDesktop ? 'block' : 'none'
+          }}
+        />
+
+        <video
+          ref={videoRef}
+          src="/mobile-hero.mp4"
+          muted
+          playsInline
+          autoPlay={false}
+          loop={false}
+          preload="auto"
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            transformOrigin: 'center center',
+            display: !isDesktop ? 'block' : 'none'
           }}
         />
 
