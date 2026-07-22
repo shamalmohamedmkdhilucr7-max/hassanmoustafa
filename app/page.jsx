@@ -248,6 +248,26 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadProgress, setLoadProgress] = useState(0);
 
+  useEffect(() => {
+    // Lock scrolling while loading so the user starts at frame 1
+    if (isLoading) {
+      document.body.style.overflow = 'hidden';
+      // Also lock touchmove for mobile
+      document.body.style.touchAction = 'none';
+    } else {
+      document.body.style.overflow = 'unset';
+      document.body.style.touchAction = 'unset';
+    }
+  }, [isLoading]);
+
+  // Max loading time fallback (10 seconds)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       {/* Global Preloader */}
