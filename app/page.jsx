@@ -48,7 +48,7 @@ function ScrollHero({ onProgress, onLoaded }) {
   const hintRef     = useRef(null);
   const barRef      = useRef(null);
 
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(null); // start as null to avoid double load
 
   // Initial check for desktop
   useEffect(() => {
@@ -64,6 +64,8 @@ function ScrollHero({ onProgress, onLoaded }) {
     : `/assets/hero-sequence-mobile/${String(index).padStart(4, '0')}.webp`;
 
   useGSAP(() => {
+    if (isDesktop === null) return; // Wait until screen size is known
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
