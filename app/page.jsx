@@ -43,149 +43,146 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 function ScrollHero({ onProgress, onLoaded }) {
   const containerRef = useRef(null);
   const stickyRef   = useRef(null);
-  const canvasRef   = useRef(null);
+  const videoRef    = useRef(null);
   const textRef     = useRef(null);
   const hintRef     = useRef(null);
   const barRef      = useRef(null);
   const overlayRef  = useRef(null);
 
-  const frameCount = 240;
-  const currentFrame = (index) => `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`;
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  // Initial check for desktop
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useGSAP(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const context = canvas.getContext("2d");
+    const video = videoRef.current;
+    if (!video) return;
 
-    // Load initial frame
-    const img = new Image();
-    
-    let loadedCount = 0;
-    const totalToPreload = frameCount;
-    
-    const handleImgLoad = () => {
-      loadedCount++;
-      if (onProgress) {
-        onProgress(Math.floor((loadedCount / totalToPreload) * 100));
-      }
-      if (loadedCount >= totalToPreload) {
-        if (onLoaded) onLoaded();
-      }
-    };
+    // We only scrub if it's desktop
+    if (!isDesktop) return;
 
-    img.onload = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render();
-      handleImgLoad();
-    };
-    img.onerror = handleImgLoad; // prevent infinite loading if missing
-    img.src = currentFrame(1);
-    
-    // We maintain an array of images so we don't fetch them constantly
-    const images = [];
-    images[0] = img;
-
-    const render = () => {
-      // Scale image to cover canvas
-      if (images[frame.value - 1]) {
-        const i = images[frame.value - 1];
-        const hRatio = canvas.width / i.width;
-        const vRatio = canvas.height / i.height;
-        
-        // On desktop, use cover (Math.max).
-        // On mobile (portrait), full cover zooms way too far into the center, 
-        // cutting off the car. We'll use a hybrid scale for mobile.
-        let ratio = Math.max(hRatio, vRatio);
-        if (canvas.width < 768) {
-           // Zoom slightly beyond horizontal fit to give it some scale, 
-           // but leave letterboxing (black bars) so the car is fully visible.
-           ratio = hRatio * 1.5; 
-        }
-
-        const centerShift_x = (canvas.width - i.width*ratio) / 2;
-        const centerShift_y = (canvas.height - i.height*ratio) / 2;
-        context.clearRect(0,0,canvas.width, canvas.height);
-        context.drawImage(i, 0,0, i.width, i.height, centerShift_x, centerShift_y, i.width*ratio, i.height*ratio);
-      }
-    };
-
-    // Resize handler
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render();
-    });
-
-    const frame = { value: 1 };
-    
     // Video scrubbing timeline
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.2, // Tighter smoothing for image sequence
+        scrub: 0.1, // Smooth scrubbing
         pin: stickyRef.current,
         anticipatePin: 1
       }
     });
 
-    // 1. Scrub image sequence
-    tl.to(frame, {
-      value: frameCount,
-      snap: "value",
-      ease: "none",
-      duration: 1,
-      onUpdate: render // Draw the new frame
-    }, 0);
+    // 1. Scrub video. Wait for video metadata to know duration
+    const setScrubTimeline = () => {
+      // Create an object to hold the current time so GSAP can animate it
+      const videoTime = { currentTime: 0 };
+      
+      tl.to(videoTime, {
+        currentTime: video.duration || 1, // Fallback to 1 if duration is 0
+        ease: "none",
+        duration: 1,
+        onUpdate: () => {
+          if (video.readyState >= 1) {
+            video.currentTime = videoTime.currentTime;
+          }
+        }
+      }, 0);
 
-    // 2. Parallax and fade text
-    tl.to(textRef.current, {
-      y: -150,
-      opacity: 0,
-      ease: "power2.inOut",
-      duration: 0.3
-    }, 0);
+      // 2. Parallax and fade text
+      tl.to(textRef.current, {
+        y: -150,
+        opacity: 0,
+        ease: "power2.inOut",
+        duration: 0.3
+      }, 0);
 
-    // 3. Fade out scroll hint immediately
-    tl.to(hintRef.current, {
-      opacity: 0,
-      ease: "power1.out",
-      duration: 0.05
-    }, 0);
+      // 3. Fade out scroll hint immediately
+      tl.to(hintRef.current, {
+        opacity: 0,
+        ease: "power1.out",
+        duration: 0.05
+      }, 0);
 
-    // 4. Darkening overlay
-    tl.to(overlayRef.current, {
-      opacity: 0.65,
-      ease: "none",
-      duration: 1
-    }, 0);
+      // 4. Darkening overlay
+      tl.to(overlayRef.current, {
+        opacity: 0.65,
+        ease: "none",
+        duration: 1
+      }, 0);
 
-    // 5. Progress bar width
-    tl.fromTo(barRef.current, { width: "0%" }, {
-      width: "100%",
-      ease: "none",
-      duration: 1
-    }, 0);
+      // 5. Progress bar width
+      tl.fromTo(barRef.current, { width: "0%" }, {
+        width: "100%",
+        ease: "none",
+        duration: 1
+      }, 0);
+    };
 
-    // Preload remaining images asynchronously so they are ready when scrolling
-    for (let i = 1; i < frameCount; i++) {
-      const preloadImg = new Image();
-      preloadImg.onload = handleImgLoad;
-      preloadImg.onerror = handleImgLoad;
-      preloadImg.src = currentFrame(i + 1);
-      images[i] = preloadImg;
+    if (video.readyState >= 1) {
+      setScrubTimeline();
+    } else {
+      video.addEventListener('loadedmetadata', setScrubTimeline);
     }
-  }, { scope: containerRef });
+
+    return () => {
+      video.removeEventListener('loadedmetadata', setScrubTimeline);
+    };
+
+  }, { scope: containerRef, dependencies: [isDesktop] });
+
+  // Handle video loading progress
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) {
+      if (onLoaded) onLoaded();
+      return;
+    }
+
+    // Simulate progress and wait for 'canplaythrough'
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 10;
+      if (progress > 90) progress = 90;
+      if (onProgress) onProgress(progress);
+    }, 100);
+
+    const handleCanPlayThrough = () => {
+      clearInterval(interval);
+      if (onProgress) onProgress(100);
+      if (onLoaded) onLoaded();
+    };
+
+    if (video.readyState >= 3) { 
+      handleCanPlayThrough();
+    } else {
+      video.addEventListener('canplaythrough', handleCanPlayThrough);
+      setTimeout(handleCanPlayThrough, 3000); 
+    }
+
+    return () => {
+      clearInterval(interval);
+      video.removeEventListener('canplaythrough', handleCanPlayThrough);
+    };
+  }, []);
 
   return (
-    <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ height: isDesktop ? '600vh' : '100vh', position: 'relative' }}>
       <div ref={stickyRef} style={{ width: '100%', height: '100vh', overflow: 'hidden', background: '#070707' }}>
 
-        {/* Apple-style image sequence canvas */}
-        <canvas
-          ref={canvasRef}
+        <video
+          ref={videoRef}
+          src="/hero-scroll-animation.mp4"
+          muted
+          playsInline
+          autoPlay={!isDesktop} // Only autoplay on mobile
+          loop={!isDesktop}
+          preload="auto"
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
@@ -236,18 +233,22 @@ function ScrollHero({ onProgress, onLoaded }) {
           </div>
         </div>
 
-        {/* Scroll hint */}
-        <div ref={hintRef} style={{ position:'absolute',bottom:32,left:'50%',transform:'translateX(-50%)',zIndex:30,display:'flex',flexDirection:'column',alignItems:'center',gap:8,opacity:0.55,transition:'opacity 0.5s ease' }}>
-          <span style={{ fontFamily:'Space Grotesk,monospace',fontSize:7,letterSpacing:'0.35em',textTransform:'uppercase',color:'rgba(255,255,255,0.5)' }}>Scroll to Experience</span>
-          <div style={{ width:20,height:32,borderRadius:999,border:'1px solid rgba(255,255,255,0.22)',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:6 }}>
-            <div className="scroll-indicator-dot" style={{ width:4,height:6,borderRadius:2,background:'#d6041d' }} />
+        {/* Scroll hint - only show on desktop */}
+        {isDesktop && (
+          <div ref={hintRef} style={{ position:'absolute',bottom:32,left:'50%',transform:'translateX(-50%)',zIndex:30,display:'flex',flexDirection:'column',alignItems:'center',gap:8,opacity:0.55,transition:'opacity 0.5s ease' }}>
+            <span style={{ fontFamily:'Space Grotesk,monospace',fontSize:7,letterSpacing:'0.35em',textTransform:'uppercase',color:'rgba(255,255,255,0.5)' }}>Scroll to Experience</span>
+            <div style={{ width:20,height:32,borderRadius:999,border:'1px solid rgba(255,255,255,0.22)',display:'flex',justifyContent:'center',alignItems:'flex-start',paddingTop:6 }}>
+              <div className="scroll-indicator-dot" style={{ width:4,height:6,borderRadius:2,background:'#d6041d' }} />
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Progress bar */}
-        <div style={{ position:'absolute',bottom:0,left:0,right:0,height:2,background:'rgba(255,255,255,0.06)',zIndex:30 }}>
-          <div ref={barRef} style={{ height:'100%',width:0,background:'linear-gradient(to right,#d6041d,#ff6060)',transition:'none',willChange:'width' }} />
-        </div>
+        {/* Progress bar - only show on desktop */}
+        {isDesktop && (
+          <div style={{ position:'absolute',bottom:0,left:0,right:0,height:2,background:'rgba(255,255,255,0.06)',zIndex:30 }}>
+            <div ref={barRef} style={{ height:'100%',width:0,background:'linear-gradient(to right,#d6041d,#ff6060)',transition:'none',willChange:'width' }} />
+          </div>
+        )}
       </div>
     </div>
   );
