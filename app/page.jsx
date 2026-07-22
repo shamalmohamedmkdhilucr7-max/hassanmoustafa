@@ -58,7 +58,7 @@ function ScrollHero({ onProgress, onLoaded }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const frameCount = 240;
+  const frameCount = 140;
   const currentFrame = (index) => `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`;
 
   useGSAP(() => {
