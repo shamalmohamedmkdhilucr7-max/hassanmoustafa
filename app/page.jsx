@@ -71,7 +71,7 @@ function ScrollHero({ onProgress, onLoaded }) {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.1, // Smooth scrubbing
+        scrub: 0.25, // Smooth scrubbing
         pin: stickyRef.current,
         anticipatePin: 1
       }
@@ -169,7 +169,7 @@ function ScrollHero({ onProgress, onLoaded }) {
 
         <video
           ref={videoRef}
-          src="/hero-scroll-animation.mp4"
+          src="/hero-optimized.mp4"
           muted
           playsInline
           autoPlay={!isDesktop} // Only autoplay on mobile
