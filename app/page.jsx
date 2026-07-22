@@ -59,7 +59,9 @@ function ScrollHero({ onProgress, onLoaded }) {
   }, []);
 
   const frameCount = 140;
-  const currentFrame = (index) => `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`;
+  const currentFrame = (index) => isDesktop 
+    ? `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`
+    : `/assets/hero-sequence-mobile/${String(index).padStart(4, '0')}.jpg`;
 
   useGSAP(() => {
     const canvas = canvasRef.current;
@@ -124,9 +126,6 @@ function ScrollHero({ onProgress, onLoaded }) {
 
     const frame = { value: 1 };
     
-    // We only scrub if it's desktop
-    if (!isDesktop) return;
-
     // Video scrubbing timeline
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -180,39 +179,19 @@ function ScrollHero({ onProgress, onLoaded }) {
     }
   }, { scope: containerRef, dependencies: [isDesktop] });
 
-  // On mobile fallback: If not desktop, we just render a static canvas frame or video? 
-  // Let's use video tag on mobile and canvas on desktop to keep the same logic.
-  // We'll return both but hide based on isDesktop.
-  
   return (
-    <div ref={containerRef} style={{ height: isDesktop ? '600vh' : '100vh', position: 'relative' }}>
+    <div ref={containerRef} style={{ height: '600vh', position: 'relative' }}>
       <div ref={stickyRef} style={{ width: '100%', height: '100vh', overflow: 'hidden', background: '#070707' }}>
 
-        {isDesktop ? (
-          <canvas
-            ref={canvasRef}
-            style={{
-              position: 'absolute', inset: 0,
-              width: '100%', height: '100%',
-              objectFit: 'cover',
-              transformOrigin: 'center center',
-            }}
-          />
-        ) : (
-          <video
-            src="/hero-optimized.mp4"
-            muted
-            playsInline
-            autoPlay
-            loop
-            style={{
-              position: 'absolute', inset: 0,
-              width: '100%', height: '100%',
-              objectFit: 'cover',
-              transformOrigin: 'center center',
-            }}
-          />
-        )}
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            transformOrigin: 'center center',
+          }}
+        />
 
         {/* Hero text */}
         <div ref={textRef} style={{ position:'absolute',inset:0,zIndex:20,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',textAlign:'center',padding:'0 1.5rem',paddingTop:80,willChange:'opacity,transform' }}>
