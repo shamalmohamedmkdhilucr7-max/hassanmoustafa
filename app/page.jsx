@@ -60,7 +60,7 @@ function ScrollHero({ onProgress, onLoaded }) {
   }, []);
 
   const frameCount = 140;
-  const currentFrame = (index) => `/assets/hero-sequence/${String(index).padStart(4, '0')}.jpg`;
+  const currentFrame = (index) => `/assets/hero-sequence/${String(index).padStart(4, '0')}.webp`;
 
   useGSAP(() => {
     // Shared timeline
